@@ -1,0 +1,10 @@
+title: Platform Integration
+nav:
+  - index.md
+  - altera.md
+  - gowin.md
+  - lattice.md
+  - quicklogic.md
+  - siliconblue.md
+  - xilinx.md
+  - ...

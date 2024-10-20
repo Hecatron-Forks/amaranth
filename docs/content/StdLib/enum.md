@@ -1,5 +1,6 @@
-Enumerations
-############
+---
+title: Enumerations
+---
 
 .. py:module:: amaranth.lib.enum
 
@@ -111,22 +112,19 @@ It is also possible to define a custom view class for a given enum:
    >>> a.has_immediate()
    (| (== (sig a) (const 5'd16)) (== (sig a) (const 5'd17)))
 
-Metaclass
-=========
+## Metaclass
 
 .. autoclass:: EnumType()
 
 
-Base classes
-============
+## Base classes
 
 .. autoclass:: Enum()
 .. autoclass:: IntEnum()
 .. autoclass:: Flag()
 .. autoclass:: IntFlag()
 
-View classes
-============
+## View classes
 
 .. autoclass:: EnumView()
 .. autoclass:: FlagView()

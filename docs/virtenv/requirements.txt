@@ -1,0 +1,5 @@
+mkdocs
+mkdocs-material
+mkdocstrings
+mktestdocs
+mkdocs-awesome-pages-plugin

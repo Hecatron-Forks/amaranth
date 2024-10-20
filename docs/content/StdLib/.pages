@@ -1,0 +1,14 @@
+title: Standard Library
+nav:
+  - index.md
+  - enum.md
+  - data.md
+  - wiring.md
+  - meta.md
+  - stream.md
+  - memory.md
+  - io.md
+  - cdc.md
+  - fifo.md
+  - crc
+  - ...
