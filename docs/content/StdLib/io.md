@@ -1,26 +1,27 @@
 # Input/output buffers
 
+```{eval-rst}
 .. py:module:: amaranth.lib.io
+```
 
-The :mod:`amaranth.lib.io` module provides a platform-independent way to instantiate platform-specific input/output buffers: combinational, synchronous, and double data rate (DDR).
-
+The {mod}`amaranth.lib.io` module provides a platform-independent way to instantiate platform-specific input/output buffers: combinational, synchronous, and double data rate (DDR).
 
 ## Introduction
 
-The Amaranth language provides :ref:`core I/O values <lang-iovalues>` that designate connections to external devices, and :ref:`I/O buffer instances <lang-iobufferinstance>` that implement platform-independent combinational I/O buffers. This low-level mechanism is foundational to all I/O in Amaranth and must be used whenever a device-specific platform is unavailable, but is limited in its capabilities. The :mod:`amaranth.lib.io` module builds on top of it to provide *library I/O ports* that specialize and annotate I/O values, and *buffer components* that connect ports to logic.
+The Amaranth language provides {ref}`core I/O values <lang-iovalues>` that designate connections to external devices, and {ref}`I/O buffer instances <lang-iobufferinstance>` that implement platform-independent combinational I/O buffers. This low-level mechanism is foundational to all I/O in Amaranth and must be used whenever a device-specific platform is unavailable, but is limited in its capabilities. The {mod}`amaranth.lib.io` module builds on top of it to provide *library I/O ports* that specialize and annotate I/O values, and *buffer components* that connect ports to logic.
 
-.. note::
+:::{note}
+Unfortunately, the terminology related to I/O has several ambiguities:
 
-    Unfortunately, the terminology related to I/O has several ambiguities:
+- A "port" could refer to an *interface port* ({class}`.Signal` objects created by the {mod}`amaranth.lib.wiring` module), a *core I/O port* ({class}`amaranth.hdl.IOPort` object), or a *library I/O port* ({class}`amaranth.lib.io.PortLike` object).
+- A "I/O buffer" could refer to an *I/O buffer instance* ({class}`amaranth.hdl.IOBufferInstance`) or a *I/O buffer component* ({class}`amaranth.lib.io.Buffer`, {class}`.FFBuffer`, or {class}`.DDRBuffer` objects).
 
-    * A "port" could refer to an *interface port* (:class:`.Signal` objects created by the :mod:`amaranth.lib.wiring` module), a *core I/O port* (:class:`amaranth.hdl.IOPort` object), or a *library I/O port* (:class:`amaranth.lib.io.PortLike` object).
-    * A "I/O buffer" could refer to an *I/O buffer instance* (:class:`amaranth.hdl.IOBufferInstance`) or a *I/O buffer component* (:class:`amaranth.lib.io.Buffer`, :class:`.FFBuffer`, or :class:`.DDRBuffer` objects).
-
-    Amaranth documentation always uses the least ambiguous form of these terms.
-
+Amaranth documentation always uses the least ambiguous form of these terms.
+:::
 
 ## Examples
 
+```{eval-rst}
 .. testsetup::
 
     from amaranth import *
@@ -52,20 +53,24 @@ The Amaranth language provides :ref:`core I/O values <lang-iovalues>` that desig
             from amaranth.back import rtlil
             return rtlil.convert(Fragment.get(top, self), ports=[])
 
+```
 
 All of the following examples assume that one of the built-in FPGA platforms is used.
 
+```{eval-rst}
 .. testcode::
 
     from amaranth.sim import Simulator, Period
     from amaranth.lib import io, wiring, stream
     from amaranth.lib.wiring import In, Out
 
+```
 
 ### LED output
 
 In this example, a library I/O port for a LED is requested from the platform and driven to blink the LED:
 
+```{eval-rst}
 .. testcode::
 
     class Toplevel(Elaboratable):
@@ -84,17 +89,21 @@ In this example, a library I/O port for a LED is requested from the platform and
             m.d.comb += led.o.eq(state)
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     MockPlatform().build(Toplevel())
 
+```
 
 ### Clock input
 
 In this example, a clock domain is created and driven from an external clock source:
 
+```{eval-rst}
 .. testcode::
 
     class Toplevel(Elaboratable):
@@ -109,17 +118,21 @@ In this example, a clock domain is created and driven from an external clock sou
             ...
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     MockPlatform().build(Toplevel())
 
+```
 
 ### Bidirectional bus
 
 This example implements a peripheral for a clocked parallel bus. This peripheral can store and recall one byte of data. The data is stored with a write enable pulse, and recalled with a read enable pulse:
 
+```{eval-rst}
 .. testcode::
 
     class Toplevel(Elaboratable):
@@ -138,21 +151,24 @@ This example implements a peripheral for a clocked parallel bus. This peripheral
                 m.d.sync += data.eq(bus_d.i)
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     MockPlatform().build(Toplevel())
+```
 
 This bus requires a turn-around time of at least 1 cycle to avoid electrical contention.
 
-Note that data appears on the bus one cycle after the read enable input is asserted, and that the write enable input stores the data present on the bus in the *previous* cycle. This is called *pipelining* and is typical for clocked buses; see :class:`.FFBuffer` for a waveform diagram. Although it increases the maximum clock frequency at which the bus can run, it also makes the bus signaling more complicated.
-
+Note that data appears on the bus one cycle after the read enable input is asserted, and that the write enable input stores the data present on the bus in the *previous* cycle. This is called *pipelining* and is typical for clocked buses; see {class}`.FFBuffer` for a waveform diagram. Although it increases the maximum clock frequency at which the bus can run, it also makes the bus signaling more complicated.
 
 ### Clock forwarding
 
-In this example of a `source-synchronous interface <https://en.wikipedia.org/wiki/Source-synchronous>`__, a clock signal is generated with the same phase as the DDR data signals associated with it:
+In this example of a [source-synchronous interface](https://en.wikipedia.org/wiki/Source-synchronous), a clock signal is generated with the same phase as the DDR data signals associated with it:
 
+```{eval-rst}
 .. testcode::
 
     class SourceSynchronousOutput(wiring.Component):
@@ -176,23 +192,26 @@ In this example of a `source-synchronous interface <https://en.wikipedia.org/wik
             ]
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     MockPlatform().build(SourceSynchronousOutput())
+```
 
-This component transmits :py:`dout` on each cycle as two halves: the low 8 bits on the rising edge of the data clock, and the high 8 bits on the falling edge of the data clock. The transmission is *edge-aligned*, meaning that the data edges exactly coincide with the clock edges.
-
+This component transmits {py}`dout` on each cycle as two halves: the low 8 bits on the rising edge of the data clock, and the high 8 bits on the falling edge of the data clock. The transmission is *edge-aligned*, meaning that the data edges exactly coincide with the clock edges.
 
 ## Simulation
 
-The Amaranth simulator, :mod:`amaranth.sim`, cannot simulate :ref:`core I/O values <lang-iovalues>` or :ref:`I/O buffer instances <lang-iobufferinstance>` as it only operates on unidirectionally driven two-state wires. This module provides a simulation-only library I/O port, :class:`SimulationPort`, so that components that use library I/O buffers can be tested.
+The Amaranth simulator, {mod}`amaranth.sim`, cannot simulate {ref}`core I/O values <lang-iovalues>` or {ref}`I/O buffer instances <lang-iobufferinstance>` as it only operates on unidirectionally driven two-state wires. This module provides a simulation-only library I/O port, {class}`SimulationPort`, so that components that use library I/O buffers can be tested.
 
-A component that is designed for testing should accept the library I/O ports it will drive as constructor parameters rather than requesting them from the platform directly. Synthesizable designs will instantiate the component with a :class:`SingleEndedPort`, :class:`DifferentialPort`, or a platform-specific library I/O port, while tests will instantiate the component with a :class:`SimulationPort`. Tests are able to inject inputs into the component using :py:`sim_port.i`, capture the outputs of the component via :py:`sim_port.o`, and ensure that the component is driving the outputs at the appropriate times using :py:`sim_port.oe`.
+A component that is designed for testing should accept the library I/O ports it will drive as constructor parameters rather than requesting them from the platform directly. Synthesizable designs will instantiate the component with a {class}`SingleEndedPort`, {class}`DifferentialPort`, or a platform-specific library I/O port, while tests will instantiate the component with a {class}`SimulationPort`. Tests are able to inject inputs into the component using {py}`sim_port.i`, capture the outputs of the component via {py}`sim_port.o`, and ensure that the component is driving the outputs at the appropriate times using {py}`sim_port.oe`.
 
 For example, consider a simple serializer that accepts a stream of multi-bit data words and outputs them bit by bit. It can be tested as follows:
 
+```{eval-rst}
 .. testcode::
 
     class OutputSerializer(wiring.Component):
@@ -245,25 +264,49 @@ For example, consider a simple serializer that accepts a stream of multi-bit dat
         sim.add_testbench(testbench_write_data)
         sim.add_testbench(testbench_sample_output)
         sim.run()
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     test_output_serializer()
 
+```
 
 ## Ports
 
+```{eval-rst}
 .. autoclass:: Direction()
+```
 
+```{eval-rst}
 .. autoclass:: PortLike
+```
+
+```{eval-rst}
 .. autoclass:: SingleEndedPort
+```
+
+```{eval-rst}
 .. autoclass:: DifferentialPort
+```
+
+```{eval-rst}
 .. autoclass:: SimulationPort
 
+```
 
 ## Buffers
 
+```{eval-rst}
 .. autoclass:: Buffer(direction, port)
+```
+
+```{eval-rst}
 .. autoclass:: FFBuffer(direction, port, *, i_domain=None, o_domain=None)
+```
+
+```{eval-rst}
 .. autoclass:: DDRBuffer(direction, port, *, i_domain=None, o_domain=None)
+```

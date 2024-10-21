@@ -1,17 +1,22 @@
----
+\---
 title: Enumerations
----
+\---
 
+```{eval-rst}
 .. py:module:: amaranth.lib.enum
+```
 
-The :mod:`amaranth.lib.enum` module is a drop-in replacement for the standard :mod:`enum` module that provides extended :class:`Enum`, :class:`IntEnum`, :class:`Flag`, and :class:`IntFlag` classes with the ability to specify a shape explicitly.
+The {mod}`amaranth.lib.enum` module is a drop-in replacement for the standard {mod}`enum` module that provides extended {class}`Enum`, {class}`IntEnum`, {class}`Flag`, and {class}`IntFlag` classes with the ability to specify a shape explicitly.
 
-A shape can be specified for an enumeration with the ``shape=`` keyword argument:
+A shape can be specified for an enumeration with the `shape=` keyword argument:
 
+```{eval-rst}
 .. testsetup::
 
    from amaranth import *
+```
 
+```{eval-rst}
 .. testcode::
 
    from amaranth.lib import enum
@@ -20,16 +25,20 @@ A shape can be specified for an enumeration with the ``shape=`` keyword argument
        ADD = 0
        SUB = 1
        MUL = 2
+```
 
+```{eval-rst}
 .. doctest::
 
    >>> Shape.cast(Funct)
    unsigned(4)
    >>> Value.cast(Funct.ADD)
    (const 4'd0)
+```
 
-Any :ref:`constant-castable <lang-constcasting>` expression can be used as the value of a member:
+Any {ref}`constant-castable <lang-constcasting>` expression can be used as the value of a member:
 
+```{eval-rst}
 .. testcode::
 
    class Op(enum.Enum, shape=1):
@@ -42,14 +51,18 @@ Any :ref:`constant-castable <lang-constcasting>` expression can be used as the v
        SUB  = Cat(Funct.SUB, Op.REG)
        SUBI = Cat(Funct.SUB, Op.IMM)
        ...
+```
 
+```{eval-rst}
 .. doctest::
 
    >>> Instr.SUBI
    <Instr.SUBI: 17>
+```
 
-The ``shape=`` argument is optional. If not specified, classes from this module behave exactly the same as classes from the standard :mod:`enum` module, and likewise, this module re-exports everything exported by the standard :mod:`enum` module.
+The `shape=` argument is optional. If not specified, classes from this module behave exactly the same as classes from the standard {mod}`enum` module, and likewise, this module re-exports everything exported by the standard {mod}`enum` module.
 
+```{eval-rst}
 .. testcode::
 
    import amaranth.lib.enum
@@ -57,11 +70,13 @@ The ``shape=`` argument is optional. If not specified, classes from this module 
    class NormalEnum(amaranth.lib.enum.Enum):
        SPAM = 0
        HAM  = 1
+```
 
-In this way, this module is a drop-in replacement for the standard :mod:`enum` module, and in an Amaranth project, all ``import enum`` statements may be replaced with ``from amaranth.lib import enum``.
+In this way, this module is a drop-in replacement for the standard {mod}`enum` module, and in an Amaranth project, all `import enum` statements may be replaced with `from amaranth.lib import enum`.
 
-Signals with :class:`Enum` or :class:`Flag` based shape are automatically wrapped in the :class:`EnumView` or :class:`FlagView` value-like wrappers, which ensure type safety. Any :ref:`value-like <lang-valuelike>` can also be explicitly wrapped in a view class by casting it to the enum type:
+Signals with {class}`Enum` or {class}`Flag` based shape are automatically wrapped in the {class}`EnumView` or {class}`FlagView` value-like wrappers, which ensure type safety. Any {ref}`value-like <lang-valuelike>` can also be explicitly wrapped in a view class by casting it to the enum type:
 
+```{eval-rst}
 .. doctest::
 
    >>> a = Signal(Funct)
@@ -75,23 +90,29 @@ Signals with :class:`Enum` or :class:`Flag` based shape are automatically wrappe
    >>> c = Signal(4)
    >>> type(Funct(c))
    <class 'amaranth.lib.enum.EnumView'>
+```
 
-Like the standard Python :class:`enum.IntEnum` and :class:`enum.IntFlag` classes, the Amaranth :class:`IntEnum` and :class:`IntFlag` classes are loosely typed and will not be subject to wrapping in view classes:
+Like the standard Python {class}`enum.IntEnum` and {class}`enum.IntFlag` classes, the Amaranth {class}`IntEnum` and {class}`IntFlag` classes are loosely typed and will not be subject to wrapping in view classes:
 
+```{eval-rst}
 .. testcode::
 
    class TransparentEnum(enum.IntEnum, shape=unsigned(4)):
        FOO = 0
        BAR = 1
+```
 
+```{eval-rst}
 .. doctest::
 
    >>> a = Signal(TransparentEnum)
    >>> type(a) is Signal
    True
+```
 
 It is also possible to define a custom view class for a given enum:
 
+```{eval-rst}
 .. testcode::
 
    class InstrView(enum.EnumView):
@@ -103,7 +124,9 @@ It is also possible to define a custom view class for a given enum:
        ADDI = Cat(Funct.ADD, Op.IMM)
        SUB  = Cat(Funct.SUB, Op.REG)
        SUBI = Cat(Funct.SUB, Op.IMM)
+```
 
+```{eval-rst}
 .. doctest::
 
    >>> a = Signal(Instr)
@@ -111,20 +134,39 @@ It is also possible to define a custom view class for a given enum:
    <class 'InstrView'>
    >>> a.has_immediate()
    (| (== (sig a) (const 5'd16)) (== (sig a) (const 5'd17)))
+```
 
-## Metaclass
+# Metaclass
 
+```{eval-rst}
 .. autoclass:: EnumType()
 
+```
 
-## Base classes
+# Base classes
 
+```{eval-rst}
 .. autoclass:: Enum()
+```
+
+```{eval-rst}
 .. autoclass:: IntEnum()
+```
+
+```{eval-rst}
 .. autoclass:: Flag()
+```
+
+```{eval-rst}
 .. autoclass:: IntFlag()
+```
 
-## View classes
+# View classes
 
+```{eval-rst}
 .. autoclass:: EnumView()
+```
+
+```{eval-rst}
 .. autoclass:: FlagView()
+```

@@ -1,55 +1,49 @@
 ---
-title: Installation
+substitutions:
+  builtin-yosys-architectures: x86_64 and AArch64
+  develop:first-time: 'To install an editable development snapshot of Amaranth for
+    the first time, run:'
+  develop:reinstall: any time package dependencies may have been added or changed
+    (notably after updating the snapshot with `git`). Otherwise, code using Amaranth
+    may crash because of a dependency version mismatch.
+  develop:update: 'Any changes made to the `amaranth` directory will immediately affect
+    any code that uses Amaranth. To update the snapshot, run:'
+  release:install: 'To install the latest release of Amaranth, run:'
+  snapshot:install: 'To install the latest development snapshot of Amaranth, run:'
+  upgrade-pip: 'Before continuing, make sure you have the latest version of [pip]
+    installed by running:'
+  yosys-version: 0.40 (or newer)
 ---
 
-.. _install-playground:
+# Installation
+
+(install-playground)=
 
 ## In-browser playground
 
-You can try Amaranth out without installing anything by visiting the `Amaranth Playground`_. The playground webpage contains a `fully functional Python interpreter <Pyodide_>`_ and an Amaranth toolchain that can simulate a design, display waveforms, and generate Verilog code. It works on all modern browsers that support WebAssembly_, including Firefox, Chrome, and Edge.
+You can try Amaranth out without installing anything by visiting the [Amaranth Playground]. The playground webpage contains a [fully functional Python interpreter][pyodide] and an Amaranth toolchain that can simulate a design, display waveforms, and generate Verilog code. It works on all modern browsers that support [WebAssembly], including Firefox, Chrome, and Edge.
 
-.. _Amaranth Playground: https://amaranth-lang.org/play/
-.. _Pyodide: https://pyodide.org/en/stable/
-.. _WebAssembly: https://webassembly.org/
-
-
-.. _install-sysreqs:
+(install-sysreqs)=
 
 ## System requirements
 
-..
-   This version requirement needs to be synchronized with the one in pyproject.toml!
+% This version requirement needs to be synchronized with the one in pyproject.toml!
 
-.. |yosys-version| replace:: 0.40 (or newer)
+Amaranth HDL requires Python 3.9; it works on [CPython] 3.9 (or newer), and works faster on [PyPy3.9] 7.3.7 (or newer). Installation requires [pip] 23.0 (or newer).
 
-Amaranth HDL requires Python 3.9; it works on CPython_ 3.9 (or newer), and works faster on PyPy3.9_ 7.3.7 (or newer). Installation requires pip_ 23.0 (or newer).
+For most workflows, Amaranth requires [Yosys] {{ yosys-version }}. A [compatible version of Yosys][amaranth-yosys] is distributed via [PyPI] for most popular platforms, so it is usually not necessary to install Yosys separately.
 
-For most workflows, Amaranth requires Yosys_ |yosys-version|. A `compatible version of Yosys <amaranth-yosys_>`_ is distributed via PyPI_ for most popular platforms, so it is usually not necessary to install Yosys separately.
+Simulating Amaranth code requires no additional software. However, a waveform viewer like [Surfer] or [GTKWave] is invaluable for debugging. As an alternative, the [Amaranth Playground] can be used to display waveforms for simple designs.
 
-Simulating Amaranth code requires no additional software. However, a waveform viewer like Surfer_ or GTKWave_ is invaluable for debugging. As an alternative, the `Amaranth Playground`_ can be used to display waveforms for simple designs.
+Synthesizing, placing and routing an Amaranth design for an FPGA requires the FPGA family specific toolchain. The open source iCE40, ECP5, MachXO2/3, Nexus, and Gowin toolchains are distributed via [PyPI] for most popular platforms by the [YoWASP] project.
 
-Synthesizing, placing and routing an Amaranth design for an FPGA requires the FPGA family specific toolchain. The open source iCE40, ECP5, MachXO2/3, Nexus, and Gowin toolchains are distributed via PyPI_ for most popular platforms by the YoWASP_ project.
+% TODO: Link to FPGA family docs here
 
-.. TODO: Link to FPGA family docs here
-
-.. _CPython: https://www.python.org/
-.. _PyPy3.9: https://www.pypy.org/
-.. _pip: https://pip.pypa.io/en/stable/
-.. _Yosys: https://yosyshq.net/yosys/
-.. _amaranth-yosys: https://pypi.org/project/amaranth-yosys/
-.. _PyPI: https://pypi.org/
-.. _Surfer: https://surfer-project.org/
-.. _GTKWave: https://gtkwave.sourceforge.net/
-.. _YoWASP: https://yowasp.org/
-
-
-.. _install-deps:
+(install-deps)=
 
 ## Installing prerequisites
 
-.. |builtin-yosys-architectures| replace:: x86_64 and AArch64
-.. |upgrade-pip| replace:: Before continuing, make sure you have the latest version of pip_ installed by running:
-
+```{eval-rst}
 .. platform-picker::
 
    .. platform-choice:: windows
@@ -121,20 +115,19 @@ Synthesizing, placing and routing an Amaranth design for an FPGA requires the FP
 
          $ pip3 install --user --upgrade pip
 
+```
 
-.. _install:
+(install)=
 
 ## Installing Amaranth
 
-The latest release of Amaranth should work well for most applications. A development snapshot---any commit from the ``main`` branch of Amaranth---should be similarly reliable, but is likely to include experimental API changes that will be in flux until the next release. With that in mind, development snapshots can be used to try out new functionality or to avoid bugs fixed since the last release.
+The latest release of Amaranth should work well for most applications. A development snapshot---any commit from the `main` branch of Amaranth---should be similarly reliable, but is likely to include experimental API changes that will be in flux until the next release. With that in mind, development snapshots can be used to try out new functionality or to avoid bugs fixed since the last release.
 
-
-.. _install-release:
+(install-release)=
 
 ### Latest release
 
-.. |release:install| replace:: To install the latest release of Amaranth, run:
-
+```{eval-rst}
 .. platform-picker::
 
    .. platform-choice:: windows
@@ -170,13 +163,13 @@ The latest release of Amaranth should work well for most applications. A develop
 
          $ pip3 install --user --upgrade amaranth
 
+```
 
-.. _install-snapshot:
+(install-snapshot)=
 
 ### Development snapshot
 
-.. |snapshot:install| replace:: To install the latest development snapshot of Amaranth, run:
-
+```{eval-rst}
 .. platform-picker::
 
    .. platform-choice:: windows
@@ -212,15 +205,13 @@ The latest release of Amaranth should work well for most applications. A develop
 
          $ pip3 install --user 'amaranth @ git+https://github.com/amaranth-lang/amaranth.git'
 
+```
 
-.. _install-develop:
+(install-develop)=
 
 ### Editable development snapshot
 
-.. |develop:first-time| replace:: To install an editable development snapshot of Amaranth for the first time, run:
-.. |develop:update| replace:: Any changes made to the ``amaranth`` directory will immediately affect any code that uses Amaranth. To update the snapshot, run:
-.. |develop:reinstall| replace:: any time package dependencies may have been added or changed (notably after updating the snapshot with ``git``). Otherwise, code using Amaranth may crash because of a dependency version mismatch.
-
+```{eval-rst}
 .. platform-picker::
 
    .. platform-choice:: windows
@@ -288,9 +279,25 @@ The latest release of Amaranth should work well for most applications. A develop
 
       Run the ``pip3 install --editable .[builtin-yosys]`` command |develop:reinstall|
 
+```
 
 ## Installing board definitions
 
+```{eval-rst}
 .. todo::
 
-	 Explain how to install `<https://github.com/amaranth-lang/amaranth-boards>`_.
+         Explain how to install `<https://github.com/amaranth-lang/amaranth-boards>`_.
+```
+
+[amaranth playground]: https://amaranth-lang.org/play/
+[amaranth-yosys]: https://pypi.org/project/amaranth-yosys/
+[cpython]: https://www.python.org/
+[gtkwave]: https://gtkwave.sourceforge.net/
+[pip]: https://pip.pypa.io/en/stable/
+[pyodide]: https://pyodide.org/en/stable/
+[pypi]: https://pypi.org/
+[pypy3.9]: https://www.pypy.org/
+[surfer]: https://surfer-project.org/
+[webassembly]: https://webassembly.org/
+[yosys]: https://yosyshq.net/yosys/
+[yowasp]: https://yowasp.org/

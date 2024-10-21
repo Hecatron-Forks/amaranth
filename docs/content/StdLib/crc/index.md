@@ -1,31 +1,34 @@
 # Cyclic redundancy checks
 
+```{eval-rst}
 .. py:module:: amaranth.lib.crc
+```
 
-The :mod:`amaranth.lib.crc` module provides facilities for computing cyclic redundancy checks (CRCs)
+The {mod}`amaranth.lib.crc` module provides facilities for computing cyclic redundancy checks (CRCs)
 in software and in hardware.
-
 
 ## Introduction
 
-The essentials of a CRC computation are specified with an :class:`Algorithm` object, which defines
+The essentials of a CRC computation are specified with an {class}`Algorithm` object, which defines
 CRC width, polynomial, initial value, input/output reflection, and output XOR. Many commonly used
-CRC algorithms are available in the :py:mod:`~amaranth.lib.crc.catalog` module, while most other
-CRC designs can be accommodated by manually constructing an :class:`Algorithm`.
+CRC algorithms are available in the {py:mod}`~amaranth.lib.crc.catalog` module, while most other
+CRC designs can be accommodated by manually constructing an {class}`Algorithm`.
 
-An :class:`Algorithm` is specialized for a particular data width to obtain :class:`Parameters`,
-which fully define a CRC computation. :meth:`Parameters.compute` computes a CRC in software, while
-:meth:`Parameters.create` creates a :class:`Processor` that computes a CRC in hardware.
-
+An {class}`Algorithm` is specialized for a particular data width to obtain {class}`Parameters`,
+which fully define a CRC computation. {meth}`Parameters.compute` computes a CRC in software, while
+{meth}`Parameters.create` creates a {class}`Processor` that computes a CRC in hardware.
 
 ## Examples
 
+```{eval-rst}
 .. testsetup::
 
     from amaranth import *
 
     m = Module()
+```
 
+```{eval-rst}
 .. testcode::
 
     from amaranth.lib.crc import Algorithm
@@ -46,24 +49,31 @@ which fully define a CRC computation. :meth:`Parameters.compute` computes a CRC 
         reflect_input=False, reflect_output=False, xor_output=0x0000)
     assert algo(data_width=8).compute(b"123456789") == 0x29b1
 
+```
 
 ## Algorithms and parameters
 
+```{eval-rst}
 .. autoclass:: Algorithm
    :special-members: __call__
+```
 
+```{eval-rst}
 .. autoclass:: Parameters
 
+```
 
 ## CRC computation
 
+```{eval-rst}
 .. autoclass:: Processor()
 
+```
 
 ## Predefined algorithms
 
 The following predefined CRC algorithms are available:
 
-.. toctree::
-
-   crc/catalog
+```{toctree}
+crc/catalog
+```

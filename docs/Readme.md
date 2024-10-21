@@ -11,6 +11,11 @@ Plugins Used:
 
   * https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin
 
+Initial conversion of RST to Markdown via
+
+  * https://rst-to-myst.readthedocs.io/en/latest/
+
+
 ## Python Virtual Environment
 
 In order to install everything needed to build / test the docs.
@@ -44,4 +49,8 @@ To build a copy of the site for release
 mkdocs build
 ``
 
-TODO publishing
+## TODO
+
+  * publishing
+  * tidy up syntax
+  * config

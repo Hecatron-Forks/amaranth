@@ -1,58 +1,62 @@
 # Data streams
 
+```{eval-rst}
 .. py:module:: amaranth.lib.stream
+```
 
-The :mod:`amaranth.lib.stream` module provides a mechanism for unidirectional exchange of arbitrary data between modules.
-
+The {mod}`amaranth.lib.stream` module provides a mechanism for unidirectional exchange of arbitrary data between modules.
 
 ## Introduction
 
-One of the most common flow control mechanisms is *ready/valid handshaking*, where a *producer* pushes data to a *consumer* whenever it becomes available, and the consumer signals to the producer whether it can accept more data. In Amaranth, this mechanism is implemented using an :ref:`interface <wiring>` with three members:
+One of the most common flow control mechanisms is *ready/valid handshaking*, where a *producer* pushes data to a *consumer* whenever it becomes available, and the consumer signals to the producer whether it can accept more data. In Amaranth, this mechanism is implemented using an {ref}`interface <wiring>` with three members:
 
-- :py:`payload` (driven by the producer), containing the data;
-- :py:`valid` (driven by the producer), indicating that data is currently available in :py:`payload`;
-- :py:`ready` (driven by the consumer), indicating that data is accepted if available.
+- {py}`payload` (driven by the producer), containing the data;
+- {py}`valid` (driven by the producer), indicating that data is currently available in {py}`payload`;
+- {py}`ready` (driven by the consumer), indicating that data is accepted if available.
 
-This module provides such an interface, :class:`stream.Interface <Interface>`, and defines the exact rules governing the flow of data through it.
+This module provides such an interface, {class}`stream.Interface <Interface>`, and defines the exact rules governing the flow of data through it.
 
-
-.. _stream-rules:
+(stream-rules)=
 
 ## Data transfer rules
 
-The producer and the consumer must be synchronized: they must belong to the same :ref:`clock domain <lang-clockdomains>`, and any :ref:`control flow modifiers <lang-controlinserter>` must be applied to both, in the same order.
+The producer and the consumer must be synchronized: they must belong to the same {ref}`clock domain <lang-clockdomains>`, and any {ref}`control flow modifiers <lang-controlinserter>` must be applied to both, in the same order.
 
 Data flows through a stream according to the following four rules:
 
-1. On each cycle where both :py:`valid` and :py:`ready` are asserted, a transfer is performed: the contents of ``payload`` are conveyed from the producer to the consumer.
-2. Once the producer asserts :py:`valid`, it must not deassert :py:`valid` or change the contents of ``payload`` until a transfer is performed.
-3. The producer must not wait for :py:`ready` to be asserted before asserting :py:`valid`: any form of feedback from :py:`ready` that causes :py:`valid` to become asserted is prohibited.
-4. The consumer may assert or deassert :py:`ready` at any time, including via combinational feedback from :py:`valid`.
+1. On each cycle where both {py}`valid` and {py}`ready` are asserted, a transfer is performed: the contents of `payload` are conveyed from the producer to the consumer.
+2. Once the producer asserts {py}`valid`, it must not deassert {py}`valid` or change the contents of `payload` until a transfer is performed.
+3. The producer must not wait for {py}`ready` to be asserted before asserting {py}`valid`: any form of feedback from {py}`ready` that causes {py}`valid` to become asserted is prohibited.
+4. The consumer may assert or deassert {py}`ready` at any time, including via combinational feedback from {py}`valid`.
 
-Some producers and consumers may be designed without support for backpressure. Such producers must tie :py:`ready` to :py:`Const(1)` by specifying :py:`always_ready=True` when constructing a stream, and consumers may (but are not required to) do the same. Similarly, some producers and consumers may be designed such that a payload is provided or must be provided on each cycle. Such consumers must tie :py:`valid` to :py:`Const(1)` by specifying :py:`always_valid=True` when constructing a stream, and producers may (but are not required to) do the same.
+Some producers and consumers may be designed without support for backpressure. Such producers must tie {py}`ready` to {py}`Const(1)` by specifying {py}`always_ready=True` when constructing a stream, and consumers may (but are not required to) do the same. Similarly, some producers and consumers may be designed such that a payload is provided or must be provided on each cycle. Such consumers must tie {py}`valid` to {py}`Const(1)` by specifying {py}`always_valid=True` when constructing a stream, and producers may (but are not required to) do the same.
 
-If these control signals are tied to :py:`Const(1)`, then the :func:`wiring.connect <.lib.wiring.connect>` function ensures that only compatible streams are connected together. For example, if the producer does not support backpressure (:py:`ready` tied to :py:`Const(1)`), it can only be connected to consumers that do not require backpressure. However, consumers that do not require backpressure can be connected to producers with or without support for backpressure. The :py:`valid` control signal is treated similarly.
+If these control signals are tied to {py}`Const(1)`, then the {func}`wiring.connect <.lib.wiring.connect>` function ensures that only compatible streams are connected together. For example, if the producer does not support backpressure ({py}`ready` tied to {py}`Const(1)`), it can only be connected to consumers that do not require backpressure. However, consumers that do not require backpressure can be connected to producers with or without support for backpressure. The {py}`valid` control signal is treated similarly.
 
-These rules ensure that producers and consumers that are developed independently can be safely used together, without unduly restricting the application-specific conditions that determine assertion of :py:`valid` and :py:`ready`.
-
+These rules ensure that producers and consumers that are developed independently can be safely used together, without unduly restricting the application-specific conditions that determine assertion of {py}`valid` and {py}`ready`.
 
 ## Examples
 
-The following examples demonstrate the use of streams for a data processing pipeline that receives serial data input from an external device, transforms it by negating the 2's complement value, and transmits it to another external device whenever requested. Similar pipelines, albeit more complex, are widely used in :abbr:`DSP (digital signal processing)` applications.
+The following examples demonstrate the use of streams for a data processing pipeline that receives serial data input from an external device, transforms it by negating the 2's complement value, and transmits it to another external device whenever requested. Similar pipelines, albeit more complex, are widely used in {abbr}`DSP (digital signal processing)` applications.
 
 The use of a unified data transfer mechanism enables uniform testing of individual units, and makes it possible to add a queue to the pipeline using only two additional connections.
 
+```{eval-rst}
 .. testsetup::
 
     from amaranth import *
+```
 
+```{eval-rst}
 .. testcode::
 
     from amaranth.lib import stream, wiring
     from amaranth.lib.wiring import In, Out
+```
 
-The pipeline is tested using the :doc:`built-in simulator </simulator>` and the two helper functions defined below:
+The pipeline is tested using the {doc}`built-in simulator </simulator>` and the two helper functions defined below:
 
+```{eval-rst}
 .. testcode::
 
     from amaranth.sim import Simulator, Period
@@ -69,18 +73,19 @@ The pipeline is tested using the :doc:`built-in simulator </simulator>` and the 
         await ctx.tick().until(stream.ready)
         ctx.set(stream.valid, 0)
 
+```
 
-.. note::
-
-    "Minimal streams" as defined in `RFC 61`_ do not provide built-in helper functions for testing pending further work on the clock domain system. They will be provided in a later release. For the time being, you can copy the helper functions above to test your designs that use streams.
-
+:::{note}
+"Minimal streams" as defined in [RFC 61] do not provide built-in helper functions for testing pending further work on the clock domain system. They will be provided in a later release. For the time being, you can copy the helper functions above to test your designs that use streams.
+:::
 
 ### Serial receiver
 
-The serial receiver captures the serial output of an external device and converts it to a stream of words. While the ``ssel`` signal is high, each low-to-high transition on the ``sclk`` input captures the value of the ``sdat`` signal; eight consecutive captured bits are assembled into a word (:abbr:`MSB (most significant bit)` first) and pushed into the pipeline for processing. If the ``ssel`` signal is low, no data transmission occurs and the transmitter and the receiver are instead synchronized with each other.
+The serial receiver captures the serial output of an external device and converts it to a stream of words. While the `ssel` signal is high, each low-to-high transition on the `sclk` input captures the value of the `sdat` signal; eight consecutive captured bits are assembled into a word ({abbr}`MSB (most significant bit)` first) and pushed into the pipeline for processing. If the `ssel` signal is low, no data transmission occurs and the transmitter and the receiver are instead synchronized with each other.
 
 In this example, the external device does not provide a way to pause data transmission. If the pipeline isn't ready to accept the next payload, it is necessary to discard data at some point; here, it is done in the serial receiver.
 
+```{eval-rst}
 .. testcode::
 
     class SerialReceiver(wiring.Component):
@@ -119,7 +124,9 @@ In this example, the external device does not provide a way to pause data transm
             # Payload is discarded if `done & self.stream.valid & ~self.stream.ready`.
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
 
     def test_serial_receiver():
@@ -150,14 +157,18 @@ In this example, the external device does not provide a way to pause data transm
         sim.add_testbench(testbench_output)
         with sim.write_vcd("stream_serial_receiver.vcd"):
             sim.run()
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     test_serial_receiver()
+```
 
-The serial protocol recognized by the receiver is illustrated with the following diagram (corresponding to ``stream_serial_receiver.vcd``):
+The serial protocol recognized by the receiver is illustrated with the following diagram (corresponding to `stream_serial_receiver.vcd`):
 
+```{eval-rst}
 .. wavedrom:: stream/serial_receiver
 
     {
@@ -180,11 +191,13 @@ The serial protocol recognized by the receiver is illustrated with the following
         ]
     }
 
+```
 
 ### Serial transmitter
 
-The serial transmitter accepts a stream of words and provides it to the serial input of an external device whenever requested. Its serial interface is the same as that of the serial receiver, with the exception that the ``sclk`` and ``sdat`` signals are outputs. The ``ssel`` signal remains an input; the external device uses it for flow control.
+The serial transmitter accepts a stream of words and provides it to the serial input of an external device whenever requested. Its serial interface is the same as that of the serial receiver, with the exception that the `sclk` and `sdat` signals are outputs. The `ssel` signal remains an input; the external device uses it for flow control.
 
+```{eval-rst}
 .. testcode::
 
     class SerialTransmitter(wiring.Component):
@@ -218,7 +231,9 @@ The serial transmitter accepts a stream of words and provides it to the serial i
                     m.d.sync += data.eq(self.stream.payload)
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
 
     def test_serial_transmitter():
@@ -243,17 +258,21 @@ The serial transmitter accepts a stream of words and provides it to the serial i
         sim.add_testbench(testbench_output)
         with sim.write_vcd("stream_serial_transmitter.vcd"):
             sim.run()
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     test_serial_transmitter()
 
+```
 
 ### Value negator
 
-The value negator accepts a stream of words, negates the 2's complement value of these words, and provides the result as a stream of words again. In a practical :abbr:`DSP` application, this unit could be replaced with, for example, a :abbr:`FIR (finite impulse response)` filter.
+The value negator accepts a stream of words, negates the 2's complement value of these words, and provides the result as a stream of words again. In a practical {abbr}`DSP` application, this unit could be replaced with, for example, a {abbr}`FIR (finite impulse response)` filter.
 
+```{eval-rst}
 .. testcode::
 
     class ValueNegator(wiring.Component):
@@ -271,7 +290,9 @@ The value negator accepts a stream of words, negates the 2's complement value of
                 m.d.sync += self.o_stream.valid.eq(0)
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
 
     def test_value_negator():
@@ -291,17 +312,21 @@ The value negator accepts a stream of words, negates the 2's complement value of
         sim.add_testbench(testbench_output)
         with sim.write_vcd("stream_value_negator.vcd"):
             sim.run()
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     test_value_negator()
 
+```
 
 ### Complete pipeline
 
-The complete pipeline consists of a serial receiver, a value negator, a FIFO queue, and a serial transmitter connected in series. Without queueing, any momentary mismatch between the rate at which the serial data is produced and consumed would result in data loss. A FIFO queue from the :mod:`.lib.fifo` standard library module is used to avoid this problem.
+The complete pipeline consists of a serial receiver, a value negator, a FIFO queue, and a serial transmitter connected in series. Without queueing, any momentary mismatch between the rate at which the serial data is produced and consumed would result in data loss. A FIFO queue from the {mod}`.lib.fifo` standard library module is used to avoid this problem.
 
+```{eval-rst}
 .. testcode::
 
     from amaranth.lib.fifo import SyncFIFOBuffered
@@ -346,7 +371,9 @@ The complete pipeline consists of a serial receiver, a value negator, a FIFO que
             ]
 
             return m
+```
 
+```{eval-rst}
 .. testcode::
 
     def test_example_pipeline():
@@ -385,23 +412,30 @@ The complete pipeline consists of a serial receiver, a value negator, a FIFO que
         sim.add_testbench(testbench_output)
         with sim.write_vcd("stream_example_pipeline.vcd"):
             sim.run()
+```
 
+```{eval-rst}
 .. testcode::
     :hide:
 
     test_example_pipeline()
+```
 
 This data processing pipeline overlaps reception and transmission of serial data, with only a few cycles of latency between the completion of reception and the beginning of transmission of the processed data:
 
-.. image:: _images/stream_pipeline.png
+```{image} _images/stream_pipeline.png
+```
 
 Implementing such an efficient pipeline can be difficult without the use of appropriate abstractions. The use of streams allows the designer to focus on the data processing and simplifies testing by ensuring that the interaction of the individual units is standard and well-defined.
 
-
 ## Reference
 
-Components that communicate using streams must not only use a :class:`stream.Interface <Interface>`, but also follow the :ref:`data transfer rules <stream-rules>`.
+Components that communicate using streams must not only use a {class}`stream.Interface <Interface>`, but also follow the {ref}`data transfer rules <stream-rules>`.
 
+```{eval-rst}
 .. autoclass:: Signature
+```
 
+```{eval-rst}
 .. autoclass:: Interface
+```
