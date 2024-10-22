@@ -4,11 +4,11 @@
 .. py:module:: amaranth.hdl
 ```
 
-:::{warning}
-This reference is a work in progress and is seriously incomplete!
+!!! warning
 
-While the wording below states that anything not described in this document isn't covered by the backwards compatibility guarantee, this should be ignored until the document is complete and this warning is removed.
-:::
+    This reference is a work in progress and is seriously incomplete!
+    While the wording below states that anything not described in this document isn't covered by the backwards compatibility guarantee, this should be ignored until the document is complete and this warning is removed.
+
 
 This reference describes the Python classes that underlie the Amaranth language's syntax. It assumes familiarity with the {doc}`language guide <guide>`.
 

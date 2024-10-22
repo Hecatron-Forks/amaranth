@@ -1,8 +1,8 @@
 # Language & toolchain
 
-:::{warning}
-This manual is a work in progress and is seriously incomplete!
-:::
+!!! warning
+
+    This manual is a work in progress and is seriously incomplete!
 
 ```{toctree}
 :maxdepth: 2

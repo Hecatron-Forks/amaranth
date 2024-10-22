@@ -1,5 +1,6 @@
 mkdocs
 mkdocs-material
 mkdocstrings
+mkdocstrings-python
 mktestdocs
 mkdocs-awesome-pages-plugin

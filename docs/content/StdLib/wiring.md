@@ -381,9 +381,9 @@ In some cases, *both* of the two interfaces provided to {func}`connect` must be 
             return m
 ```
 
-:::{warning}
-It is important to wrap an interface with the {func}`flipped` function whenever it is being connected from inside the module. If the {py}`elaborate` function above had made a connection using {py}`wiring.connect(m, self.sink, self.source)`, it would not work correctly. No diagnostic is emitted in this case.
-:::
+!!! warning
+
+    It is important to wrap an interface with the {func}`flipped` function whenever it is being connected from inside the module. If the {py}`elaborate` function above had made a connection using {py}`wiring.connect(m, self.sink, self.source)`, it would not work correctly. No diagnostic is emitted in this case.
 
 (wiring-constant-inputs)=
 
@@ -566,13 +566,13 @@ The custom properties defined for both the signature and the interface object ca
     (& (sig bus__en) (== (sig bus__rw) (const 1'd1)))
 ```
 
-:::{note}
-Unusually for Python, when the implementation of a property or method is invoked through a flipped object, the {py}`self` argument receives the flipped object that has the type {class}`FlippedSignature` or {class}`FlippedInterface`. This wrapper object proxies all attribute accesses and method calls to the original signature or interface, the only change being that of the data flow directions. See the documentation for these classes for a more detailed explanation.
-:::
+!!! note
 
-:::{warning}
-While the wrapper object forwards attribute accesses and method calls, it does not currently proxy special methods such as {py}`__getitem__` or {py}`__add__` that are rarely, if ever, used with interface objects. This limitation may be lifted in the future.
-:::
+    Unusually for Python, when the implementation of a property or method is invoked through a flipped object, the {py}`self` argument receives the flipped object that has the type {class}`FlippedSignature` or {class}`FlippedInterface`. This wrapper object proxies all attribute accesses and method calls to the original signature or interface, the only change being that of the data flow directions. See the documentation for these classes for a more detailed explanation.
+
+!!! warning
+
+    While the wrapper object forwards attribute accesses and method calls, it does not currently proxy special methods such as {py}`__getitem__` or {py}`__add__` that are rarely, if ever, used with interface objects. This limitation may be lifted in the future.
 
 (wiring-path)=
 

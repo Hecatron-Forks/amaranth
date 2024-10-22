@@ -10,26 +10,26 @@ The {mod}`amaranth.lib.memory` module provides a way to efficiently store data o
 
 A memory {ref}`component <wiring>` is accessed through read and write *memory ports*, which are {ref}`interface objects <wiring>` with address, data, and enable ports. The address input selects the memory row to be accessed, the enable input determines whether an access will be made, and the data output (for read ports) or data input (for write ports) transfers data between the memory row and the rest of the design. Read ports can be synchronous (where the memory row access is triggered by the {ref}`active edge <lang-sync>` of a clock) or asynchronous (where the memory row is accessed continuously); write ports are always synchronous.
 
-:::{note}
-Unfortunately, the terminology related to memories has an ambiguity: a "port" could refer to either an *interface port* ({class}`.Signal` objects created by the {mod}`amaranth.lib.wiring` module) or to a *memory port* ({class}`ReadPort` or {class}`WritePort` object created by {class}`amaranth.lib.memory.Memory`).
+!!! note
 
-Amaranth documentation always uses the term "memory port" when referring to the latter.
-:::
+    Unfortunately, the terminology related to memories has an ambiguity: a "port" could refer to either an *interface port* ({class}`.Signal` objects created by the {mod}`amaranth.lib.wiring` module) or to a *memory port* ({class}`ReadPort` or {class}`WritePort` object created by {class}`amaranth.lib.memory.Memory`).
+
+    Amaranth documentation always uses the term "memory port" when referring to the latter.
 
 To use a memory, first create a {class}`Memory` object, providing a shape, depth (the number of rows), and initial contents. Then, request as many memory ports as the number of concurrent accesses you need to perform by using the {meth}`Memory.read_port` and {meth}`Memory.write_port` methods.
 
-:::{warning}
-While {class}`Memory` will provide virtually any memory configuration on request and all will simulate correctly, only a subset of configurations can implemented in hardware efficiently or `at all`. Exactly what any given hardware platform supports is specific to both the device and the toolchain used.
+!!! warning
 
-However, the following two configurations are well-supported on most platforms:
+    While {class}`Memory` will provide virtually any memory configuration on request and all will simulate correctly, only a subset of configurations can implemented in hardware efficiently or `at all`. Exactly what any given hardware platform supports is specific to both the device and the toolchain used.
 
-1. Zero or one write ports and any amount of read ports. Almost all devices include one or two read ports in a hardware memory block, but the toolchain will replicate memory blocks as needed to meet the requested amount of read ports, using more resources.
-2. Two write ports and any amount of read ports whose address input always matches that of the either write port. Most devices include two combined read/write ports in a hardware memory block (known as "true dual-port", or "TDP", block RAM), and the toolchain will replicate memory blocks to meet the requested amount of read ports. However, some devices include one read-only and one write-only port in a hardware memory block (known as "simple dual-port", or "SDP", block RAM), making this configuration unavailable. Also, the combined (synchronous) read/write port of a TDP block RAM usually does not have independent read enable and write enable inputs; in this configuration, the read enable input should usually be left in the (default if not driven) asserted state.
+    However, the following two configurations are well-supported on most platforms:
 
-Most devices include hardware primitives that can efficiently implement memories with asynchronous read ports (known as "LUT RAM", "distributed RAM", or "DRAM"; not to be confused with "dynamic RAM", also abbreviated as "DRAM"). On devices without these hardware primitives, memories with asynchronous read ports are implemented using logic resources, which are consumed at an extremely high rate. Synchronous read ports should be always preferred over asynchronous ones.
+    1. Zero or one write ports and any amount of read ports. Almost all devices include one or two read ports in a hardware memory block, but the toolchain will replicate memory blocks as needed to meet the requested amount of read ports, using more resources.
+    2. Two write ports and any amount of read ports whose address input always matches that of the either write port. Most devices include two combined read/write ports in a hardware memory block (known as "true dual-port", or "TDP", block RAM), and the toolchain will replicate memory blocks to meet the requested amount of read ports. However, some devices include one read-only and one write-only port in a hardware memory block (known as "simple dual-port", or "SDP", block RAM), making this configuration unavailable. Also, the combined (synchronous) read/write port of a TDP block RAM usually does not have independent read enable and write enable inputs; in this configuration, the read enable input should usually be left in the (default if not driven) asserted state.
 
-Additionally, some memory configurations (that seem like they should be supported by the device and the toolchain) may fail to be recognized, or may use much more resources than they should. This can happen due to device and/or toolchain errata (including defects in Amaranth). Unfortunately, such issues can only be handled on a case-by-case basis; in general, simpler memory configurations are better and more widely supported.
-:::
+    Most devices include hardware primitives that can efficiently implement memories with asynchronous read ports (known as "LUT RAM", "distributed RAM", or "DRAM"; not to be confused with "dynamic RAM", also abbreviated as "DRAM"). On devices without these hardware primitives, memories with asynchronous read ports are implemented using logic resources, which are consumed at an extremely high rate. Synchronous read ports should be always preferred over asynchronous ones.
+
+    Additionally, some memory configurations (that seem like they should be supported by the device and the toolchain) may fail to be recognized, or may use much more resources than they should. This can happen due to device and/or toolchain errata (including defects in Amaranth). Unfortunately, such issues can only be handled on a case-by-case basis; in general, simpler memory configurations are better and more widely supported.
 
 ## Examples
 

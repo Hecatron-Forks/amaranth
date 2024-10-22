@@ -18,7 +18,9 @@ substitutions:
 
 This guide introduces the Amaranth language in depth. It assumes familiarity with synchronous digital logic and the Python programming language, but does not require prior experience with any hardware description language. See the {doc}`tutorial <tutorial>` for a step-by-step introduction to the language, and the {doc}`reference <reference>` for a detailed description of the Python classes that underlie the language's syntax.
 
-% TODO: link to a good synchronous logic tutorial and a Python tutorial?
+!!! warning "TODO"
+
+    link to a good synchronous logic tutorial and a Python tutorial?
 
 (lang-prelude)=
 
@@ -179,52 +181,52 @@ Specifying a shape with a range is convenient for counters, indexes, and all oth
 
 (lang-exclrange)=
 
-:::{note}
-Python ranges are *exclusive* or *half-open*, meaning they do not contain their `.stop` element. Because of this, values with shapes cast from a `range(stop)` where `stop` is a power of 2 are not wide enough to represent `stop` itself:
+!!! note
 
-```{eval-rst}
-.. doctest::
-   :hide:
+    Python ranges are *exclusive* or *half-open*, meaning they do not contain their `.stop` element. Because of this, values with shapes cast from a `range(stop)` where `stop` is a power of 2 are not wide enough to represent `stop` itself:
 
-   >>> import warnings
-   >>> _warning_filters_backup = warnings.catch_warnings()
-   >>> _warning_filters_backup.__enter__() # have to do this horrific hack to make it work with `PYTHONWARNINGS=error` :(
-   >>> warnings.simplefilter("default", amaranth.hdl._ast.SyntaxWarning)
-```
+    ```{eval-rst}
+    .. doctest::
+        :hide:
 
-```{eval-rst}
-.. doctest::
+        >>> import warnings
+        >>> _warning_filters_backup = warnings.catch_warnings()
+        >>> _warning_filters_backup.__enter__() # have to do this horrific hack to make it work with `PYTHONWARNINGS=error` :(
+        >>> warnings.simplefilter("default", amaranth.hdl._ast.SyntaxWarning)
+    ```
 
-   >>> fencepost = C(256, range(256))
-   <...>:1: SyntaxWarning: Value 256 equals the non-inclusive end of the constant shape range(0, 256); this is likely an off-by-one error
-     fencepost = C(256, range(256))
-   >>> fencepost.shape()
-   unsigned(8)
-   >>> fencepost.value
-   0
-```
+    ```{eval-rst}
+    .. doctest::
 
-```{eval-rst}
-.. doctest::
-   :hide:
+        >>> fencepost = C(256, range(256))
+        <...>:1: SyntaxWarning: Value 256 equals the non-inclusive end of the constant shape range(0, 256); this is likely an off-by-one error
+            fencepost = C(256, range(256))
+        >>> fencepost.shape()
+        unsigned(8)
+        >>> fencepost.value
+        0
+    ```
 
-   >>> _warning_filters_backup.__exit__()
-```
+    ```{eval-rst}
+    .. doctest::
+        :hide:
 
-Amaranth detects uses of {class}`Const` and {class}`Signal` that invoke such an off-by-one error, and emits a diagnostic message.
-:::
+        >>> _warning_filters_backup.__exit__()
+    ```
 
-:::{note}
-An empty range always casts to an {py}`unsigned(0)`, even if both of its bounds are negative.
-This happens because, being empty, it does not contain any negative values.
+    Amaranth detects uses of {class}`Const` and {class}`Signal` that invoke such an off-by-one error, and emits a diagnostic message.
 
-```{eval-rst}
-.. doctest::
+!!! note
 
-   >>> Shape.cast(range(-1, -1))
-   unsigned(0)
-```
-:::
+    An empty range always casts to an {py}`unsigned(0)`, even if both of its bounds are negative.
+    This happens because, being empty, it does not contain any negative values.
+
+    ```{eval-rst}
+    .. doctest::
+
+        >>> Shape.cast(range(-1, -1))
+        unsigned(0)
+    ```
 
 (lang-shapeenum)=
 
@@ -281,9 +283,9 @@ The {mod}`amaranth.lib.enum` module extends the standard enumerations such that 
    unsigned(4)
 ```
 
-:::{note}
-The enumeration does not have to subclass {class}`enum.IntEnum` or have {class}`int` as one of its base classes; it only needs to have integers as values of every member. Using enumerations based on {class}`enum.Enum` rather than {class}`enum.IntEnum` prevents unwanted implicit conversion of enum members to integers.
-:::
+!!! note
+
+    The enumeration does not have to subclass {class}`enum.IntEnum` or have {class}`int` as one of its base classes; it only needs to have integers as values of every member. Using enumerations based on {class}`enum.Enum` rather than {class}`enum.IntEnum` prevents unwanted implicit conversion of enum members to integers.
 
 (lang-shapecustom)=
 
@@ -310,9 +312,9 @@ Casting a value from an integer `i` is equivalent to {class}`Const(i) <Const>`:
    (const 3'd5)
 ```
 
-:::{note}
-If a value subclasses {class}`enum.IntEnum` or its class otherwise inherits from both {class}`int` and {class}`Enum`, it is treated as an enumeration.
-:::
+!!! note
+
+    If a value subclasses {class}`enum.IntEnum` or its class otherwise inherits from both {class}`int` and {class}`Enum`, it is treated as an enumeration.
 
 ### Values from enumeration members
 
@@ -326,9 +328,9 @@ Casting a value from an enumeration member `m` is equivalent to `Const(m.value, 
 
 ```
 
-:::{note}
-If a value subclasses {class}`enum.IntEnum` or its class otherwise inherits from both {class}`int` and {class}`Enum`, it is treated as an enumeration.
-:::
+!!! note
+
+    If a value subclasses {class}`enum.IntEnum` or its class otherwise inherits from both {class}`int` and {class}`Enum`, it is treated as an enumeration.
 
 (lang-constcasting)=
 
@@ -366,15 +368,15 @@ They may be used in enumeration members, provided the enumeration inherits from 
 
 They may also be provided as a pattern to the {ref}`match operator <lang-matchop>` and the {ref}`Case block <lang-switch>`.
 
-:::{note}
-At the moment, only the following expressions are constant-castable:
+!!! note
 
-- {class}`Const`
-- {func}`Cat`
-- {class}`Slice`
+    At the moment, only the following expressions are constant-castable:
 
-This list will be expanded in the future.
-:::
+    - {class}`Const`
+    - {func}`Cat`
+    - {class}`Slice`
+
+    This list will be expanded in the future.
 
 (lang-signals)=
 
@@ -619,18 +621,19 @@ The following table lists the bitwise and shift operations provided by Amaranth:
 
 (lang-hugeshift)=
 
-:::{note}
-Because Amaranth ensures that the width of a variable left shift expression is wide enough to represent any possible result, variable left shift by a wide amount produces exponentially wider intermediate values, stressing the synthesis tools:
+!!! note
 
-```{eval-rst}
-.. doctest::
+    Because Amaranth ensures that the width of a variable left shift expression is wide enough to represent any possible result, variable left shift by a wide amount produces exponentially wider intermediate values, stressing the synthesis tools:
 
-   >>> (1 << C(0, 32)).shape()
-   unsigned(4294967296)
-```
+    ```{eval-rst}
+    .. doctest::
 
-Although Amaranth will detect and reject expressions wide enough to break other tools, it is a good practice to explicitly limit the width of a shift amount in a variable left shift.
-:::
+        >>> (1 << C(0, 32)).shape()
+        unsigned(4294967296)
+    ```
+
+    Although Amaranth will detect and reject expressions wide enough to break other tools, it is a good practice to explicitly limit the width of a shift amount in a variable left shift.
+
 
 (lang-reduceops)=
 
@@ -681,73 +684,77 @@ When the operands are known to be boolean values, such as comparisons, reduction
 
 (lang-logicprecedence)=
 
-:::{warning}
-Because of Python {ref}`operator precedence <python:operator-summary>`, logical operators bind less tightly than comparison operators whereas bitwise operators bind more tightly than comparison operators. As a result, all logical expressions in Amaranth **must** have parenthesized operands.
+!!! warning
 
-Omitting parentheses around operands in an Amaranth a logical expression is likely to introduce a subtle bug:
+    Because of Python {ref}`operator precedence <python:operator-summary>`, logical operators bind less tightly than comparison operators whereas bitwise operators bind more tightly than comparison operators. As a result, all logical expressions in Amaranth **must** have parenthesized operands.
 
-```{eval-rst}
-.. doctest::
+    Omitting parentheses around operands in an Amaranth a logical expression is likely to introduce a subtle bug:
 
-   >>> en = Signal()
-   >>> addr = Signal(8)
-   >>> en & (addr == 0) # correct
-   (& (sig en) (== (sig addr) (const 1'd0)))
-   >>> en & addr == 0 # WRONG! addr is truncated to 1 bit
-   (== (& (sig en) (sig addr)) (const 1'd0))
-```
+    ```{eval-rst}
+        .. doctest::
 
-% TODO: can we detect this footgun automatically? #380
-:::
+        >>> en = Signal()
+        >>> addr = Signal(8)
+        >>> en & (addr == 0) # correct
+        (& (sig en) (== (sig addr) (const 1'd0)))
+        >>> en & addr == 0 # WRONG! addr is truncated to 1 bit
+        (== (& (sig en) (sig addr)) (const 1'd0))
+    ```
+
+    !!! warning "TODO"
+
+        can we detect this footgun automatically? #380
 
 (lang-negatebool)=
 
-:::{warning}
-When applied to Amaranth boolean values, the `~` operator computes negation, and when applied to Python boolean values, the `not` operator also computes negation. However, the `~` operator applied to Python boolean values produces an unexpected result:
+!!! warning
 
-```{eval-rst}
-.. doctest::
-   :hide:
+    When applied to Amaranth boolean values, the `~` operator computes negation, and when applied to Python boolean values, the `not` operator also computes negation. However, the `~` operator applied to Python boolean values produces an unexpected result:
 
-   >>> import warnings
-   >>> _warning_filters_backup = warnings.catch_warnings()
-   >>> _warning_filters_backup.__enter__() # have to do this horrific hack to make it work with `PYTHONWARNINGS=error` :(
-   >>> warnings.simplefilter("ignore", DeprecationWarning)
-```
+    ```{eval-rst}
+    .. doctest::
+        :hide:
 
-```{eval-rst}
-.. doctest::
+        >>> import warnings
+        >>> _warning_filters_backup = warnings.catch_warnings()
+        >>> _warning_filters_backup.__enter__() # have to do this horrific hack to make it work with `PYTHONWARNINGS=error` :(
+        >>> warnings.simplefilter("ignore", DeprecationWarning)
+    ```
 
-   >>> ~False
-   -1
-   >>> ~True
-   -2
-```
+    ```{eval-rst}
+        .. doctest::
 
-Because of this, Python booleans used in Amaranth logical expressions **must** be negated with the `not` operator, not the `~` operator. Negating a Python boolean with the `~` operator in an Amaranth logical expression is likely to introduce a subtle bug:
+        >>> ~False
+        -1
+        >>> ~True
+        -2
+    ```
 
-```{eval-rst}
-.. doctest::
+    Because of this, Python booleans used in Amaranth logical expressions **must** be negated with the `not` operator, not the `~` operator. Negating a Python boolean with the `~` operator in an Amaranth logical expression is likely to introduce a subtle bug:
 
-   >>> stb = Signal()
-   >>> use_stb = True
-   >>> (not use_stb) | stb # correct
-   (| (const 1'd0) (sig stb))
-   >>> ~use_stb | stb # WRONG! MSB of 2-bit wide OR expression is always 1
-   (| (const 2'sd-2) (sig stb))
-```
+    ```{eval-rst}
+    .. doctest::
 
-```{eval-rst}
-.. doctest::
-   :hide:
+        >>> stb = Signal()
+        >>> use_stb = True
+        >>> (not use_stb) | stb # correct
+        (| (const 1'd0) (sig stb))
+        >>> ~use_stb | stb # WRONG! MSB of 2-bit wide OR expression is always 1
+        (| (const 2'sd-2) (sig stb))
+    ```
 
-   >>> _warning_filters_backup.__exit__()
-```
+    ```{eval-rst}
+    .. doctest::
+        :hide:
 
-Amaranth automatically detects some cases of misuse of `~` and emits a detailed diagnostic message.
+        >>> _warning_filters_backup.__exit__()
+    ```
 
-% TODO: this isn't quite reliable, #380
-:::
+    Amaranth automatically detects some cases of misuse of `~` and emits a detailed diagnostic message.
+
+    !!! warning "TODO"
+
+        this isn't quite reliable, #380
 
 (lang-seqops)=
 
@@ -786,15 +793,15 @@ For the operators introduced by Amaranth, the following table explains them in t
 | `a.bit_select(b, w)`  | `a[b:b+w]`             |
 | `a.word_select(b, w)` | `a[b*w:b*w+w]`         |
 
-:::{warning}
-In Python, the digits of a number are written right-to-left (0th exponent at the right), and the elements of a sequence are written left-to-right (0th element at the left). This mismatch can cause confusion when numeric operations (like shifts) are mixed with bit sequence operations (like concatenations). For example, `Cat(C(0b1001), C(0b1010))` has the same value as `C(0b1010_1001)`, `val[4:]` is equivalent to `val >> 4`, and `val[-1]` refers to the most significant bit.
+!!! warning
 
-Such confusion can often be avoided by not using numeric and bit sequence operations in the same expression. For example, although it may seem natural to describe a shift register with a numeric shift and a sequence slice operations, using sequence operations alone would make it easier to understand.
-:::
+    In Python, the digits of a number are written right-to-left (0th exponent at the right), and the elements of a sequence are written left-to-right (0th element at the left). This mismatch can cause confusion when numeric operations (like shifts) are mixed with bit sequence operations (like concatenations). For example, `Cat(C(0b1001), C(0b1010))` has the same value as `C(0b1010_1001)`, `val[4:]` is equivalent to `val >> 4`, and `val[-1]` refers to the most significant bit.
 
-:::{note}
-Could Amaranth have used a different indexing or iteration order for values? Yes, but it would be necessary to either place the most significant bit at index 0, or deliberately break the Python sequence type interface. Both of these options would cause more issues than using different iteration orders for numeric and sequence operations.
-:::
+    Such confusion can often be avoided by not using numeric and bit sequence operations in the same expression. For example, although it may seem natural to describe a shift register with a numeric shift and a sequence slice operations, using sequence operations alone would make it easier to understand.
+
+!!! note
+
+    Could Amaranth have used a different indexing or iteration order for values? Yes, but it would be necessary to either place the most significant bit at index 0, or deliberately break the Python sequence type interface. Both of these options would cause more issues than using different iteration orders for numeric and sequence operations.
 
 (lang-matchop)=
 
@@ -854,13 +861,13 @@ Crucially, this means that any Python object can be added to an array; the only 
     (proxy (array [180, 74, 115]) (sig index))
 ```
 
-:::{note}
-An array becomes immutable after it is indexed for the first time. The elements of the array do not themselves become immutable, but it is not recommended to mutate them as the behavior can become unpredictable.
-:::
+!!! note
 
-:::{note}
-Arrays, {class}`amaranth.hdl.Array`, are distinct from and serve a different function than {class}`amaranth.lib.data.ArrayLayout`.
-:::
+    An array becomes immutable after it is indexed for the first time. The elements of the array do not themselves become immutable, but it is not recommended to mutate them as the behavior can become unpredictable.
+
+!!! note
+
+    Arrays, {class}`amaranth.hdl.Array`, are distinct from and serve a different function than {class}`amaranth.lib.data.ArrayLayout`.
 
 (lang-data)=
 
@@ -1170,7 +1177,9 @@ If an {py}`Else` block is present, then the statements within exactly one block 
 
 Case comparison, where a single value is examined against several different *patterns*, is described using a {py}`with m.Switch(value):` block. This block can contain any amount of {py}`with m.Case(*patterns)` and {py}`with m.Default():` blocks. This structure parallels Python's own {ref}`match/case <python:match>` control flow syntax. For example:
 
-% TODO: rename `Switch` to `Match`, to mirror `Value.matches()`?
+!!! warning "TODO"
+
+    rename `Switch` to `Match`, to mirror `Value.matches()`?
 
 ```{eval-rst}
 .. testcode::
@@ -1199,21 +1208,21 @@ Within a single {py}`Switch` block, the statements within at most one block will
 
 If a {py}`Default` block is present, or the patterns in the {py}`Case` blocks cover every possible {py}`Switch` value, then the statements within exactly one block will be active at any time, and the sequence as a whole is called a *full condition*.
 
-:::{tip}
-While all Amaranth control flow syntax can be generated programmatically, the {py}`Switch` control block is particularly easy to use in this way:
+!!! tip
 
-```{eval-rst}
-.. testcode::
+    While all Amaranth control flow syntax can be generated programmatically, the {py}`Switch` control block is particularly easy to use in this way:
 
-    length  = Signal(4)
-    squared = Signal.like(length * length)
+    ```{eval-rst}
+    .. testcode::
 
-    with m.Switch(length):
-        for value in range(length.shape().width):
-            with m.Case(value):
-                m.d.comb += squared.eq(value * value)
-```
-:::
+        length  = Signal(4)
+        squared = Signal.like(length * length)
+
+        with m.Switch(length):
+            for value in range(length.shape().width):
+                with m.Case(value):
+                    m.d.comb += squared.eq(value * value)
+    ```
 
 (lang-fsm)=
 
@@ -1244,7 +1253,9 @@ Simple [finite state machines](https://en.wikipedia.org/wiki/Finite-state_machin
                 m.next = "Set Address" # try again
 ```
 
-% TODO: FSM() should require keyword arguments, for good measure
+!!! warning "TODO"
+
+    FSM() should require keyword arguments, for good measure
 
 The initial (and reset) state of the FSM can be provided when defining it using the {py}`with m.FSM(init="Name"):` argument. If not provided, it is the first state in the order of definition. For example, this definition is equivalent to the one at the beginning of this section:
 
@@ -1278,27 +1289,33 @@ To determine (from code that is outside the FSM definition) whether it is curren
 
 Note that in Python, assignments made using {py}`with x() as y:` syntax persist past the end of the block.
 
-% TODO: `ongoing` currently creates a state if it doesn't exist, which seems clearly wrong but maybe some depend on it? add a diagnostic here
+!!! warning "TODO"
 
-% TODO: `m.next` does the same, which is worse because adding a diagnostic is harder
+    `ongoing` currently creates a state if it doesn't exist, which seems clearly wrong but maybe some depend on it? add a diagnostic here
 
-:::{warning}
-If you make a typo in the state name provided to {py}`m.next = ...` or {py}`fsm.ongoing(...)`, an empty and unreachable state with that name will be created with no diagnostic message.
+!!! warning "TODO"
 
-This hazard will be eliminated in the future.
-:::
+    `m.next` does the same, which is worse because adding a diagnostic is harder
 
-:::{warning}
-If a non-string object is provided as a state name to {py}`with m.State(...):`, it is cast to a string first, which may lead to surprising behavior. {py}`with m.State(...):` **does not** treat an enumeration value specially; if one is provided, it is cast to a string, and its numeric value will have no correspondence to the numeric value of the generated state signal.
+!!! warning
 
-This hazard will be eliminated in the future.
-:::
+    If you make a typo in the state name provided to {py}`m.next = ...` or {py}`fsm.ongoing(...)`, an empty and unreachable state with that name will be created with no diagnostic message.
 
-% TODO: we should probably have `fsm.next = "Name"` or `fsm.next("Name")` instead
+    This hazard will be eliminated in the future.
 
-:::{note}
-If you are nesting two state machines within each other, the {py}`m.next = ...` syntax always refers to the innermost one. To change the state of the outer state machine from within the inner one, use an intermediate signal.
-:::
+!!! warning
+
+    If a non-string object is provided as a state name to {py}`with m.State(...):`, it is cast to a string first, which may lead to surprising behavior. {py}`with m.State(...):` **does not** treat an enumeration value specially; if one is provided, it is cast to a string, and its numeric value will have no correspondence to the numeric value of the generated state signal.
+
+    This hazard will be eliminated in the future.
+
+!!! warning "TODO"
+
+    we should probably have `fsm.next = "Name"` or `fsm.next("Name")` instead
+
+!!! note
+
+    If you are nesting two state machines within each other, the {py}`m.next = ...` syntax always refers to the innermost one. To change the state of the outer state machine from within the inner one, use an intermediate signal.
 
 (lang-comb)=
 
@@ -1328,9 +1345,9 @@ Whenever the signals `en` or `b` change, the signal `a` changes as well. If `en`
 
 A combinational signal that is computed directly or indirectly based on its own value is a part of a *combinational feedback loop*, sometimes shortened to just *feedback loop*. Combinational feedback loops can be stable (e.g. implement a constant driver or a transparent latch), or unstable (e.g. implement a ring oscillator). Amaranth prohibits using assignments to describe any kind of a combinational feedback loop, including transparent latches.
 
-:::{note}
-In the exceedingly rare case when a combinational feedback loop is desirable, it is possible to implement it by directly instantiating technology primitives (e.g. device-specific LUTs or latches). This is also the only way to introduce a combinational feedback loop with well-defined behavior in simulation and synthesis, regardless of the HDL being used.
-:::
+!!! note
+
+    In the exceedingly rare case when a combinational feedback loop is desirable, it is possible to implement it by directly instantiating technology primitives (e.g. device-specific LUTs or latches). This is also the only way to introduce a combinational feedback loop with well-defined behavior in simulation and synthesis, regardless of the HDL being used.
 
 (lang-sync)=
 
@@ -1390,24 +1407,24 @@ Assertions may be nested within a {ref}`control block <lang-control>`:
         m.d.sync += Assert(ip < 128)
 ```
 
-:::{warning}
-While is is also possible to add assertions to the {ref}`combinational domain <lang-comb>`, simulations of combinational circuits may have *glitches*: instantaneous, transient changes in the values of expressions that are being computed which do not affect the result of the computation (and are not visible in most waveform viewers for that reason). Depending on the tools used for simulation, a glitch in the condition of an assertion or of a {ref}`control block <lang-control>` that contains it may cause the simulation to be terminated, even if the glitch would have been instantaneously resolved afterwards.
+!!! warning
 
-If the condition of an assertion is assigned in a synchronous domain, then it is safe to add that assertion in the combinational domain. For example, neither of the assertions in the example below will be violated due to glitches, regardless of which domain the {py}`ip` and {py}`booting` signals are driven by:
+    While is is also possible to add assertions to the {ref}`combinational domain <lang-comb>`, simulations of combinational circuits may have *glitches*: instantaneous, transient changes in the values of expressions that are being computed which do not affect the result of the computation (and are not visible in most waveform viewers for that reason). Depending on the tools used for simulation, a glitch in the condition of an assertion or of a {ref}`control block <lang-control>` that contains it may cause the simulation to be terminated, even if the glitch would have been instantaneously resolved afterwards.
 
-```{eval-rst}
-.. testcode::
+    If the condition of an assertion is assigned in a synchronous domain, then it is safe to add that assertion in the combinational domain. For example, neither of the assertions in the example below will be violated due to glitches, regardless of which domain the {py}`ip` and {py}`booting` signals are driven by:
 
-    ip_sync = Signal.like(ip)
-    m.d.sync += ip_sync.eq(ip)
+    ```{eval-rst}
+    .. testcode::
 
-    m.d.comb += Assert(ip_sync < 128)
-    with m.If(booting):
+        ip_sync = Signal.like(ip)
+        m.d.sync += ip_sync.eq(ip)
+
         m.d.comb += Assert(ip_sync < 128)
-```
+        with m.If(booting):
+            m.d.comb += Assert(ip_sync < 128)
+    ```
 
-Assertions should be added in a {ref}`synchronous domain <lang-sync>` when possible. In cases where it is not, such as if the condition is a signal that is assigned in a synchronous domain elsewhere, care should be taken while adding the assertion to the combinational domain.
-:::
+    Assertions should be added in a {ref}`synchronous domain <lang-sync>` when possible. In cases where it is not, such as if the condition is a signal that is assigned in a synchronous domain elsewhere, care should be taken while adding the assertion to the combinational domain.
 
 (lang-print)=
 
@@ -1484,9 +1501,9 @@ If the name of the domain is not known upfront, another, less concise, syntax ca
     add_video_domain(2)
 ```
 
-:::{note}
-Whenever the created {class}`ClockDomain` object is immediately assigned using the {py}`domain_name = ClockDomain(...)` or {py}`m.domains.domain_name = ClockDomain(...)` syntax, the name of the domain may be omitted from the {py}`ClockDomain()` invocation. In other cases, it must be provided as the first argument.
-:::
+!!! note
+
+    Whenever the created {class}`ClockDomain` object is immediately assigned using the {py}`domain_name = ClockDomain(...)` or {py}`m.domains.domain_name = ClockDomain(...)` syntax, the name of the domain may be omitted from the {py}`ClockDomain()` invocation. In other cases, it must be provided as the first argument.
 
 A clock domain always has a clock signal, which can be accessed through the {attr}`cd.clk <ClockDomain.clk>` attribute. By default, the *active edge* of the clock domain is positive; this means that the signals in the domain change when the clock signal transitions from 0 to 1. A clock domain can be configured to have a negative active edge so that signals in it change when the clock signal transitions from 1 to 0:
 
@@ -1508,15 +1525,15 @@ Signals in a reset-less clock domain can still be explicitly reset using the {cl
 
 If a clock domain is defined in a module, all of its {ref}`submodules <lang-submodules>` can refer to that domain under the same name.
 
-:::{warning}
-Clock domains use synchronous reset unless otherwise specified. Clock domains with asynchronous reset are implemented, but their behavior is subject to change in near future, and is intentionally left undocumented.
-:::
+!!! warning
 
-:::{tip}
-Unless you need to introduce a new asynchronous control set in the design, consider {ref}`using ResetInserter or EnableInserter <lang-controlinserter>` instead of defining a new clock domain. Designs with fewer clock domains are easier to reason about.
+    Clock domains use synchronous reset unless otherwise specified. Clock domains with asynchronous reset are implemented, but their behavior is subject to change in near future, and is intentionally left undocumented.
 
-A new asynchronous control set is necessary when some signals must change on a different active edge of a clock, at a different frequency, with a different phase, or when a different asynchronous reset signal is asserted.
-:::
+!!! tip
+
+    Unless you need to introduce a new asynchronous control set in the design, consider {ref}`using ResetInserter or EnableInserter <lang-controlinserter>` instead of defining a new clock domain. Designs with fewer clock domains are easier to reason about.
+
+    A new asynchronous control set is necessary when some signals must change on a different active edge of a clock, at a different frequency, with a different phase, or when a different asynchronous reset signal is asserted.
 
 (lang-latesignals)=
 
@@ -1544,7 +1561,9 @@ Clock domains are *late bound*, which means that their signals and properties ca
 
 In this example, once the design is processed, the clock signal of the clock domain `sync` found in this module or one of its containing modules will be equal to {py}`bus_clk`. The reset signal of the same clock domain will be equal to the negated {py}`bus_rstn`. With the `sync` domain created in the same module, these statements become equivalent to:
 
-% TODO: explain the difference (or lack thereof, eventually) between m.d, m.domain, and m.domains
+!!! warning "TODO"
+
+    explain the difference (or lack thereof, eventually) between m.d, m.domain, and m.domains
 
 ```{eval-rst}
 .. testcode::
@@ -1558,11 +1577,11 @@ In this example, once the design is processed, the clock signal of the clock dom
 
 The {class}`ClockSignal` and {class}`ResetSignal` values may also be assigned to other signals and used in expressions. They take a single argument, which is the name of the domain; if not specified, it defaults to {py}`"sync"`.
 
-:::{warning}
-Be especially careful when using {class}`ClockSignal` or {attr}`cd.clk <ClockDomain.clk>` in expressions. Assigning to and from a clock signal is usually safe; any other operations may have unpredictable results. Consult the documentation for your synthesis toolchain and platform to understand which operations with a clock signal are permitted.
+!!! warning
 
-FPGAs usually have dedicated clocking facilities that can be used to disable, divide, or multiplex clock signals. When targeting an FPGA, these facilities should be used if at all possible, and expressions like {py}`ClockSignal() & en` or {py}`Mux(sel, ClockSignal("a"), ClockSignal("b"))` should be avoided.
-:::
+    Be especially careful when using {class}`ClockSignal` or {attr}`cd.clk <ClockDomain.clk>` in expressions. Assigning to and from a clock signal is usually safe; any other operations may have unpredictable results. Consult the documentation for your synthesis toolchain and platform to understand which operations with a clock signal are permitted.
+
+    FPGAs usually have dedicated clocking facilities that can be used to disable, divide, or multiplex clock signals. When targeting an FPGA, these facilities should be used if at all possible, and expressions like {py}`ClockSignal() & en` or {py}`Mux(sel, ClockSignal("a"), ClockSignal("b"))` should be avoided.
 
 (lang-elaboration)=
 
@@ -1586,17 +1605,17 @@ An elaboratable is any Python object that inherits from the {class}`Elaboratable
 
 The {meth}`~Elaboratable.elaborate` method must either return an instance of {class}`Module` or {class}`Instance` to describe the behavior of the elaboratable, or delegate it by returning another elaboratable object.
 
-:::{note}
-Instances of {class}`Module` also implement the {meth}`~Elaboratable.elaborate` method, which returns a special object that represents a fragment of a netlist. Such an object cannot be constructed without using {class}`Module`.
-:::
+!!! note
+
+    Instances of {class}`Module` also implement the {meth}`~Elaboratable.elaborate` method, which returns a special object that represents a fragment of a netlist. Such an object cannot be constructed without using {class}`Module`.
 
 The {py}`platform` argument received by the {meth}`~Elaboratable.elaborate` method can be {py}`None`, an instance of {ref}`a built-in platform <platform>`, or a custom object. It is used for [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) and to contain the state of a design while it is being elaborated.
 
-:::{warning}
-The {meth}`~Elaboratable.elaborate` method should not modify the `self` object it receives other than for debugging and experimentation. Elaborating the same design twice with two identical platform objects should produce two identical netlists. If the design needs to be modified after construction, this should happen before elaboration.
+!!! warning
 
-It is not possible to ensure that a design which modifies itself during elaboration is correctly converted to a netlist because the relative order in which the {meth}`~Elaboratable.elaborate` methods are called within a single design is not guaranteed.
-:::
+    The {meth}`~Elaboratable.elaborate` method should not modify the `self` object it receives other than for debugging and experimentation. Elaborating the same design twice with two identical platform objects should produce two identical netlists. If the design needs to be modified after construction, this should happen before elaboration.
+
+    It is not possible to ensure that a design which modifies itself during elaboration is correctly converted to a netlist because the relative order in which the {meth}`~Elaboratable.elaborate` methods are called within a single design is not guaranteed.
 
 The Amaranth standard library provides *components*: elaboratable objects that also include a description of their interface. Unless otherwise necessary, an elaboratable should inherit from {class}`amaranth.lib.wiring.Component` rather than plain {class}`Elaboratable`. See the {ref}`introduction to interfaces and components <wiring-introduction>` for details.
 
@@ -1630,9 +1649,9 @@ A submodule can also be added without specifying a name:
     m.submodules += counter
 ```
 
-:::{tip}
-If a name is not explicitly specified for a submodule, one will be generated and assigned automatically. Designs with many autogenerated names can be difficult to debug, so a name should usually be supplied.
-:::
+!!! tip
+
+    If a name is not explicitly specified for a submodule, one will be generated and assigned automatically. Designs with many autogenerated names can be difficult to debug, so a name should usually be supplied.
 
 A non-Amaranth design unit can be added as a submodule using an {ref}`instance <lang-instance>`.
 
@@ -1665,13 +1684,14 @@ The result of applying a control flow modifier to an elaboratable is, itself, an
 
 A control flow modifier affects all logic within a given elaboratable and clock domain, which includes the submodules of that elaboratable.
 
-:::{note}
-Applying a control flow modifier to an elaboratable does not mutate it; a new proxy object is returned that forwards attribute accesses and method calls to the original elaboratable. Whenever this proxy object is elaborated, it manipulates the circuit defined by the original elaboratable to include the requested control inputs.
-:::
+!!! note
 
-:::{note}
-It is possible to apply several control flow modifiers to the same elaboratable, even if the same domain is used. For {class}`ResetInserter`, the signals in a domain are held at their initial value whenever any of the reset inputs for that domain are asserted (logical OR), and for {class}`EnableInserter`, the signals in a domain are allowed to update whenever all of the enable signals for that domain are asserted (logical AND).
-:::
+    Applying a control flow modifier to an elaboratable does not mutate it; a new proxy object is returned that forwards attribute accesses and method calls to the original elaboratable. Whenever this proxy object is elaborated, it manipulates the circuit defined by the original elaboratable to include the requested control inputs.
+
+!!! note
+
+    It is possible to apply several control flow modifiers to the same elaboratable, even if the same domain is used. For {class}`ResetInserter`, the signals in a domain are held at their initial value whenever any of the reset inputs for that domain are asserted (logical OR), and for {class}`EnableInserter`, the signals in a domain are allowed to update whenever all of the enable signals for that domain are asserted (logical AND).
+
 
 Consider the following code:
 
@@ -1709,11 +1729,13 @@ The application of control flow modifiers in it causes the behavior of the final
     m.d.comb += z.eq(n == 0)
 ```
 
-:::{tip}
-The control input provided to {class}`ResetInserter` must be synchronous to the domain that is being reset by it. If you need to reset another domain, use {class}`amaranth.lib.cdc.ResetSynchronizer` instead.
-:::
+!!! tip
 
-% TODO: link to a clock gating primitive if/when we ever get one, from a tip about EnableInserter similar to the tip about ResetInserter above
+    The control input provided to {class}`ResetInserter` must be synchronous to the domain that is being reset by it. If you need to reset another domain, use {class}`amaranth.lib.cdc.ResetSynchronizer` instead.
+
+!!! warning "TODO"
+
+    link to a clock gating primitive if/when we ever get one, from a tip about EnableInserter similar to the tip about ResetInserter above
 
 (lang-domainrenamer)=
 
@@ -1740,13 +1762,14 @@ The result of renaming clock domains in an elaboratable is, itself, an elaborata
 
 Renaming a clock domain affects all logic within a given elaboratable and clock domain, which includes the submodules of that elaboratable. It does not affect any logic outside of that elaboratable.
 
-:::{note}
-Renaming domains in an elaboratable does not mutate it; a new proxy object is returned that forwards attribute accesses and method calls to the original elaboratable. Whenever this proxy object is elaborated, it manipulates the circuit defined by the original elaboratable to use the requested clock domain.
-:::
+!!! note
 
-:::{note}
-It is possible to rename domains in an elaboratable and also apply {ref}`control flow modifiers <lang-controlinserter>`.
-:::
+    Renaming domains in an elaboratable does not mutate it; a new proxy object is returned that forwards attribute accesses and method calls to the original elaboratable. Whenever this proxy object is elaborated, it manipulates the circuit defined by the original elaboratable to use the requested clock domain.
+
+!!! note
+
+    It is possible to rename domains in an elaboratable and also apply {ref}`control flow modifiers <lang-controlinserter>`.
+
 
 Consider the following code:
 
@@ -1778,9 +1801,10 @@ The renaming of the `sync` clock domain in it causes the behavior of the final {
     m.d.comb += zero.eq(count == 0)
 ```
 
-:::{warning}
-A combinational signal can change synchronously to a clock domain, as in the example above, in which case it may only be sampled from the same clock domain unless explicitly synchronized. Renaming a clock domain must be assumed to potentially affect any output of an elaboratable.
-:::
+!!! warning
+
+    A combinational signal can change synchronously to a clock domain, as in the example above, in which case it may only be sampled from the same clock domain unless explicitly synchronized. Renaming a clock domain must be assumed to potentially affect any output of an elaboratable.
+
 
 (lang-memory)=
 
@@ -1930,9 +1954,9 @@ Like a regular submodule, an instance can also be added without specifying a nam
     )
 ```
 
-:::{tip}
-If a name is not explicitly specified for a submodule, one will be generated and assigned automatically. Designs with many autogenerated names can be difficult to debug, so a name should usually be supplied.
-:::
+!!! tip
+
+    If a name is not explicitly specified for a submodule, one will be generated and assigned automatically. Designs with many autogenerated names can be difficult to debug, so a name should usually be supplied.
 
 Although an {class}`Instance` is not an elaboratable, as a special case, it can be returned from the {py}`elaborate()` method. This is conveinent for implementing an elaboratable that adorns an instance with an Amaranth interface:
 
@@ -1964,9 +1988,9 @@ Although an {class}`Instance` is not an elaboratable, as a special case, it can 
 
 ## I/O buffer instances
 
-:::{note}
-I/O buffer instances are a low-level primitive which is documented to ensure that the standard library does not rely on private interfaces in the core language. Most designers should use the {mod}`amaranth.lib.io` module instead.
-:::
+!!! note
+
+    I/O buffer instances are a low-level primitive which is documented to ensure that the standard library does not rely on private interfaces in the core language. Most designers should use the {mod}`amaranth.lib.io` module instead.
 
 An *I/O buffer instance* is a submodule that allows connecting {ref}`core I/O values <lang-iovalues>` and regular {ref}`values <lang-values>` without the use of an external, toolchain- and technology-dependent {ref}`instance <lang-instance>`. It can be created in four configurations: input, output, tristatable output, and bidirectional (input/output).
 

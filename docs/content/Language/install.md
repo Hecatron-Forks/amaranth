@@ -37,85 +37,78 @@ Simulating Amaranth code requires no additional software. However, a waveform vi
 
 Synthesizing, placing and routing an Amaranth design for an FPGA requires the FPGA family specific toolchain. The open source iCE40, ECP5, MachXO2/3, Nexus, and Gowin toolchains are distributed via [PyPI] for most popular platforms by the [YoWASP] project.
 
-% TODO: Link to FPGA family docs here
+!!! warning "TODO"
+
+    Link to FPGA family docs here
 
 (install-deps)=
 
 ## Installing prerequisites
 
-```{eval-rst}
-.. platform-picker::
+=== "Windows"
 
-   .. platform-choice:: windows
-      :title: Windows
+    :ref:`Install Python <python:using-on-windows>`, either from Windows Store or using the full installer. If using the full installer, make sure to install a 64-bit version of Python.
 
-      :ref:`Install Python <python:using-on-windows>`, either from Windows Store or using the full installer. If using the full installer, make sure to install a 64-bit version of Python.
+    |upgrade-pip|
 
-      |upgrade-pip|
+    ```doscon
+    > pip install --upgrade pip
+    ```
 
-      .. code-block:: doscon
+=== "macOS"
 
-         > pip install --upgrade pip
+    Install Homebrew_. Then, install Python by running:
 
-   .. platform-choice:: macos
-      :title: macOS
+    ```console
+    $ brew install python
+    ```
 
-      Install Homebrew_. Then, install Python by running:
+    .. _Homebrew: https://brew.sh
 
-      .. code-block:: console
+    |upgrade-pip|
 
-         $ brew install python
+    ```console
+    $ pip install --upgrade pip
+    ```
 
-      .. _Homebrew: https://brew.sh
+=== "Debian"
 
-      |upgrade-pip|
+    Install Python by running:
 
-      .. code-block:: console
+    ```console
+    $ sudo apt-get install python3-pip
+    ```
 
-         $ pip install --upgrade pip
+    On architectures other than |builtin-yosys-architectures|, install Yosys by running:
 
-   .. platform-choice:: debian
-      :altname: linux
-      :title: Debian
+    ```console
+    $ sudo apt-get install yosys
+    ```
 
-      Install Python by running:
+    If Yosys |yosys-version| is not available, `build Yosys from source`_.
 
-      .. code-block:: console
+    |upgrade-pip|
 
-         $ sudo apt-get install python3-pip
+    ```console
+    $ pip3 install --user --upgrade pip
+    ```
 
-      On architectures other than |builtin-yosys-architectures|, install Yosys by running:
+=== "Other Linux"
 
-      .. code-block:: console
+    Install Python from the package repository of your distribution.
 
-         $ sudo apt-get install yosys
+    On architectures other than |builtin-yosys-architectures|, install Yosys from the package repository of your distribution.
 
-      If Yosys |yosys-version| is not available, `build Yosys from source`_.
+    If Yosys |yosys-version| is not available, `build Yosys from source`_.
 
-      |upgrade-pip|
+    .. _build Yosys from source: https://github.com/YosysHQ/yosys/#building-from-source
 
-      .. code-block:: console
+    |upgrade-pip|
 
-         $ pip3 install --user --upgrade pip
+    ```console
+    $ pip3 install --user --upgrade pip
+    ```
 
-   .. platform-choice:: linux
-      :title: Other Linux
-
-      Install Python from the package repository of your distribution.
-
-      On architectures other than |builtin-yosys-architectures|, install Yosys from the package repository of your distribution.
-
-      If Yosys |yosys-version| is not available, `build Yosys from source`_.
-
-      .. _build Yosys from source: https://github.com/YosysHQ/yosys/#building-from-source
-
-      |upgrade-pip|
-
-      .. code-block:: console
-
-         $ pip3 install --user --upgrade pip
-
-```
 
 (install)=
 
@@ -283,11 +276,10 @@ The latest release of Amaranth should work well for most applications. A develop
 
 ## Installing board definitions
 
-```{eval-rst}
-.. todo::
+!!! warning "TODO"
 
-         Explain how to install `<https://github.com/amaranth-lang/amaranth-boards>`_.
-```
+    Explain how to install `<https://github.com/amaranth-lang/amaranth-boards>`_.
+
 
 [amaranth playground]: https://amaranth-lang.org/play/
 [amaranth-yosys]: https://pypi.org/project/amaranth-yosys/

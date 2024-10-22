@@ -37,7 +37,7 @@ The Amaranth codebase uses the [PDM] package and dependency manager to structure
 $ pdm install --dev
 ```
 
-This command creates a {ref}`virtual environment <python:tut-venv>` located at `./.venv/` and installs the runtime dependencies of Amaranth as well as the necessary development tools in it.
+This command creates a [virtual environment] located at `./.venv/` and installs the runtime dependencies of Amaranth as well as the necessary development tools in it.
 
 Amaranth itself is installed in the *editable mode*, meaning that the changes to its source files are immediately reflected in running the tests and documentation. However, other changes (addition or removal of source files, or changes to dependencies) will not be picked up, and it is a good habit to run `pdm install` each time after updating the source tree.
 
@@ -77,9 +77,10 @@ $ pdm run document-live -a
 
 ## Documentation style guide
 
-:::{warning}
-Our documentation style guidelines are evolving, and this section is incomplete.
-:::
+!!! warning
+
+    Our documentation style guidelines are evolving, and this section is incomplete.
+
 
 Some of the fundamental guidelines are:
 
@@ -121,9 +122,9 @@ Some of the formatting guidelines are:
 
 ## Contributing your changes
 
-:::{warning}
-Our code style guidelines are evolving, and we do not yet have a formal document listing them.
-:::
+!!! warning
+
+    Our code style guidelines are evolving, and we do not yet have a formal document listing them.
 
 We ask that you do your best effort to keep the code that you add or modify similar in style as well as in spirit to the code surrounding it, and we may ask you to change it during review. When in doubt, submit your code as-is.
 
@@ -143,3 +144,4 @@ If you want to contribute, have interest in language evolution, or simply want t
 [rfcs]: https://amaranth-lang.org/rfcs/
 [yices2]: https://github.com/SRI-CSL/yices2
 [yosys]: https://github.com/YosysHQ/yosys
+[virtual environment]: https://docs.python.org/3/tutorial/venv.html#tut-venv

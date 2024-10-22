@@ -200,9 +200,9 @@ Since this circuit is entirely combinational, and the Amaranth simulator uses a 
 
 ## Replacing circuits with code
 
-:::{note}
-This section describes an advanced technique that is not commonly used. If you are first learning how to use the simulator, you can skip it.
-:::
+!!! note
+
+    This section describes an advanced technique that is not commonly used. If you are first learning how to use the simulator, you can skip it.
 
 During simulation, it is possible to replace an Amaranth circuit with the equivalent Python code. This can be used to improve simulation performance, or to avoid reimplementing complex Python algorithms in Amaranth if they do not need to be synthesized.
 

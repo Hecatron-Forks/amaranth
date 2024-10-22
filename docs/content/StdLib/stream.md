@@ -75,9 +75,9 @@ The pipeline is tested using the {doc}`built-in simulator </simulator>` and the 
 
 ```
 
-:::{note}
-"Minimal streams" as defined in [RFC 61] do not provide built-in helper functions for testing pending further work on the clock domain system. They will be provided in a later release. For the time being, you can copy the helper functions above to test your designs that use streams.
-:::
+!!! note
+
+    "Minimal streams" as defined in [RFC 61] do not provide built-in helper functions for testing pending further work on the clock domain system. They will be provided in a later release. For the time being, you can copy the helper functions above to test your designs that use streams.
 
 ### Serial receiver
 

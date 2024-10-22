@@ -37,7 +37,9 @@ Consider a simple {ref}`component <wiring>`:
             return m
 ```
 
-% TODO: link to Verilog backend doc when we have it
+!!! warning "TODO"
+
+    link to Verilog backend doc when we have it
 
 While it can be easily converted to Verilog, external tools will find the interface of the resulting module opaque unless they parse its Verilog source (a difficult and unrewarding task), or are provided with a description of it. Components can describe their signature with JSON-based metadata:
 
@@ -271,11 +273,11 @@ where:
 > - `<version>` is the version of that package;
 > - `<path>` is a non-empty string specific to the annotation.
 
-:::{note}
-Annotations used in the Amaranth project packages are published under <https://amaranth-lang.org/schema/> according to this URL format, and are covered by the usual compatibility commitment.
+!!! note
 
-Other projects that define additional Amaranth annotations are encouraged, but not required, to make their schemas publicly accessible; the only requirement is for the URL to be globally unique.
-:::
+    Annotations used in the Amaranth project packages are published under <https://amaranth-lang.org/schema/> according to this URL format, and are covered by the usual compatibility commitment.
+
+    Other projects that define additional Amaranth annotations are encouraged, but not required, to make their schemas publicly accessible; the only requirement is for the URL to be globally unique.
 
 ## Reference
 

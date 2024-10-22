@@ -2,9 +2,11 @@
 
 This section demonstrates the basic Amaranth workflow to provide a cursory overview of the language and the toolchain. See the {doc}`tutorial <tutorial>` for a step-by-step introduction to the language, and the {doc}`language guide <guide>` for a detailed explanation of every language construct.
 
-% TODO: add link to build system doc
 
-% TODO: add link to more complex examples?
+!!! warning "TODO"
+
+    * add link to build system doc
+    * add link to more complex examples?
 
 ## A counter
 
@@ -26,11 +28,15 @@ A 16-bit up counter with enable input, overflow output, and a limit fixed at des
 
 The reusable building block of Amaranth designs is a `Component`: a Python class declares its interface (`en` and `ovf`, in this case) and implements the `elaborate` method that defines its behavior.
 
-% TODO: link to Elaboratable reference
+!!! warning "TODO"
+
+    link to Elaboratable reference
 
 Most `elaborate` implementations use a `Module` helper to describe combinational (`m.d.comb`) and synchronous (`m.d.sync`) logic controlled with conditional syntax (`m.If`, `m.Elif`, `m.Else`) similar to Python's. They can also instantiate vendor-defined black boxes or modules written in other HDLs.
 
-% TODO: link to DSL reference
+!!! warning "TODO"
+
+    link to DSL reference
 
 ### Testing a counter
 
@@ -76,7 +82,9 @@ Although some Amaranth workflows do not include Verilog at all, it is still the 
 
 The signals that will be connected to the ports of the top-level Verilog module should be specified explicitly. The rising edge clock and synchronous reset signals of the `sync` domain are added automatically; if necessary, the control signals can be configured explicitly. The result is the following Verilog code (lightly edited for clarity):
 
-% TODO: link to clock domain section of language reference
+!!! warning "TODO"
+
+    link to clock domain section of language reference
 
 ```{literalinclude} _code/up_counter.v
 :language: verilog
@@ -85,9 +93,11 @@ The signals that will be connected to the ports of the top-level Verilog module 
 
 To aid debugging, the generated Verilog code has the same general structure as the Amaranth source code (although more verbose), and contains extensive source location information.
 
-:::{note}
-Unfortunately, at the moment none of the supported toolchains will use the source location information in diagnostic messages.
-:::
+
+!!! note
+
+    Unfortunately, at the moment none of the supported toolchains will use the source location information in diagnostic messages.
+
 
 ## A blinking LED
 
@@ -101,7 +111,9 @@ Although Amaranth works well as a standalone HDL, it also includes a build syste
 
 The `LEDBlinker` module will use the first LED available on the board, and derive the clock divisor from the oscillator frequency specified in the clock constraint. It can be used, for example, with the [Lattice iCEStick evaluation board](https://www.latticesemi.com/icestick), one of the many boards already supported by Amaranth:
 
-% TODO: link to list of supported boards
+!!! warning "TODO"
+
+    link to list of supported boards
 
 ```{eval-rst}
 .. todo::
@@ -117,14 +129,16 @@ The `LEDBlinker` module will use the first LED available on the board, and deriv
 
 With only a single line of code, the design is synthesized, placed, routed, and programmed to the on-board Flash memory. Although not all applications will use the Amaranth build system, the designs that choose it can benefit from the "turnkey" built-in workflows; if necessary, the built-in workflows can be customized to include user-specified options, commands, and files.
 
-% TODO: link to build system reference
+!!! warning "TODO"
 
-:::{note}
-The ability to check with minimal effort whether the entire toolchain functions correctly is so important that it is built into every board definition file. To use it with the iCEStick board, run:
+    link to build system reference
 
-```shell
-$ python3 -m amaranth_boards.icestick
-```
+!!! note
 
-This command will build and program a test bitstream similar to the example above.
-:::
+    The ability to check with minimal effort whether the entire toolchain functions correctly is so important that it is built into every board definition file. To use it with the iCEStick board, run:
+
+    ```shell
+    $ python3 -m amaranth_boards.icestick
+    ```
+
+    This command will build and program a test bitstream similar to the example above.

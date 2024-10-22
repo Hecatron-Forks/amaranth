@@ -10,6 +10,7 @@ The theme in use is mkdocs-material
 Plugins Used:
 
   * https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin
+  * https://github.com/mkdocstrings/mkdocstrings
 
 Initial conversion of RST to Markdown via
 

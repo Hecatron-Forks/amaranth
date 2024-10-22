@@ -1,9 +1,8 @@
 nav:
   - index.md
+  - General
   - Language
   - StdLib
   - Simulator
   - Platform
-  - changes.md
-  - contrib.md
   - ...

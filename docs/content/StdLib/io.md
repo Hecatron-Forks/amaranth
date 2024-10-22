@@ -10,14 +10,15 @@ The {mod}`amaranth.lib.io` module provides a platform-independent way to instant
 
 The Amaranth language provides {ref}`core I/O values <lang-iovalues>` that designate connections to external devices, and {ref}`I/O buffer instances <lang-iobufferinstance>` that implement platform-independent combinational I/O buffers. This low-level mechanism is foundational to all I/O in Amaranth and must be used whenever a device-specific platform is unavailable, but is limited in its capabilities. The {mod}`amaranth.lib.io` module builds on top of it to provide *library I/O ports* that specialize and annotate I/O values, and *buffer components* that connect ports to logic.
 
-:::{note}
-Unfortunately, the terminology related to I/O has several ambiguities:
+!!! note
 
-- A "port" could refer to an *interface port* ({class}`.Signal` objects created by the {mod}`amaranth.lib.wiring` module), a *core I/O port* ({class}`amaranth.hdl.IOPort` object), or a *library I/O port* ({class}`amaranth.lib.io.PortLike` object).
-- A "I/O buffer" could refer to an *I/O buffer instance* ({class}`amaranth.hdl.IOBufferInstance`) or a *I/O buffer component* ({class}`amaranth.lib.io.Buffer`, {class}`.FFBuffer`, or {class}`.DDRBuffer` objects).
+    Unfortunately, the terminology related to I/O has several ambiguities:
 
-Amaranth documentation always uses the least ambiguous form of these terms.
-:::
+    - A "port" could refer to an *interface port* ({class}`.Signal` objects created by the {mod}`amaranth.lib.wiring` module), a *core I/O port* ({class}`amaranth.hdl.IOPort` object), or a *library I/O port* ({class}`amaranth.lib.io.PortLike` object).
+    - A "I/O buffer" could refer to an *I/O buffer instance* ({class}`amaranth.hdl.IOBufferInstance`) or a *I/O buffer component* ({class}`amaranth.lib.io.Buffer`, {class}`.FFBuffer`, or {class}`.DDRBuffer` objects).
+
+    Amaranth documentation always uses the least ambiguous form of these terms.
+
 
 ## Examples
 

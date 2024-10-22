@@ -1,13 +1,19 @@
-% TODO: this introduction is written for people well familiar with HDLs; we likely need
-% another one for people who will use Amaranth as their first HDL
+
 
 # Introduction
+
+!!! warning "TODO"
+
+    This introduction is written for people well familiar with HDLs; we likely need
+    another one for people who will use Amaranth as their first HDL
 
 The Amaranth project provides an open-source toolchain for developing hardware based on synchronous digital logic using the Python programming language. It aims to be easy to learn and use, reduce or eliminate common coding mistakes, and simplify the design of complex hardware with reusable components.
 
 The Amaranth toolchain consists of the {ref}`Amaranth language <intro-lang>`, the {ref}`standard library <intro-stdlib>`, the {ref}`simulator <intro-sim>`, and the {ref}`build system <intro-build>`, covering all steps of a typical FPGA development workflow. At the same time, it does not restrict the designer's choice of tools: existing industry-standard (System)Verilog or VHDL code can be integrated into an Amaranth-based design flow, or, conversely, Amaranth code can be integrated into an existing Verilog-based design flow.
 
-% TODO: add links to connect_rpc docs once they exist
+!!! warning "TODO"
+
+    add links to connect_rpc docs once they exist
 
 (intro-lang)=
 
@@ -25,7 +31,9 @@ A core design principle of the Amaranth language is to be not only easy to use, 
 
 The Amaranth language comes with a standard library---a collection of essential digital design components and interfaces. It includes clock domain crossing primitives, synchronous and asynchronous FIFOs, a flexible I/O buffer interface, and more. By providing reliable building blocks out of the box, Amaranth allows the designer to focus on their application and avoids subtle differences in behavior between different designs.
 
-% TODO: link to stdlib here
+!!! warning "TODO"
+
+    link to stdlib here
 
 Clock domain crossing often requires special treatment, such as using vendor-defined attributes or instantiating device-specific primitives. The CDC primitives in the Amaranth standard library can be overridden by the platform integration, and every platform integration included with Amaranth follows the vendor recommendations for CDC.
 
@@ -35,7 +43,9 @@ While many designs will use at least some vendor-specific functionality, the com
 
 The Amaranth standard library is optional: the Amaranth language can be used without it. Conversely, it is possible to use the Amaranth standard library components in Verilog or VHDL code, with some limitations.
 
-% TODO: link to connect_rpc docs here *again*
+!!! warning "TODO"
+
+    link to connect_rpc docs here *again*
 
 (intro-sim)=
 
@@ -53,7 +63,9 @@ Although Amaranth does not support native code simulation or co-simulation at th
 
 To achieve an end-to-end FPGA development workflow, the Amaranth project integrates with all major FPGA toolchains and provides definitions for many common development boards.
 
-% TODO: link to vendor docs and board docs here
+!!! warning "TODO"
+
+    link to vendor docs and board docs here
 
 ### FPGA toolchain integration
 

@@ -9,18 +9,3 @@ The {mod}`amaranth.lib` module, also known as the standard library, provides mod
 As part of the Amaranth backwards compatibility guarantee, any behaviors described in these documents will not change from a version to another without at least one version including a warning about the impending change. Any nontrivial change to these behaviors must also go through the public review as a part of the [Amaranth Request for Comments process](https://amaranth-lang.org/rfcs/).
 
 The Amaranth standard library is separate from the Amaranth language: everything provided in it could have been implemented in a third-party library.
-
-```{toctree}
-:maxdepth: 2
-
-stdlib/enum
-stdlib/data
-stdlib/wiring
-stdlib/meta
-stdlib/stream
-stdlib/memory
-stdlib/io
-stdlib/cdc
-stdlib/fifo
-stdlib/crc
-```

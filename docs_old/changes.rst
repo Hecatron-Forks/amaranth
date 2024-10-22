@@ -30,7 +30,7 @@ Implemented RFCs
 .. _RFC 71: https://amaranth-lang.org/rfcs/0071-enumview-matches.html
 
 * `RFC 66`_: Simulation time
-* `RFC 71`_: ``EnumView.matches``
+* `RFC 71`_: `EnumView.matches`
 
 
 Language changes
