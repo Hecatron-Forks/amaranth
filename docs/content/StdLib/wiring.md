@@ -2,9 +2,7 @@
 
 # Interfaces and connections
 
-```{eval-rst}
-.. py:module:: amaranth.lib.wiring
-```
+[](){#amaranth.lib.wiring}
 
 The {mod}`amaranth.lib.wiring` module provides a way to declare the interfaces between design components and connect them to each other in a reliable and convenient way.
 
@@ -659,9 +657,7 @@ When they appear in diagnostics, paths are printed as the corresponding Python e
 
 ## Making connections
 
-```{eval-rst}
-.. autoexception:: ConnectionError
-```
+::: amaranth.lib.wiring.ConnectionError
 
 ```{eval-rst}
 .. autofunction:: connect
@@ -670,16 +666,12 @@ When they appear in diagnostics, paths are printed as the corresponding Python e
 
 ## Components
 
-```{eval-rst}
-.. autoclass:: Component
+::: amaranth.lib.wiring.Component
 
-```
 
 ## Component metadata
 
-```{eval-rst}
-.. autoexception:: InvalidMetadata
-```
+::: amaranth.lib.wiring.InvalidMetadata
 
 ```{eval-rst}
 .. autoclass:: ComponentMetadata

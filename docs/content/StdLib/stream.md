@@ -1,8 +1,6 @@
 # Data streams
 
-```{eval-rst}
-.. py:module:: amaranth.lib.stream
-```
+[](){#amaranth.lib.stream}
 
 The {mod}`amaranth.lib.stream` module provides a mechanism for unidirectional exchange of arbitrary data between modules.
 
@@ -432,10 +430,6 @@ Implementing such an efficient pipeline can be difficult without the use of appr
 
 Components that communicate using streams must not only use a {class}`stream.Interface <Interface>`, but also follow the {ref}`data transfer rules <stream-rules>`.
 
-```{eval-rst}
-.. autoclass:: Signature
-```
+::: amaranth.lib.stream.Signature
 
-```{eval-rst}
-.. autoclass:: Interface
-```
+::: amaranth.lib.stream.Interface

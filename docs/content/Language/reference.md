@@ -1,8 +1,6 @@
 # Language reference
 
-```{eval-rst}
-.. py:module:: amaranth.hdl
-```
+[](){#amaranth.hdl}
 
 !!! warning
 
@@ -101,26 +99,15 @@ The number {py}`1` corresponds to the number of call stack frames that should be
 
 See also the introduction to {ref}`shapes <lang-shapes>` and {ref}`casting from shape-like objects <lang-shapelike>` in the language guide.
 
-```{eval-rst}
-.. autoclass:: Shape
-```
+::: amaranth.hdl._ast.Shape
 
-```{eval-rst}
-.. autofunction:: unsigned
-```
+::: amaranth.hdl._ast.unsigned
 
-```{eval-rst}
-.. autofunction:: signed
-```
+::: amaranth.hdl._ast.signed
 
-```{eval-rst}
-.. autoclass:: ShapeCastable()
-```
+::: amaranth.hdl._ast.ShapeCastable
 
-```{eval-rst}
-.. autoclass:: ShapeLike()
-
-```
+::: amaranth.hdl._ast.ShapeLike
 
 ## Values
 
@@ -131,10 +118,6 @@ See also the introduction to {ref}`values <lang-values>` and {ref}`casting from 
     :special-members: __bool__, __pos__, __neg__, __add__, __radd__, __sub__, __rsub__, __mul__, __rmul__, __mod__, __rmod__, __floordiv__, __rfloordiv__, __eq__, __ne__, __lt__, __le__, __gt__, __ge__, __abs__, __invert__, __and__, __rand__, __or__, __ror__, __xor__, __rxor__, __lshift__, __rlshift__, __rshift__, __rrshift__, __len__, __getitem__, __contains__, __hash__
 ```
 
-```{eval-rst}
-.. autoclass:: ValueCastable()
-```
+::: amaranth.hdl._ast.ValueCastable
 
-```{eval-rst}
-.. autoclass:: ValueLike()
-```
+::: amaranth.hdl._ast.ValueLike

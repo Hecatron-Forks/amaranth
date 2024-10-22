@@ -1,6 +1,6 @@
 # Quicklogic
 
-The {class}`QuicklogicPlatform` class provides a base platform to support Quicklogic toolchains.
+The [QuicklogicPlatform][amaranth.vendor._quicklogic.QuicklogicPlatform] class provides a base platform to support Quicklogic toolchains.
 
 The Symbiflow toolchain is supported.
 

@@ -1,10 +1,8 @@
 # Simulator
 
-```{eval-rst}
-.. py:module:: amaranth.sim
-```
+[](){#amaranth.sim}
 
-The {mod}`amaranth.sim` module, also known as the simulator, makes it possible to evaluate a design's functionality in a virtual environment before it is implemented in hardware.
+The [`amaranth.sim`][] module, also known as the simulator, makes it possible to evaluate a design's functionality in a virtual environment before it is implemented in hardware.
 
 ## Simulating circuits
 
@@ -46,7 +44,7 @@ The following examples simulate one of the two designs below: synchronous counte
 
 ### Running a simulation
 
-Simulating a design always requires the three basic steps: constructing the {abbr}`DUT (Design Under Test)`, constructing a {class}`Simulator` for it, and running the simulation with the {meth}`Simulator.run` or {meth}`Simulator.run_until` method:
+Simulating a design always requires the three basic steps: constructing the {abbr}`DUT (Design Under Test)`, constructing a {class}`Simulator` for it, and running the simulation with the [`Simulator.run`][amaranth.sim.core.Simulator.run] or [`Simulator.run_until`][amaranth.sim.core.Simulator.run_until] method:
 
 ```{eval-rst}
 .. testcode::
@@ -58,11 +56,11 @@ Simulating a design always requires the three basic steps: constructing the {abb
     sim.run()
 ```
 
-However, the code above neither stimulates the DUT's inputs nor measures the DUT's outputs; the {meth}`Simulator.run` method also immediately returns if no stimulus is added to the simulation. To make it useful, several changes are necessary:
+However, the code above neither stimulates the DUT's inputs nor measures the DUT's outputs; the [`Simulator.run`][amaranth.sim.core.Simulator.run] method also immediately returns if no stimulus is added to the simulation. To make it useful, several changes are necessary:
 
-- The {meth}`Simulator.add_clock` method adds a *stimulus*: a process external to the DUT that manipulates its inputs (in this case, toggles the clock of the `sync` domain).
-- The {meth}`Simulator.run_until` method runs the simulation until a specific deadline is reached.
-- The {meth}`Simulator.write_vcd` method captures the DUT's inputs, state, and outputs, and writes it to a {abbr}`VCD (Value Change Dump)` file.
+- The [`Simulator.add_clock`][amaranth.sim.core.Simulator.add_clock] method adds a *stimulus*: a process external to the DUT that manipulates its inputs (in this case, toggles the clock of the `sync` domain).
+- The [`Simulator.run_until`][amaranth.sim.core.Simulator.run_until] method runs the simulation until a specific deadline is reached.
+- The [`Simulator.write_vcd`][amaranth.sim.core.Simulator.write_vcd] method captures the DUT's inputs, state, and outputs, and writes it to a {abbr}`VCD (Value Change Dump)` file.
 
 The following code simulates a design and capture the values of all the signals used in the design for each moment of simulation time:
 
@@ -93,7 +91,7 @@ The captured data is saved to a {abbr}`VCD` file {file}`example1.vcd`, which can
     }
 ```
 
-The {meth}`Simulator.reset` method reverts the simulation to its initial state. It can be used to speed up tests by capturing the waveforms only when the simulation is known to encounter an error:
+The [`Simulator.reset`][amaranth.sim.core.Simulator.reset] method reverts the simulation to its initial state. It can be used to speed up tests by capturing the waveforms only when the simulation is known to encounter an error:
 
 ```{eval-rst}
 .. testcode::
@@ -111,7 +109,7 @@ The {meth}`Simulator.reset` method reverts the simulation to its initial state. 
 
 To verify that the DUT works as intended during a simulation, known values are provided as the inputs, and the outputs are compared with the expected results.
 
-This is done by adding a different type of stimulus to the simulator, a *testbench*: an {py}`async` Python function that runs concurrently with the DUT and can manipulate the signals used in the simulation. A testbench is added using the {meth}`Simulator.add_testbench` method, and receives a {class}`SimulatorContext` object through which it can interact with the simulator: inspect the value of signals using the {meth}`ctx.get() <SimulatorContext.get>` method, change the value of signals using the {meth}`ctx.set() <SimulatorContext.set>` method, or wait for an active edge of a {ref}`clock domain <lang-clockdomains>` using the {meth}`ctx.tick() <SimulatorContext.tick>` method.
+This is done by adding a different type of stimulus to the simulator, a *testbench*: an {py}`async` Python function that runs concurrently with the DUT and can manipulate the signals used in the simulation. A testbench is added using the {meth}`Simulator.add_testbench` method, and receives a [`SimulatorContext`][amaranth.sim._async.SimulatorContext] object through which it can interact with the simulator: inspect the value of signals using the {meth}`ctx.get() <SimulatorContext.get>` method, change the value of signals using the {meth}`ctx.set() <SimulatorContext.set>` method, or wait for an active edge of a {ref}`clock domain <lang-clockdomains>` using the {meth}`ctx.tick() <SimulatorContext.tick>` method.
 
 The following example simulates a counter and verifies that it can be stopped using its {py}`en` input:
 
@@ -206,7 +204,7 @@ Since this circuit is entirely combinational, and the Amaranth simulator uses a 
 
 During simulation, it is possible to replace an Amaranth circuit with the equivalent Python code. This can be used to improve simulation performance, or to avoid reimplementing complex Python algorithms in Amaranth if they do not need to be synthesized.
 
-This is done by adding a *process* to the simulator: an {py}`async` Python function that runs as an integral part of the simulation, simultaneously with the DUT. A process is added using the {meth}`Simulator.add_process` method, and receives a {class}`SimulatorContext` object through which it can interact with the simulator. A process is conceptually similar to a testbench but differs from it in two important ways:
+This is done by adding a *process* to the simulator: an {py}`async` Python function that runs as an integral part of the simulation, simultaneously with the DUT. A process is added using the {meth}`Simulator.add_process` method, and receives a {class}[`SimulatorContext`][amaranth.sim._async.SimulatorContext] object through which it can interact with the simulator. A process is conceptually similar to a testbench but differs from it in two important ways:
 
 - Testbenches run in a well-defined order (from first to last in the order they were added, yielding control only at {py}`await` points) and cannot observe inconsistent intermediate states of a design, but processes run in an undefined order while the design is converging after a change to its inputs.
 - In a process, it is not possible to inspect the value of a signal using the {meth}`ctx.get() <SimulatorContext.get>` method, which guarantees that inconsistent intermediate states of a design cannot be observed by a process either.
@@ -295,31 +293,19 @@ The following code replaces the {py}`Adder` elaboratable with the equivalent Pyt
 
 ## Reference
 
-```{eval-rst}
-.. autoclass:: Simulator
-```
+::: amaranth.sim.core.Simulator
 
-```{eval-rst}
-.. autoclass:: SimulatorContext
-```
+::: amaranth.sim._async.SimulatorContext
 
-```{eval-rst}
-.. autoexception:: BrokenTrigger
-```
+::: amaranth.sim._async.BrokenTrigger
 
-```{eval-rst}
-.. autoexception:: DomainReset
-```
+::: amaranth.sim._async.DomainReset
 
 (sim-tick-trigger)=
 
-```{eval-rst}
-.. autoclass:: TickTrigger
-```
+::: amaranth.sim._async.TickTrigger
 
-```{eval-rst}
-.. autoclass:: TriggerCombination
-```
+::: amaranth.sim._async.TriggerCombination
 
 [gtkwave]: https://gtkwave.sourceforge.net/
 [surfer]: https://surfer-project.org/

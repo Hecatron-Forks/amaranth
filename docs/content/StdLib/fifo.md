@@ -1,31 +1,19 @@
 # First-in first-out queues
 
-```{eval-rst}
-.. py:module:: amaranth.lib.fifo
-```
+[](){#amaranth.lib.fifo}
 
-The `amaranth.lib.fifo` module provides building blocks for first-in, first-out queues.
+The [`amaranth.lib.fifo`][] module provides building blocks for first-in, first-out queues.
 
-```{eval-rst}
-.. autoclass:: FIFOInterface
+::: amaranth.lib.fifo.FIFOInterface
 
-   .. note::
+!!! note
 
-      The :class:`FIFOInterface` class can be used directly to substitute a FIFO in tests, or inherited from in a custom FIFO implementation.
-```
+    The :class:`FIFOInterface` class can be used directly to substitute a FIFO in tests, or inherited from in a custom FIFO implementation.
 
-```{eval-rst}
-.. autoclass:: SyncFIFO(*, width, depth)
-```
+::: amaranth.lib.fifo.SyncFIFO
 
-```{eval-rst}
-.. autoclass:: SyncFIFOBuffered(*, width, depth)
-```
+::: amaranth.lib.fifo.SyncFIFOBuffered
 
-```{eval-rst}
-.. autoclass:: AsyncFIFO(*, width, depth, r_domain="read", w_domain="write", exact_depth=False)
-```
+::: amaranth.lib.fifo.AsyncFIFO
 
-```{eval-rst}
-.. autoclass:: AsyncFIFOBuffered(*, width, depth, r_domain="read", w_domain="write", exact_depth=False)
-```
+::: amaranth.lib.fifo.AsyncFIFOBuffered

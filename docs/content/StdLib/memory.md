@@ -1,8 +1,6 @@
 # Memory arrays
 
-```{eval-rst}
-.. py:module:: amaranth.lib.memory
-```
+[](){#amaranth.lib.memory}
 
 The {mod}`amaranth.lib.memory` module provides a way to efficiently store data organized as an array of identically shaped rows, which may be addressed (read and/or written) one at a time. This organization is well suited for an efficient implementation in hardware.
 
@@ -225,9 +223,7 @@ For example, this {doc}`testbench </simulator>` will clear the least significant
 % weird and not really how rst/sphinx are supposed to work but it results in a comprehensible
 % generated document. be careful to not break this!
 
-```{eval-rst}
-.. class:: Memory(data, *, src_loc_at=0)
-```
+::: amaranth.lib.memory.Memory
 
 ```{eval-rst}
 .. autoclass:: Memory(*, shape, depth, init, src_loc_at=0)
@@ -246,10 +242,6 @@ For example, this {doc}`testbench </simulator>` will clear the least significant
 
 ## Memory ports
 
-```{eval-rst}
-.. autoclass:: ReadPort(...)
-```
+::: amaranth.lib.memory.ReadPort
 
-```{eval-rst}
-.. autoclass:: WritePort(...)
-```
+::: amaranth.lib.memory.WritePort

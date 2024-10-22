@@ -1,8 +1,6 @@
 # Input/output buffers
 
-```{eval-rst}
-.. py:module:: amaranth.lib.io
-```
+[](){#amaranth.lib.io}
 
 The {mod}`amaranth.lib.io` module provides a platform-independent way to instantiate platform-specific input/output buffers: combinational, synchronous, and double data rate (DDR).
 
@@ -277,37 +275,21 @@ For example, consider a simple serializer that accepts a stream of multi-bit dat
 
 ## Ports
 
-```{eval-rst}
-.. autoclass:: Direction()
-```
+::: amaranth.lib.io.Direction
 
-```{eval-rst}
-.. autoclass:: PortLike
-```
+::: amaranth.lib.io.PortLike
 
-```{eval-rst}
-.. autoclass:: SingleEndedPort
-```
+::: amaranth.lib.io.SingleEndedPort
 
-```{eval-rst}
-.. autoclass:: DifferentialPort
-```
+::: amaranth.lib.io.DifferentialPort
 
-```{eval-rst}
-.. autoclass:: SimulationPort
+::: amaranth.lib.io.SimulationPort
 
-```
 
 ## Buffers
 
-```{eval-rst}
-.. autoclass:: Buffer(direction, port)
-```
+::: amaranth.lib.io.Buffer
 
-```{eval-rst}
-.. autoclass:: FFBuffer(direction, port, *, i_domain=None, o_domain=None)
-```
+::: amaranth.lib.io.FFBuffer
 
-```{eval-rst}
-.. autoclass:: DDRBuffer(direction, port, *, i_domain=None, o_domain=None)
-```
+::: amaranth.lib.io.DDRBuffer

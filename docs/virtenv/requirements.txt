@@ -4,3 +4,4 @@ mkdocstrings
 mkdocstrings-python
 mktestdocs
 mkdocs-awesome-pages-plugin
+black

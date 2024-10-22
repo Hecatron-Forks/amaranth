@@ -1,8 +1,6 @@
 # Data structures
 
-```{eval-rst}
-.. py:module:: amaranth.lib.data
-```
+[](){#amaranth.lib.data}
 
 The {mod}`amaranth.lib.data` module provides a way to describe the bitwise layout of values and a proxy class for accessing fields of values using the attribute access and indexing syntax.
 
@@ -253,51 +251,31 @@ The other would react to commands as follows:
 
 ## Modeling structured data
 
-```{eval-rst}
-.. autoclass:: Field
-```
+::: amaranth.lib.data.Field
 
-```{eval-rst}
-.. autoclass:: Layout()
+::: amaranth.lib.data.Layout
 
-```
 
 ## Common data layouts
 
-```{eval-rst}
-.. autoclass:: StructLayout
-```
+::: amaranth.lib.data.StructLayout
 
-```{eval-rst}
-.. autoclass:: UnionLayout
-```
+::: amaranth.lib.data.UnionLayout
 
-```{eval-rst}
-.. autoclass:: ArrayLayout
-```
+::: amaranth.lib.data.ArrayLayout
 
-```{eval-rst}
-.. autoclass:: FlexibleLayout
+::: amaranth.lib.data.FlexibleLayout
 
-```
 
 ## Data views
 
-```{eval-rst}
-.. autoclass:: View
-```
+::: amaranth.lib.data.View
 
-```{eval-rst}
-.. autoclass:: Const
+::: amaranth.lib.data.Const
 
-```
 
 ## Data classes
 
-```{eval-rst}
-.. autoclass:: Struct
-```
+::: amaranth.lib.data.Struct
 
-```{eval-rst}
-.. autoclass:: Union
-```
+::: amaranth.lib.data.Union

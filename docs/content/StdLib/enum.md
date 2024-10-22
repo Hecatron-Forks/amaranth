@@ -1,10 +1,6 @@
-\---
-title: Enumerations
-\---
+# Enumerations
 
-```{eval-rst}
-.. py:module:: amaranth.lib.enum
-```
+[](){#amaranth.lib.enum}
 
 The {mod}`amaranth.lib.enum` module is a drop-in replacement for the standard {mod}`enum` module that provides extended {class}`Enum`, {class}`IntEnum`, {class}`Flag`, and {class}`IntFlag` classes with the ability to specify a shape explicitly.
 
@@ -138,35 +134,21 @@ It is also possible to define a custom view class for a given enum:
 
 # Metaclass
 
-```{eval-rst}
-.. autoclass:: EnumType()
-
-```
+::: amaranth.lib.enum.EnumType
 
 # Base classes
 
-```{eval-rst}
-.. autoclass:: Enum()
-```
+::: amaranth.lib.enum.Enum
 
-```{eval-rst}
-.. autoclass:: IntEnum()
-```
+::: amaranth.lib.enum.IntEnum
 
-```{eval-rst}
-.. autoclass:: Flag()
-```
+::: amaranth.lib.enum.Flag
 
-```{eval-rst}
-.. autoclass:: IntFlag()
-```
+::: amaranth.lib.enum.IntFlag
 
 # View classes
 
-```{eval-rst}
-.. autoclass:: EnumView()
-```
+::: amaranth.lib.enum.EnumView
 
-```{eval-rst}
-.. autoclass:: FlagView()
-```
+::: amaranth.lib.enum.FlagView
+

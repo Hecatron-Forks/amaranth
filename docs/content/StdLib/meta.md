@@ -2,9 +2,7 @@
 
 # Interface metadata
 
-```{eval-rst}
-.. py:module:: amaranth.lib.meta
-```
+[](){#amaranth.lib.meta}
 
 The {mod}`amaranth.lib.meta` module provides a way to annotate objects in an Amaranth design and exchange these annotations with external tools in a standardized format.
 
@@ -281,13 +279,10 @@ where:
 
 ## Reference
 
-```{eval-rst}
-.. autoexception:: InvalidSchema
-```
+::: amaranth.lib.meta.InvalidSchema
 
-```{eval-rst}
-.. autoexception:: InvalidAnnotation
-```
+::: amaranth.lib.meta.InvalidAnnotation
+
 
 ```{eval-rst}
 .. autoclass:: Annotation

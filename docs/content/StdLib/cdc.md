@@ -1,23 +1,13 @@
 # Clock domain crossing
 
-```{eval-rst}
-.. py:module:: amaranth.lib.cdc
-```
+[](){#amaranth.lib.cdc}
 
-The {mod}`amaranth.lib.cdc` module provides building blocks for transferring data between clock domains.
+The [`amaranth.lib.cdc`][] module provides building blocks for transferring data between clock domains.
 
-```{eval-rst}
-.. autoclass:: FFSynchronizer()
-```
+::: amaranth.lib.cdc.FFSynchronizer
 
-```{eval-rst}
-.. autoclass:: AsyncFFSynchronizer()
-```
+::: amaranth.lib.cdc.AsyncFFSynchronizer
 
-```{eval-rst}
-.. autoclass:: ResetSynchronizer()
-```
+::: amaranth.lib.cdc.ResetSynchronizer
 
-```{eval-rst}
-.. autoclass:: PulseSynchronizer()
-```
+::: amaranth.lib.cdc.PulseSynchronizer
