@@ -24,25 +24,19 @@ Conversely, any behavior not documented here is subject to change at any time wi
 
 There are two ways to import the Amaranth syntax into a Python file: by importing the {ref}`prelude <lang-prelude>` or by importing individual names from the {mod}`amaranth.hdl` module. Since the prelude is kept small and rarely extended to avoid breaking downstream code that uses a glob import, there are some names that are only exported from the {mod}`amaranth.hdl` module. The following three snippets are equivalent:
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth import *
 
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     import amaranth as am
 
     m = am.Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.hdl import Module
 
     m = Module()
@@ -85,9 +79,7 @@ Many functions and methods in Amaranth take the {py}`src_loc_at=0` keyword argum
 
 Some call sites are not relevant for an Amaranth designer; e.g. when an Amaranth language construct is called from a user-defined utility function, the source location of the call site within this utility function is usually not interesting to the designer. In these cases, one or more levels of function calls can be removed from consideration using the {py}`src_loc_at` argument as follows (using {meth}`Shape.cast` to demonstrate the concept):
 
-```{eval-rst}
-.. testcode::
-
+```python
     def my_shape_cast(obj, *, src_loc_at=0):
         ... # additionally process `obj`...
         return Shape.cast(obj, src_loc_at=1 + src_loc_at)

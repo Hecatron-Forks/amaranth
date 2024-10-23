@@ -31,17 +31,13 @@ To use a memory, first create a {class}`Memory` object, providing a shape, depth
 
 ## Examples
 
-```{eval-rst}
-.. testsetup::
-
+```python
     from amaranth import *
 ```
 
 First, import the {class}`Memory` class.
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.lib.memory import Memory
 
 ```
@@ -50,16 +46,11 @@ First, import the {class}`Memory` class.
 
 In the following example, a read-only memory is used to output a fixed message in a loop:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     message = b"Hello world\n"
     m.submodules.memory = memory = \
         Memory(shape=unsigned(8), depth=len(message), init=message)
@@ -76,9 +67,7 @@ In the following example, a read-only memory is used to output a fixed message i
 
 In this example, the memory read port is asynchronous, and a change of the address input (labelled `a` on the diagram below) results in an immediate change of the data output (labelled `d`).
 
-```{eval-rst}
-.. wavedrom:: memory/example_hello
-
+```json
     {
         "signal": [
             {"name": "clk",
@@ -103,16 +92,11 @@ In this example, the memory read port is asynchronous, and a change of the addre
 
 In a more complex example, a power-of-2 sized writable memory is used to implement a first-in, first-out queue:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     push = Signal()
     pop  = Signal()
 
@@ -137,9 +121,7 @@ In this example, the memory read and write ports are synchronous. A write operat
 
 However, the memory read port is also configured to be *transparent* relative to the memory write port. This means that if a write and a read operation (labelled `t`, `u` respectively) access the same row with address 3, the new contents will be read out, reducing the minimum push-to-pop latency to one cycle, down from two cycles that would be required without the use of transparency.
 
-```{eval-rst}
-.. wavedrom:: memory/example_fifo
-
+```json
     {
         "signal": [
             {"name": "clk",
@@ -185,13 +167,10 @@ There are two ways to interact with a memory array in a simulator: requesting a 
 
 For example, this {doc}`testbench </simulator>` will clear the least significant bit of every memory row:
 
-```{eval-rst}
-.. testcode::
-
+```python
     async def testbench(ctx):
         for index in len(memory.data):
             ctx.set(memory.data[index], ctx.get(memory.data[index]) & ~1)
-
 ```
 
 ## Memory description

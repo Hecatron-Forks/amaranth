@@ -39,24 +39,18 @@ The following examples demonstrate the use of streams for a data processing pipe
 
 The use of a unified data transfer mechanism enables uniform testing of individual units, and makes it possible to add a queue to the pipeline using only two additional connections.
 
-```{eval-rst}
-.. testsetup::
-
+```python
     from amaranth import *
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.lib import stream, wiring
     from amaranth.lib.wiring import In, Out
 ```
 
 The pipeline is tested using the {doc}`built-in simulator </simulator>` and the two helper functions defined below:
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.sim import Simulator, Period
 
     async def stream_get(ctx, stream):
@@ -83,9 +77,7 @@ The serial receiver captures the serial output of an external device and convert
 
 In this example, the external device does not provide a way to pause data transmission. If the pipeline isn't ready to accept the next payload, it is necessary to discard data at some point; here, it is done in the serial receiver.
 
-```{eval-rst}
-.. testcode::
-
+```python
     class SerialReceiver(wiring.Component):
         ssel: In(1)
         sclk: In(1)
@@ -124,9 +116,7 @@ In this example, the external device does not provide a way to pause data transm
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     def test_serial_receiver():
         dut = SerialReceiver()
 
@@ -157,18 +147,13 @@ In this example, the external device does not provide a way to pause data transm
             sim.run()
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     test_serial_receiver()
 ```
 
 The serial protocol recognized by the receiver is illustrated with the following diagram (corresponding to `stream_serial_receiver.vcd`):
 
-```{eval-rst}
-.. wavedrom:: stream/serial_receiver
-
+```json
     {
         signal: [
                 { name: "clk",     wave: "lpppppppppppppppppppp" },
@@ -195,9 +180,7 @@ The serial protocol recognized by the receiver is illustrated with the following
 
 The serial transmitter accepts a stream of words and provides it to the serial input of an external device whenever requested. Its serial interface is the same as that of the serial receiver, with the exception that the `sclk` and `sdat` signals are outputs. The `ssel` signal remains an input; the external device uses it for flow control.
 
-```{eval-rst}
-.. testcode::
-
+```python
     class SerialTransmitter(wiring.Component):
         ssel: In(1)
         sclk: Out(1)
@@ -231,9 +214,7 @@ The serial transmitter accepts a stream of words and provides it to the serial i
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     def test_serial_transmitter():
         dut = SerialTransmitter()
 
@@ -258,10 +239,7 @@ The serial transmitter accepts a stream of words and provides it to the serial i
             sim.run()
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     test_serial_transmitter()
 
 ```
@@ -270,9 +248,7 @@ The serial transmitter accepts a stream of words and provides it to the serial i
 
 The value negator accepts a stream of words, negates the 2's complement value of these words, and provides the result as a stream of words again. In a practical {abbr}`DSP` application, this unit could be replaced with, for example, a {abbr}`FIR (finite impulse response)` filter.
 
-```{eval-rst}
-.. testcode::
-
+```python
     class ValueNegator(wiring.Component):
         i_stream: In(stream.Signature(signed(8)))
         o_stream: Out(stream.Signature(signed(8)))
@@ -290,9 +266,7 @@ The value negator accepts a stream of words, negates the 2's complement value of
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     def test_value_negator():
         dut = ValueNegator()
 
@@ -312,10 +286,7 @@ The value negator accepts a stream of words, negates the 2's complement value of
             sim.run()
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     test_value_negator()
 
 ```
@@ -324,9 +295,7 @@ The value negator accepts a stream of words, negates the 2's complement value of
 
 The complete pipeline consists of a serial receiver, a value negator, a FIFO queue, and a serial transmitter connected in series. Without queueing, any momentary mismatch between the rate at which the serial data is produced and consumed would result in data loss. A FIFO queue from the {mod}`.lib.fifo` standard library module is used to avoid this problem.
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.lib.fifo import SyncFIFOBuffered
 
     class ExamplePipeline(wiring.Component):
@@ -371,9 +340,7 @@ The complete pipeline consists of a serial receiver, a value negator, a FIFO que
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     def test_example_pipeline():
         dut = ExamplePipeline()
 
@@ -412,10 +379,7 @@ The complete pipeline consists of a serial receiver, a value negator, a FIFO que
             sim.run()
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     test_example_pipeline()
 ```
 

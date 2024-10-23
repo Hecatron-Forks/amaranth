@@ -53,9 +53,7 @@ The testbench is implemented as a Python {py}`async` function that is simulated 
 
 When run, the testbench finishes successfully, since all of the assertions hold, and produces a VCD file with waveforms recorded for every {class}`Signal` as well as the clock of the `sync` domain:
 
-```{eval-rst}
-.. wavedrom:: start/up_counter
-
+```json
     {
         "signal": [
             {"name": "clk",   "wave": "p.........."},
@@ -115,11 +113,10 @@ The `LEDBlinker` module will use the first LED available on the board, and deriv
 
     link to list of supported boards
 
-```{eval-rst}
-.. todo::
+!!! warning "TODO"
 
-         Link to the installation instructions for the FOSS iCE40 toolchain, probably as a part of board documentation.
-```
+    Link to the installation instructions for the FOSS iCE40 toolchain, probably as a part of board documentation.
+
 
 ```{literalinclude} _code/led_blinker.py
 :lineno-match: true

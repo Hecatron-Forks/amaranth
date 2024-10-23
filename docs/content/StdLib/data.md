@@ -17,29 +17,22 @@ This module provides four related facilities:
 
 To use this module, add the following imports to the beginning of the file:
 
-```{eval-rst}
-.. testcode::
-
+```python
    from amaranth.lib import data
-
 ```
 
 ### Motivation
 
 The fundamental Amaranth type is a {class}`Value`: a sequence of bits that can also be used as a number. Manipulating values directly is sufficient for simple applications, but in more complex ones, values are often more than just a sequence of bits; they have well-defined internal structure.
 
-```{eval-rst}
-.. testsetup::
-
+```python
     from amaranth import *
     m = Module()
 ```
 
 For example, consider a module that processes pixels, converting them from RGB to grayscale. The color pixel format is RGB565:
 
-```{eval-rst}
-.. wavedrom:: data/rgb565_layout
-
+```json
     {
         "reg": [
             {"name": ".red",   "bits": 5, "type": 2},
@@ -57,9 +50,7 @@ For example, consider a module that processes pixels, converting them from RGB t
 
 This module could be implemented (using a fast but *very* approximate method) as follows:
 
-```{eval-rst}
-.. testcode::
-
+```python
     i_color = Signal(16)
     o_gray  = Signal(8)
 
@@ -68,9 +59,7 @@ This module could be implemented (using a fast but *very* approximate method) as
 
 While this implementation works, it is repetitive, error-prone, hard to read, and laborous to change; all because the color components are referenced using bit offsets. To improve it, the structure can be described with a {class}`Layout` so that the components can be referenced by name:
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.lib import data, enum
 
     rgb565_layout = data.StructLayout({
@@ -87,11 +76,8 @@ While this implementation works, it is repetitive, error-prone, hard to read, an
 
 The {class}`View` is {ref}`value-like <lang-valuelike>` and can be used anywhere a plain value can be used. For example, it can be assigned to in the usual way:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.d.comb += i_color.eq(0) # everything is black
-
 ```
 
 ### Composing layouts
@@ -100,9 +86,7 @@ Layouts are composable: a {class}`Layout` is a {ref}`shape <lang-shapes>` and ca
 
 For example, consider a module that processes RGB pixels in groups of up to four at a time, provided by another module, and accumulates their average intensity:
 
-```{eval-rst}
-.. testcode::
-
+```python
     input_layout = data.StructLayout({
         "pixels": data.ArrayLayout(rgb565_layout, 4),
         "valid":  4
@@ -129,9 +113,7 @@ Data layouts can be defined in a few different ways depending on the use case.
 
 In case the data format is defined using a family of layouts instead of a single specific one, a function can be used:
 
-```{eval-rst}
-.. testcode::
-
+```python
     def rgb_layout(r_bits, g_bits, b_bits):
         return data.StructLayout({
             "red":   unsigned(r_bits),
@@ -145,9 +127,7 @@ In case the data format is defined using a family of layouts instead of a single
 
 In case the data has related operations or transformations, {class}`View` can be subclassed to define methods implementing them:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class RGBLayout(data.StructLayout):
         def __init__(self, r_bits, g_bits, b_bits):
             super().__init__({
@@ -166,9 +146,7 @@ In case the data has related operations or transformations, {class}`View` can be
 
 Here, an instance of the {py}`RGBLayout` class itself is {ref}`shape-like <lang-shapelike>` and can be used anywhere a shape is accepted. When a {class}`Signal` is constructed with this layout, the returned value is wrapped in an {py}`RGBView`:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> pixel = Signal(RGBLayout(5, 6, 5))
    >>> len(pixel.as_value())
    16
@@ -178,9 +156,7 @@ Here, an instance of the {py}`RGBLayout` class itself is {ref}`shape-like <lang-
 
 In case the data format is static, {class}`Struct` (or {class}`Union`) can be subclassed instead of {class}`View`, to reduce the amount of boilerplate needed:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class IEEE754Single(data.Struct):
         fraction: 23
         exponent:  8 = 0x7f
@@ -197,9 +173,7 @@ This module provides a {class}`UnionLayout`, which is rarely needed by itself, b
 
 For example, consider a module that can direct another module to perform one of a few operations, each of which requires its own parameters. The two modules could communicate through a channel with a layout like this:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class Command(data.Struct):
         class Kind(enum.Enum):
             SET_ADDR  = 0
@@ -221,9 +195,7 @@ Here, the shape of the {py}`Command` is inferred, being large enough to accommod
 
 One module could submit a command with:
 
-```{eval-rst}
-.. testcode::
-
+```python
     cmd = Signal(Command)
 
     m.d.comb += [
@@ -235,9 +207,7 @@ One module could submit a command with:
 
 The other would react to commands as follows:
 
-```{eval-rst}
-.. testcode::
-
+```python
     addr = Signal(32)
 
     with m.If(cmd.valid):

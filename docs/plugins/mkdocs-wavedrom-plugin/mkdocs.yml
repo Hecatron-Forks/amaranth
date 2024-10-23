@@ -1,0 +1,16 @@
+site_name: test
+plugins:
+    - markdownwavedrom
+
+nav:
+    - 'README.md'
+    - 'test.md'
+
+extra_javascript:
+    # use local.
+    # - wavedrom.unpkg.js
+    # - skin-default.js
+    # from internet.
+    - https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/wavedrom.min.js
+    - https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/skins/default.js
+

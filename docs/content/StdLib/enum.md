@@ -6,15 +6,11 @@ The {mod}`amaranth.lib.enum` module is a drop-in replacement for the standard {m
 
 A shape can be specified for an enumeration with the `shape=` keyword argument:
 
-```{eval-rst}
-.. testsetup::
-
+```python
    from amaranth import *
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
    from amaranth.lib import enum
 
    class Funct(enum.Enum, shape=4):
@@ -23,9 +19,7 @@ A shape can be specified for an enumeration with the `shape=` keyword argument:
        MUL = 2
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Shape.cast(Funct)
    unsigned(4)
    >>> Value.cast(Funct.ADD)
@@ -34,9 +28,7 @@ A shape can be specified for an enumeration with the `shape=` keyword argument:
 
 Any {ref}`constant-castable <lang-constcasting>` expression can be used as the value of a member:
 
-```{eval-rst}
-.. testcode::
-
+```python
    class Op(enum.Enum, shape=1):
        REG = 0
        IMM = 1
@@ -49,18 +41,14 @@ Any {ref}`constant-castable <lang-constcasting>` expression can be used as the v
        ...
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Instr.SUBI
    <Instr.SUBI: 17>
 ```
 
 The `shape=` argument is optional. If not specified, classes from this module behave exactly the same as classes from the standard {mod}`enum` module, and likewise, this module re-exports everything exported by the standard {mod}`enum` module.
 
-```{eval-rst}
-.. testcode::
-
+```python
    import amaranth.lib.enum
 
    class NormalEnum(amaranth.lib.enum.Enum):
@@ -72,9 +60,7 @@ In this way, this module is a drop-in replacement for the standard {mod}`enum` m
 
 Signals with {class}`Enum` or {class}`Flag` based shape are automatically wrapped in the {class}`EnumView` or {class}`FlagView` value-like wrappers, which ensure type safety. Any {ref}`value-like <lang-valuelike>` can also be explicitly wrapped in a view class by casting it to the enum type:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = Signal(Funct)
    >>> b = Signal(Op)
    >>> type(a)
@@ -90,17 +76,13 @@ Signals with {class}`Enum` or {class}`Flag` based shape are automatically wrappe
 
 Like the standard Python {class}`enum.IntEnum` and {class}`enum.IntFlag` classes, the Amaranth {class}`IntEnum` and {class}`IntFlag` classes are loosely typed and will not be subject to wrapping in view classes:
 
-```{eval-rst}
-.. testcode::
-
+```python
    class TransparentEnum(enum.IntEnum, shape=unsigned(4)):
        FOO = 0
        BAR = 1
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = Signal(TransparentEnum)
    >>> type(a) is Signal
    True
@@ -108,9 +90,7 @@ Like the standard Python {class}`enum.IntEnum` and {class}`enum.IntFlag` classes
 
 It is also possible to define a custom view class for a given enum:
 
-```{eval-rst}
-.. testcode::
-
+```python
    class InstrView(enum.EnumView):
        def has_immediate(self):
            return (self == Instr.ADDI) | (self == Instr.SUBI)
@@ -122,9 +102,7 @@ It is also possible to define a custom view class for a given enum:
        SUBI = Cat(Funct.SUB, Op.IMM)
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = Signal(Instr)
    >>> type(a)
    <class 'InstrView'>

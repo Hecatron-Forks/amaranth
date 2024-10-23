@@ -36,7 +36,7 @@ theme:
     # - navigation.instant.prefetch
     # - navigation.instant.progress
     # - navigation.prune
-    - navigation.sections
+    # - navigation.sections
     - navigation.tabs
     # - navigation.tabs.sticky
     - navigation.top
@@ -76,6 +76,7 @@ theme:
 plugins:
   - awesome-pages
   - autorefs
+  - markdownwavedrom
   - mkdocstrings:
       handlers:
         python:
@@ -125,6 +126,9 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: wavedrom
+          class: language-wavedrom
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
       combine_header_slug: true
@@ -134,3 +138,8 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+
+extra_javascript:
+  # used by wavedrom plugin
+  - https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/wavedrom.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.5.0/skins/default.js

@@ -5,3 +5,4 @@ mkdocstrings-python
 mktestdocs
 mkdocs-awesome-pages-plugin
 black
+../plugins/mkdocs-wavedrom-plugin

@@ -1,8 +1,6 @@
 # Cyclic redundancy checks
 
-```{eval-rst}
-.. py:module:: amaranth.lib.crc
-```
+::: amaranth.lib.crc
 
 The {mod}`amaranth.lib.crc` module provides facilities for computing cyclic redundancy checks (CRCs)
 in software and in hardware.
@@ -20,17 +18,13 @@ which fully define a CRC computation. {meth}`Parameters.compute` computes a CRC 
 
 ## Examples
 
-```{eval-rst}
-.. testsetup::
-
+```python
     from amaranth import *
 
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.lib.crc import Algorithm
     from amaranth.lib.crc.catalog import CRC16_CCITT, CRC16_USB
 

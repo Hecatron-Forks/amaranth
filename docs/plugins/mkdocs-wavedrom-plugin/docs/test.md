@@ -1,11 +1,5 @@
-# Root
-
-Root Page
 
 ```wavedrom
 { signal: [{ name: 'Alfa', wave: '01.zx=ud.23.45' }] }
 ```
 
-```sh
-echo "test"
-```

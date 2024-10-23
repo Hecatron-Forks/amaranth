@@ -3,9 +3,7 @@ substitutions:
   emph:assigned: '*assigned*'
 ---
 
-```{eval-rst}
-.. testsetup::
-
+```python
    # Required to capture warnings in doctests.
    import sys; sys.stderr = sys.stdout
 ```
@@ -28,23 +26,20 @@ This guide introduces the Amaranth language in depth. It assumes familiarity wit
 
 Because Amaranth is a regular Python library, it needs to be imported before use. The root `amaranth` module, called *the prelude*, is carefully curated to export a small amount of the most essential names, useful in nearly every design. In source files dedicated to Amaranth code, it is a good practice to use a {ref}`glob import <python:tut-pkg-import-star>` for readability:
 
-```
+```python
 from amaranth import *
 ```
 
 However, if a source file uses Amaranth together with other libraries, or if glob imports are frowned upon, it is conventional to use a short alias instead:
 
-```
+```python
 import amaranth as am
 ```
 
 All of the examples below assume that a glob import is used.
 
-```{eval-rst}
-.. testsetup::
-
+```python
    from amaranth import *
-
 ```
 
 (lang-shapes)=
@@ -53,9 +48,7 @@ All of the examples below assume that a glob import is used.
 
 A {class}`Shape` describes the bit width and signedness of an Amaranth value. It can be constructed directly:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Shape(width=5, signed=False)
    unsigned(5)
    >>> Shape(width=12, signed=True)
@@ -64,28 +57,22 @@ A {class}`Shape` describes the bit width and signedness of an Amaranth value. It
 
 However, in most cases, the signedness of a shape is known upfront, and the convenient aliases {func}`signed` and {func}`unsigned` can be used:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> unsigned(5) == Shape(width=5, signed=False)
    True
    >>> signed(12) == Shape(width=12, signed=True)
    True
-
 ```
 
 ### Shapes of values
 
 All values have a `.shape()` method that computes their shape. The width of a value `v`, `v.shape().width`, can also be retrieved with `len(v)`.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Const(5).shape()
    unsigned(3)
    >>> len(Const(5))
    3
-
 ```
 
 (lang-values)=
@@ -100,18 +87,14 @@ The basic building block of the Amaranth language is a *value*, which is a term 
 
 The simplest Amaranth value is a *constant*, representing a fixed number, and introduced using `Const(...)` or its short alias `C(...)`:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> ten = Const(10)
    >>> minus_two = C(-2)
 ```
 
 The code above does not specify any shape for the constants. If the shape is omitted, Amaranth uses unsigned shape for positive numbers and signed shape for negative numbers, with the width inferred from the smallest amount of bits necessary to represent the number. As a special case, in order to get the same inferred shape for `True` and `False`, `0` is considered to be 1-bit unsigned.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> ten.shape()
    unsigned(4)
    >>> minus_two.shape()
@@ -122,16 +105,13 @@ The code above does not specify any shape for the constants. If the shape is omi
 
 The shape of the constant can be specified explicitly, in which case the number's binary representation will be truncated or extended to fit the shape. Although rarely useful, 0-bit constants are permitted.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Const(360, unsigned(8)).value
    104
    >>> Const(129, signed(8)).value
    -127
    >>> Const(1, unsigned(0)).value
    0
-
 ```
 
 (lang-shapelike)=
@@ -148,14 +128,11 @@ Casting to a shape can be done explicitly with {meth}`Shape.cast`, but is usuall
 
 Casting a shape from an integer `i` is a shorthand for constructing a shape with {func}`unsigned(i) <unsigned>`:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Shape.cast(5)
    unsigned(5)
    >>> C(0, 3).shape()
    unsigned(3)
-
 ```
 
 (lang-shaperange)=
@@ -169,9 +146,7 @@ Casting a shape from a {class}`range` `r` produces a shape that:
 
 Specifying a shape with a range is convenient for counters, indexes, and all other values whose width is derived from a set of numbers they must be able to fit:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Const(0, range(100)).shape()
    unsigned(7)
    >>> items = [1, 2, 3]
@@ -185,19 +160,14 @@ Specifying a shape with a range is convenient for counters, indexes, and all oth
 
     Python ranges are *exclusive* or *half-open*, meaning they do not contain their `.stop` element. Because of this, values with shapes cast from a `range(stop)` where `stop` is a power of 2 are not wide enough to represent `stop` itself:
 
-    ```{eval-rst}
-    .. doctest::
-        :hide:
-
+    ```python
         >>> import warnings
         >>> _warning_filters_backup = warnings.catch_warnings()
         >>> _warning_filters_backup.__enter__() # have to do this horrific hack to make it work with `PYTHONWARNINGS=error` :(
         >>> warnings.simplefilter("default", amaranth.hdl._ast.SyntaxWarning)
     ```
 
-    ```{eval-rst}
-    .. doctest::
-
+    ```python
         >>> fencepost = C(256, range(256))
         <...>:1: SyntaxWarning: Value 256 equals the non-inclusive end of the constant shape range(0, 256); this is likely an off-by-one error
             fencepost = C(256, range(256))
@@ -207,10 +177,7 @@ Specifying a shape with a range is convenient for counters, indexes, and all oth
         0
     ```
 
-    ```{eval-rst}
-    .. doctest::
-        :hide:
-
+    ```python
         >>> _warning_filters_backup.__exit__()
     ```
 
@@ -221,9 +188,7 @@ Specifying a shape with a range is convenient for counters, indexes, and all oth
     An empty range always casts to an {py}`unsigned(0)`, even if both of its bounds are negative.
     This happens because, being empty, it does not contain any negative values.
 
-    ```{eval-rst}
-    .. doctest::
-
+    ```python
         >>> Shape.cast(range(-1, -1))
         unsigned(0)
     ```
@@ -236,15 +201,11 @@ Casting a shape from an {class}`enum.Enum` subclass requires all of the enumerat
 
 Specifying a shape with an enumeration is convenient for finite state machines, multiplexers, complex control signals, and all other values whose width is derived from a few distinct choices they must be able to fit:
 
-```{eval-rst}
-.. testsetup::
-
+```python
    import enum
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
    class Direction(enum.Enum):
        TOP    = 0
        LEFT   = 1
@@ -252,33 +213,25 @@ Specifying a shape with an enumeration is convenient for finite state machines, 
        RIGHT  = 3
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Shape.cast(Direction)
    unsigned(2)
 ```
 
 The {mod}`amaranth.lib.enum` module extends the standard enumerations such that their shape can be specified explicitly when they are defined:
 
-```{eval-rst}
-.. testsetup::
-
+```python
    import amaranth.lib.enum
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
    class Funct4(amaranth.lib.enum.Enum, shape=unsigned(4)):
        ADD = 0
        SUB = 1
        MUL = 2
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Shape.cast(Funct4)
    unsigned(4)
 ```
@@ -305,9 +258,7 @@ Casting to a value can be done explicitly with {meth}`Value.cast`, but is usuall
 
 Casting a value from an integer `i` is equivalent to {class}`Const(i) <Const>`:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Value.cast(5)
    (const 3'd5)
 ```
@@ -320,12 +271,9 @@ Casting a value from an integer `i` is equivalent to {class}`Const(i) <Const>`:
 
 Casting a value from an enumeration member `m` is equivalent to `Const(m.value, type(m))`:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Value.cast(Direction.LEFT)
    (const 2'd1)
-
 ```
 
 !!! note
@@ -340,18 +288,14 @@ A subset of {ref}`values <lang-values>` are *constant-castable*. If a value is c
 
 Constant-castable objects are accepted anywhere a constant integer is accepted. Casting to a constant can also be done explicitly with {meth}`Const.cast`:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Const.cast(Cat(C(10, 4), C(1, 2)))
    (const 6'd26)
 ```
 
 They may be used in enumeration members, provided the enumeration inherits from {class}`amaranth.lib.enum.Enum`:
 
-```{eval-rst}
-.. testcode::
-
+```python
    class Funct(amaranth.lib.enum.Enum, shape=4):
        ADD = 0
        ...
@@ -388,9 +332,7 @@ A *signal* is a value representing a (potentially) varying number. Signals can b
 
 A signal can be created with an explicitly specified shape (any {ref}`shape-like <lang-shapelike>` object); if omitted, the shape defaults to {func}`unsigned(1) <unsigned>`. Although rarely useful, 0-bit signals are permitted.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Signal().shape()
    unsigned(1)
    >>> Signal(4).shape()
@@ -401,7 +343,6 @@ A signal can be created with an explicitly specified shape (any {ref}`shape-like
    unsigned(2)
    >>> Signal(0).shape()
    unsigned(0)
-
 ```
 
 (lang-signalname)=
@@ -410,16 +351,12 @@ A signal can be created with an explicitly specified shape (any {ref}`shape-like
 
 Each signal has a *name*, which is used in the waveform viewer, diagnostic messages, Verilog output, and so on. In most cases, the name is omitted and inferred from the name of the variable or attribute the signal is placed into:
 
-```{eval-rst}
-.. testsetup::
-
+```python
    class dummy(object): pass
    self = dummy()
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> foo = Signal()
    >>> foo.name
    'foo'
@@ -430,9 +367,7 @@ Each signal has a *name*, which is used in the waveform viewer, diagnostic messa
 
 However, the name can also be specified explicitly with the `name=` parameter:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> foo2 = Signal(name="second_foo")
    >>> foo2.name
    'second_foo'
@@ -448,16 +383,13 @@ Each signal has an *initial value*, specified with the `init=` parameter. If the
 
 Signals {ref}`assigned <lang-assigns>` in a {ref}`combinational <lang-comb>` domain assume their initial value when none of the assignments are {ref}`active <lang-active>`. Signals assigned in a {ref}`synchronous <lang-sync>` domain assume their initial value after *power-on reset* and, unless the signal is {ref}`reset-less <lang-resetless>`, *explicit reset*. Signals that are used but never assigned are equivalent to constants of their initial value.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Signal(4).init
    0
    >>> Signal(4, init=5).init
    5
    >>> Signal(Direction, init=Direction.LEFT).init
    1
-
 ```
 
 (lang-resetless)=
@@ -468,14 +400,11 @@ Signals assigned in a {ref}`synchronous <lang-sync>` domain can be *resettable* 
 
 Signals assigned in a {ref}`combinational <lang-comb>` domain are not affected by the `reset_less` parameter.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> Signal().reset_less
    False
    >>> Signal(reset_less=True).reset_less
    True
-
 ```
 
 (lang-operators)=
@@ -490,9 +419,7 @@ To describe computations, Amaranth values can be combined with each other or wit
 
 Code written in the Python language *performs* computations on concrete objects, like integers, with the goal of calculating a concrete result:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = 5
    >>> a + 1
    6
@@ -500,9 +427,7 @@ Code written in the Python language *performs* computations on concrete objects,
 
 In contrast, code written in the Amaranth language *describes* computations on abstract objects, like {ref}`signals <lang-signals>`, with the goal of generating a hardware *circuit* that can be simulated, synthesized, and so on. Amaranth expressions are ordinary Python objects that represent parts of this circuit:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = Signal(8, init=5)
    >>> a + 1
    (+ (sig a) (const 1'd1))
@@ -510,9 +435,7 @@ In contrast, code written in the Amaranth language *describes* computations on a
 
 Although the syntax is similar, it is important to remember that Amaranth values exist on a higher level of abstraction than Python values. For example, expressions that include Amaranth values cannot be used in Python control flow structures:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> if a == 0:
    ...     print("Zero!")
    Traceback (most recent call last):
@@ -536,9 +459,7 @@ Most arithmetic operations on integers provided by Python can be used on Amarant
 
 Although Python integers have unlimited precision and Amaranth values are represented with a {ref}`finite amount of bits <lang-values>`, arithmetics on Amaranth values never overflows because the width of the arithmetic expression is always sufficient to represent all possible results.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = Signal(8)
    >>> (a + 1).shape() # needs to represent 1 to 256
    unsigned(9)
@@ -546,9 +467,7 @@ Although Python integers have unlimited precision and Amaranth values are repres
 
 Similarly, although Python integers are always signed and Amaranth values can be either {ref}`signed or unsigned <lang-values>`, if any of the operands of an Amaranth arithmetic expression is signed, the expression itself is also signed, matching the behavior of Python.
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = Signal(unsigned(8))
    >>> b = Signal(signed(8))
    >>> (a + b).shape() # needs to represent -128 to 382
@@ -625,9 +544,7 @@ The following table lists the bitwise and shift operations provided by Amaranth:
 
     Because Amaranth ensures that the width of a variable left shift expression is wide enough to represent any possible result, variable left shift by a wide amount produces exponentially wider intermediate values, stressing the synthesis tools:
 
-    ```{eval-rst}
-    .. doctest::
-
+    ```python
         >>> (1 << C(0, 32)).shape()
         unsigned(4294967296)
     ```
@@ -690,9 +607,7 @@ When the operands are known to be boolean values, such as comparisons, reduction
 
     Omitting parentheses around operands in an Amaranth a logical expression is likely to introduce a subtle bug:
 
-    ```{eval-rst}
-        .. doctest::
-
+    ```python
         >>> en = Signal()
         >>> addr = Signal(8)
         >>> en & (addr == 0) # correct
@@ -711,19 +626,14 @@ When the operands are known to be boolean values, such as comparisons, reduction
 
     When applied to Amaranth boolean values, the `~` operator computes negation, and when applied to Python boolean values, the `not` operator also computes negation. However, the `~` operator applied to Python boolean values produces an unexpected result:
 
-    ```{eval-rst}
-    .. doctest::
-        :hide:
-
+    ```python
         >>> import warnings
         >>> _warning_filters_backup = warnings.catch_warnings()
         >>> _warning_filters_backup.__enter__() # have to do this horrific hack to make it work with `PYTHONWARNINGS=error` :(
         >>> warnings.simplefilter("ignore", DeprecationWarning)
     ```
 
-    ```{eval-rst}
-        .. doctest::
-
+    ```python
         >>> ~False
         -1
         >>> ~True
@@ -732,9 +642,7 @@ When the operands are known to be boolean values, such as comparisons, reduction
 
     Because of this, Python booleans used in Amaranth logical expressions **must** be negated with the `not` operator, not the `~` operator. Negating a Python boolean with the `~` operator in an Amaranth logical expression is likely to introduce a subtle bug:
 
-    ```{eval-rst}
-    .. doctest::
-
+    ```python
         >>> stb = Signal()
         >>> use_stb = True
         >>> (not use_stb) | stb # correct
@@ -743,10 +651,7 @@ When the operands are known to be boolean values, such as comparisons, reduction
         (| (const 2'sd-2) (sig stb))
     ```
 
-    ```{eval-rst}
-    .. doctest::
-        :hide:
-
+    ```python
         >>> _warning_filters_backup.__exit__()
     ```
 
@@ -843,9 +748,7 @@ An *array* is a mutable collection that can be indexed with an {class}`int` or w
 
 Crucially, this means that any Python object can be added to an array; the only requirement is that the final result of any computation involving it is a value-like object. For example:
 
-```{eval-rst}
-.. testcode::
-
+```python
     pixels = Array([
         {"r": 180, "g": 92, "b": 230},
         {"r": 74, "g": 130, "b": 128},
@@ -853,9 +756,7 @@ Crucially, this means that any Python object can be added to an array; the only 
     ])
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
     >>> index = Signal(range(len(pixels)))
     >>> pixels[index]["r"]
     (proxy (array [180, 74, 115]) (sig index))
@@ -883,11 +784,8 @@ A *module* is a unit of the Amaranth design hierarchy: the smallest collection o
 
 Every Amaranth design starts with a fresh module:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> m = Module()
-
 ```
 
 (lang-domains)=
@@ -908,9 +806,7 @@ The behavior of assignments differs for signals in {ref}`combinational <lang-com
 
 *Assignments* are used to change the values of signals. An assignment statement can be introduced with the `.eq(...)` syntax:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> s = Signal()
    >>> s.eq(1)
    (eq (sig s) (const 1'd1))
@@ -924,9 +820,7 @@ Similar to {ref}`how Amaranth operators work <lang-abstractexpr>`, an Amaranth a
 
 An assignment can affect a value that is more complex than just a signal. It is possible to assign to any combination of {ref}`signals <lang-signals>`, {ref}`bit slices <lang-seqops>`, {ref}`concatenations <lang-seqops>`, {ref}`part selects <lang-seqops>`, and {ref}`array proxy objects <lang-array>` as long as it includes no other values:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> a = Signal(8)
    >>> b = Signal(4)
    >>> Cat(a, b).eq(0)
@@ -944,9 +838,7 @@ An assignment can affect a value that is more complex than just a signal. It is 
 
 The `m.d.<domain> += ...` syntax is used to add assignments to a specific control domain in a module. It can add just a single assignment, or an entire sequence of them:
 
-```{eval-rst}
-.. testcode::
-
+```python
    a = Signal()
    b = Signal()
    c = Signal()
@@ -959,9 +851,7 @@ The `m.d.<domain> += ...` syntax is used to add assignments to a specific contro
 
 If the name of a domain is not known upfront, the `m.d["<domain>"] += ...` syntax can be used instead:
 
-```{eval-rst}
-.. testcode::
-
+```python
    def add_toggle(num):
        t = Signal()
        m.d[f"sync_{num}"] += t.eq(~t)
@@ -972,9 +862,7 @@ If the name of a domain is not known upfront, the `m.d["<domain>"] += ...` synta
 
 Every signal bit included in the target of an assignment becomes a part of the domain, or equivalently, *driven* by that domain. A signal bit can be either undriven or driven by exactly one domain; it is an error to add two assignments to the same signal bit to two different domains:
 
-```{eval-rst}
-.. doctest::
-
+```python
    >>> d = Signal()
    >>> m.d.comb += d.eq(1)
    >>> m.d.sync += d.eq(0)
@@ -985,9 +873,7 @@ Every signal bit included in the target of an assignment becomes a part of the d
 
 However, two different bits of a signal can be driven from two different domains without an issue:
 
-```{eval-rst}
-.. testcode::
-
+```python
    e = Signal(2)
    m.d.comb += e[0].eq(1)
    m.d.sync += e[1].eq(0)
@@ -1003,9 +889,7 @@ Unlike with two different domains, adding multiple assignments to the same signa
 
 Assignments to different signal bits apply independently. For example, the following two snippets are equivalent:
 
-```{eval-rst}
-.. testcode::
-
+```python
    a = Signal(8)
    m.d.comb += [
        a[0:4].eq(C(1, 4)),
@@ -1013,18 +897,14 @@ Assignments to different signal bits apply independently. For example, the follo
    ]
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
    a = Signal(8)
    m.d.comb += a.eq(Cat(C(1, 4), C(2, 4)))
 ```
 
 If multiple assignments change the value of the same signal bits, the assignment that is added last determines the final value. For example, the following two snippets are equivalent:
 
-```{eval-rst}
-.. testcode::
-
+```python
    b = Signal(9)
    m.d.comb += [
        b[0:9].eq(Cat(C(1, 3), C(2, 3), C(3, 3))),
@@ -1033,9 +913,7 @@ If multiple assignments change the value of the same signal bits, the assignment
    ]
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
    b = Signal(9)
    m.d.comb += b.eq(Cat(C(4, 3), C(6, 3), C(3, 3)))
 ```
@@ -1048,9 +926,7 @@ Multiple assignments to the same signal bits are more useful when combined with 
 
 Although it is possible to write any decision tree as a combination of {ref}`assignments <lang-assigns>` and {ref}`choice expressions <lang-muxop>`, Amaranth provides *control flow syntax* tailored for this task: {ref}`If/Elif/Else <lang-if>`, {ref}`Switch/Case <lang-switch>`, and {ref}`FSM/State <lang-fsm>`. The control flow syntax uses {py}`with` blocks (it is implemented using {ref}`context managers <python:context-managers>`), for example:
 
-```{eval-rst}
-.. testcode::
-
+```python
    timer = Signal(8)
    with m.If(timer == 0):
        m.d.sync += timer.eq(10)
@@ -1060,18 +936,14 @@ Although it is possible to write any decision tree as a combination of {ref}`ass
 
 While some Amaranth control structures are superficially similar to imperative control flow statements (such as Python's {py}`if`), their function---together with {ref}`expressions <lang-abstractexpr>` and {ref}`assignments <lang-assigns>`---is to describe circuits. The code above is equivalent to:
 
-```{eval-rst}
-.. testcode::
-
+```python
    timer = Signal(8)
    m.d.sync += timer.eq(Mux(timer == 0, 10, timer - 1))
 ```
 
 Because all branches of a decision tree affect the generated circuit, all of the Python code inside Amaranth control structures is always evaluated in the order in which it appears in the program. This can be observed through Python code with side effects, such as {py}`print()`:
 
-```{eval-rst}
-.. testcode::
-
+```python
    timer = Signal(8)
    with m.If(timer == 0):
        print("inside `If`")
@@ -1081,12 +953,9 @@ Because all branches of a decision tree affect the generated circuit, all of the
        m.d.sync += timer.eq(timer - 1)
 ```
 
-```{eval-rst}
-.. testoutput::
-
+```python
    inside `If`
    inside `Else`
-
 ```
 
 (lang-active)=
@@ -1097,9 +966,7 @@ An assignment added inside an Amaranth control structure, i.e. `with m.<...>:` b
 
 For example, there are two possible cases in the circuit generated from the following code:
 
-```{eval-rst}
-.. testcode::
-
+```python
    timer = Signal(8)
    m.d.sync += timer.eq(timer - 1)
    with m.If(timer == 0):
@@ -1127,12 +994,9 @@ m.d.sync += timer.eq(timer - 1)
 
 Combining these cases together, the code above is equivalent to:
 
-```{eval-rst}
-.. testcode::
-
+```python
    timer = Signal(8)
    m.d.sync += timer.eq(Mux(timer == 0, 10, timer - 1))
-
 ```
 
 (lang-if)=
@@ -1141,19 +1005,14 @@ Combining these cases together, the code above is equivalent to:
 
 Conditional control flow is described using a {py}`with m.If(cond1):` block, which may be followed by one or more {py}`with m.Elif(cond2):` blocks, and optionally a final {py}`with m.Else():` block. This structure parallels Python's own {ref}`if/elif/else <python:if>` control flow syntax. For example:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     x_coord = Signal(8)
     is_fporch = Signal()
     is_active = Signal()
     is_bporch = Signal()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     with m.If(x_coord < 4):
         m.d.comb += is_bporch.eq(1)
         m.d.sync += x_coord.eq(x_coord + 1)
@@ -1181,18 +1040,13 @@ Case comparison, where a single value is examined against several different *pat
 
     rename `Switch` to `Match`, to mirror `Value.matches()`?
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     is_even = Signal()
     is_odd  = Signal()
     too_big = Signal()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     value = Signal(4)
 
     with m.Switch(value):
@@ -1212,9 +1066,7 @@ If a {py}`Default` block is present, or the patterns in the {py}`Case` blocks co
 
     While all Amaranth control flow syntax can be generated programmatically, the {py}`Switch` control block is particularly easy to use in this way:
 
-    ```{eval-rst}
-    .. testcode::
-
+    ```python
         length  = Signal(4)
         squared = Signal.like(length * length)
 
@@ -1230,9 +1082,7 @@ If a {py}`Default` block is present, or the patterns in the {py}`Case` blocks co
 
 Simple [finite state machines](https://en.wikipedia.org/wiki/Finite-state_machine) are described using a {py}`with m.FSM():` block. This block can contain one or more {py}`with m.State("Name")` blocks. In addition to these blocks, the {py}`m.next = "Name"` syntax chooses which state the FSM enters on the next clock cycle. For example, this FSM performs a bus read transaction once after reset:
 
-```{eval-rst}
-.. testcode::
-
+```python
     bus_addr = Signal(16)
     r_data   = Signal(8)
     r_en     = Signal()
@@ -1259,27 +1109,21 @@ Simple [finite state machines](https://en.wikipedia.org/wiki/Finite-state_machin
 
 The initial (and reset) state of the FSM can be provided when defining it using the {py}`with m.FSM(init="Name"):` argument. If not provided, it is the first state in the order of definition. For example, this definition is equivalent to the one at the beginning of this section:
 
-```{eval-rst}
-.. testcode::
-
+```python
     with m.FSM(init="Set Address"):
         ...
 ```
 
 The FSM belongs to a {ref}`clock domain <lang-domains>`, which is specified using the {py}`with m.FSM(domain="dom")` argument. If not specified, it is the `sync` domain. For example, this definition is equivalent to the one at the beginning of this section:
 
-```{eval-rst}
-.. testcode::
-
+```python
     with m.FSM(domain="sync"):
         ...
 ```
 
 To determine (from code that is outside the FSM definition) whether it is currently in a particular state, the FSM can be captured; its {py}`.ongoing("Name")` method returns a value that is true whenever the FSM is in the corresponding state. For example:
 
-```{eval-rst}
-.. testcode::
-
+```python
     with m.FSM() as fsm:
         ...
 
@@ -1325,17 +1169,12 @@ Signals in the combinational {ref}`control domain <lang-domains>` change wheneve
 
 Consider the following code:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     en = Signal()
     b = Signal(8)
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     a = Signal(8, init=1)
     with m.If(en):
         m.d.comb += a.eq(b + 1)
@@ -1357,17 +1196,12 @@ Signals in synchronous {ref}`control domains <lang-domains>` change whenever the
 
 Consider the following code:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     up = Signal()
     down = Signal()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     timer = Signal(8)
 
     with m.If(up):
@@ -1384,25 +1218,18 @@ Whenever there is a transition on the clock of the `sync` domain, the {py}`timer
 
 Some properties are so important that if they are violated, the computations described by the design become meaningless. These properties should be guarded with an {class}`Assert` statement that immediately terminates the simulation if its condition is false. Assertions should generally be added to a {ref}`synchronous domain <lang-sync>`, and may have an optional message printed when it is violated:
 
-```{eval-rst}
-.. testcode::
-
+```python
     ip = Signal(16)
     m.d.sync += Assert(ip < 128, "instruction pointer past the end of program code!")
 ```
 
 Assertions may be nested within a {ref}`control block <lang-control>`:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     booting = Signal()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     with m.If(~booting):
         m.d.sync += Assert(ip < 128)
 ```
@@ -1413,9 +1240,7 @@ Assertions may be nested within a {ref}`control block <lang-control>`:
 
     If the condition of an assertion is assigned in a synchronous domain, then it is safe to add that assertion in the combinational domain. For example, neither of the assertions in the example below will be violated due to glitches, regardless of which domain the {py}`ip` and {py}`booting` signals are driven by:
 
-    ```{eval-rst}
-    .. testcode::
-
+    ```python
         ip_sync = Signal.like(ip)
         m.d.sync += ip_sync.eq(ip)
 
@@ -1432,26 +1257,20 @@ Assertions may be nested within a {ref}`control block <lang-control>`:
 
 The value of any expression, or of several of them, can be printed to the terminal during simulation using the {class}`Print` statement. When added to the {ref}`combinational domain <lang-comb>`, the value of an expression is printed whenever it changes:
 
-```{eval-rst}
-.. testcode::
-
+```python
     state = Signal()
     m.d.comb += Print(state)
 ```
 
 When added to a {ref}`synchronous domain <lang-sync>`, the value of an expression is printed whenever the active edge occurs on the clock of that domain:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.d.sync += Print("on tick: ", state)
 ```
 
 The {class}`Print` statement, regardless of the domain, may be nested within a {ref}`control block <lang-control>`:
 
-```{eval-rst}
-.. testcode::
-
+```python
     old_state = Signal.like(state)
     m.d.sync += old_state.eq(state)
     with m.If(state != old_state):
@@ -1460,20 +1279,15 @@ The {class}`Print` statement, regardless of the domain, may be nested within a {
 
 The arguments to the {class}`Print` statement have the same meaning as the arguments to the Python {func}`print` function, with the exception that only {py}`sep` and {py}`end` keyword arguments are supported. In addition, the {class}`Format` helper can be used to apply formatting to the values, similar to the Python {meth}`str.format` method:
 
-```{eval-rst}
-.. testcode::
-
+```python
     addr = Signal(32)
     m.d.sync += Print(Format("address: {:08x}", addr))
 ```
 
 In both {class}`Print` and {class}`Format`, arguments that are not Amaranth {ref}`values <lang-values>` are formatted using the usual Python rules. The optional second {py}`message` argument to {class}`Assert` (described {ref}`above <lang-assert>`) also accepts a string or the {class}`Format` helper:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.d.sync += Assert((addr & 0b111) == 0, message=Format("unaligned address {:08x}!", addr))
-
 ```
 
 (lang-clockdomains)=
@@ -1482,17 +1296,13 @@ In both {class}`Print` and {class}`Format`, arguments that are not Amaranth {ref
 
 A new synchronous {ref}`control domain <lang-domains>`, which is more often called a *clock domain*, can be defined in a design by creating a {class}`ClockDomain` object and adding it to the {py}`m.domains` collection:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.domains.video = cd_video = ClockDomain()
 ```
 
 If the name of the domain is not known upfront, another, less concise, syntax can be used instead:
 
-```{eval-rst}
-.. testcode::
-
+```python
     def add_video_domain(n):
         cd = ClockDomain(f"video_{n}")
         m.domains += cd
@@ -1507,17 +1317,13 @@ If the name of the domain is not known upfront, another, less concise, syntax ca
 
 A clock domain always has a clock signal, which can be accessed through the {attr}`cd.clk <ClockDomain.clk>` attribute. By default, the *active edge* of the clock domain is positive; this means that the signals in the domain change when the clock signal transitions from 0 to 1. A clock domain can be configured to have a negative active edge so that signals in it change when the clock signal transitions from 1 to 0:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.domains.jtag = ClockDomain(clk_edge="neg")
 ```
 
 A clock domain also has a reset signal, which can be accessed through the {attr}`cd.rst <ClockDomain.rst>` attribute. The reset signal is always active-high: the signals in the clock domain are reset if the value of the reset signal is 1. The {ref}`initial value <lang-initial>` of this signal is 0, so if the reset signal is never assigned, the signals in the clock domain are never explicitly reset (they are still {ref}`reset at power-on <lang-initial>`). Nevertheless, if its existence is undesirable, the clock domain can be configured to omit it:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.domains.startup = ClockDomain(reset_less=True)
 ```
 
@@ -1541,18 +1347,13 @@ If a clock domain is defined in a module, all of its {ref}`submodules <lang-subm
 
 Clock domains are *late bound*, which means that their signals and properties can be referred to using the domain's name before the {class}`ClockDomain` object with that name is created and added to the design. This happens whenever {ref}`an assignment is added <lang-assigns>` to a domain. In some cases, it is necessary to refer to the domain's clock or reset signal using only the domain's name. The {class}`ClockSignal` and {class}`ResetSignal` values make this possible:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     m = Module()
     bus_clk = Signal()
     bus_rstn = Signal()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.d.comb += [
         ClockSignal().eq(bus_clk),
         ResetSignal().eq(~bus_rstn),
@@ -1565,9 +1366,7 @@ In this example, once the design is processed, the clock signal of the clock dom
 
     explain the difference (or lack thereof, eventually) between m.d, m.domain, and m.domains
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.domains.sync = cd_sync = ClockDomain()
     m.d.comb += [
         cd_sync.clk.eq(bus_clk),
@@ -1591,9 +1390,7 @@ Amaranth designs are built from a hierarchy of smaller subdivisions, which are c
 
 An elaboratable is any Python object that inherits from the {class}`Elaboratable` base class and implements the {meth}`~Elaboratable.elaborate`  method:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class Counter(Elaboratable):
         def elaborate(self, platform):
             m = Module()
@@ -1625,26 +1422,20 @@ The Amaranth standard library provides *components*: elaboratable objects that a
 
 An elaboratable can be included within another elaboratable, which is called its *containing elaboratable*, by adding it as a submodule:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.submodules.counter = counter = Counter()
 ```
 
 If the name of a submodule is not known upfront, a different syntax should be used:
 
-```{eval-rst}
-.. testcode::
-
+```python
     for n in range(3):
         m.submodules[f"counter_{n}"] = Counter()
 ```
 
 A submodule can also be added without specifying a name:
 
-```{eval-rst}
-.. testcode::
-
+```python
     counter = Counter()
     m.submodules += counter
 ```
@@ -1668,16 +1459,11 @@ Control flow modifiers use the syntax {py}`Modifier(controls)(elaboratable)`, wh
 
 The result of applying a control flow modifier to an elaboratable is, itself, an elaboratable object. A common way to use a control flow modifier is to apply it to another elaboratable while adding it as a submodule:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     rst = Signal()
     m.submodules.counter = counter = ResetInserter(rst)(Counter())
 ```
@@ -1695,19 +1481,14 @@ A control flow modifier affects all logic within a given elaboratable and clock 
 
 Consider the following code:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     z = Signal()
     n = Signal(8)
     en = Signal()
     rst = Signal()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     m = Module()
     m.d.sync += n.eq(n + 1)
     m.d.comb += z.eq(n == 0)
@@ -1718,9 +1499,7 @@ Consider the following code:
 
 The application of control flow modifiers in it causes the behavior of the final {py}`m` to be identical to that of this module:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m = Module()
     with m.If(en):
         m.d.sync += n.eq(n + 1)
@@ -1747,16 +1526,11 @@ Clock domains can be renamed using the syntax {py}`DomainRenamer(domains)(elabor
 
 The result of renaming clock domains in an elaboratable is, itself, an elaboratable object. A common way to rename domains is to apply {class}`DomainRenamer` to another elaboratable while adding it as a submodule:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.submodules.counter = counter = DomainRenamer("video")(counter)
 ```
 
@@ -1773,29 +1547,21 @@ Renaming a clock domain affects all logic within a given elaboratable and clock 
 
 Consider the following code:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     count = Signal(8)
     zero = Signal()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     m = Module()
     m.d.sync += count.eq(count + 1)
     m.d.comb += zero.eq(count == 0)
-
     m = DomainRenamer({"sync": "video"})(m)
 ```
 
 The renaming of the `sync` clock domain in it causes the behavior of the final {py}`m` to be identical to that of this module:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m = Module()
     m.d.video += count.eq(count + 1)
     m.d.comb += zero.eq(count == 0)
@@ -1826,15 +1592,11 @@ Core I/O values are only used to define connections between non-Amaranth buildin
 
 A *core I/O port* is a core I/O value representing a connection to a port of the topmost module in the {ref}`design hierarchy <lang-submodules>`. It can be created with an explicitly specified width.
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.hdl import IOPort
 ```
 
-```{eval-rst}
-.. doctest::
-
+```python
     >>> port = IOPort(4)
     >>> port.width
     4
@@ -1842,9 +1604,7 @@ A *core I/O port* is a core I/O value representing a connection to a port of the
 
 Core I/O ports can be named in the same way as {ref}`signals <lang-signalname>`:
 
-```{eval-rst}
-.. doctest::
-
+```python
     >>> clk_port = IOPort(1, name="clk")
     >>> clk_port.name
     'clk'
@@ -1889,27 +1649,22 @@ A submodule written in a non-Amaranth language is called an *instance*. An insta
 
 An instance can be added as a submodule using the {py}`m.submodules.name = Instance("type", ...)` syntax, where {py}`"type"` is the type of the instance as a string (which is passed to the synthesis toolchain uninterpreted), and {py}`...` is a list of parameters, inputs, and outputs. Depending on whether the name of an attribute, parameter, input, or output can be written as a part of a Python identifier or not, one of two possible syntaxes is used to specify them:
 
-- An attribute is specified using the {py}`a_ANAME=attr` or {py}`("a", "ANAME", attr)` syntaxes. The {py}`attr` must be an {class}`int`, a {class}`str`, or a {class}`Const`.
-- A parameter is specified using the {py}`p_PNAME=param` or {py}`("p", "PNAME", param)` syntaxes. The {py}`param` must be an {class}`int`, a {class}`str`, or a {class}`Const`.
-- An input is specified using the {py}`i_INAME=in_val` or {py}`("i", "INAME", in_val)` syntaxes. The {py}`in_val` must be a {ref}`core I/O value <lang-iovalues>` or a {ref}`value-like <lang-valuelike>` object.
-- An output is specified using the {py}`o_ONAME=out_val` or {py}`("o", "ONAME", out_val)` syntaxes. The {py}`out_val` must be a {ref}`core I/O value <lang-iovalues>` or a {ref}`value-like <lang-valuelike>` object that casts to a {ref}`signal <lang-signals>`, a concatenation of signals, or a slice of a signal.
-- An inout is specified using the {py}`io_IONAME=inout_val` or {py}`("io", "IONAME", inout_val)` syntaxes. The {py}`inout_val` must be a {ref}`core I/O value <lang-iovalues>`.
+  - An attribute is specified using the {py}`a_ANAME=attr` or {py}`("a", "ANAME", attr)` syntaxes. The {py}`attr` must be an {class}`int`, a {class}`str`, or a {class}`Const`.
+  - A parameter is specified using the {py}`p_PNAME=param` or {py}`("p", "PNAME", param)` syntaxes. The {py}`param` must be an {class}`int`, a {class}`str`, or a {class}`Const`.
+  - An input is specified using the {py}`i_INAME=in_val` or {py}`("i", "INAME", in_val)` syntaxes. The {py}`in_val` must be a {ref}`core I/O value <lang-iovalues>` or a {ref}`value-like <lang-valuelike>` object.
+  - An output is specified using the {py}`o_ONAME=out_val` or {py}`("o", "ONAME", out_val)` syntaxes. The {py}`out_val` must be a {ref}`core I/O value <lang-iovalues>` or a {ref}`value-like <lang-valuelike>` object that casts to a {ref}`signal <lang-signals>`, a concatenation of signals, or a slice of a signal.
+  - An inout is specified using the {py}`io_IONAME=inout_val` or {py}`("io", "IONAME", inout_val)` syntaxes. The {py}`inout_val` must be a {ref}`core I/O value <lang-iovalues>`.
 
 The two following examples use both syntaxes to add the same instance of type `external` as a submodule named `processor`:
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     i_data = Signal(8)
     o_data = Signal(8)
     io_pin = IOPort(1)
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.submodules.processor = Instance("external",
         p_width=8,
         i_clk=ClockSignal(),
@@ -1922,16 +1677,11 @@ The two following examples use both syntaxes to add the same instance of type `e
     )
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     m = Module()
 ```
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.submodules.processor = Instance("external",
         ("p", "width", 8),
         ("i", "clk", ClockSignal()),
@@ -1946,9 +1696,7 @@ The two following examples use both syntaxes to add the same instance of type `e
 
 Like a regular submodule, an instance can also be added without specifying a name:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m.submodules += Instance("external",
         # ...
     )
@@ -1960,9 +1708,7 @@ Like a regular submodule, an instance can also be added without specifying a nam
 
 Although an {class}`Instance` is not an elaboratable, as a special case, it can be returned from the {py}`elaborate()` method. This is conveinent for implementing an elaboratable that adorns an instance with an Amaranth interface:
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth import vendor
 
 
@@ -1994,9 +1740,7 @@ Although an {class}`Instance` is not an elaboratable, as a special case, it can 
 
 An *I/O buffer instance* is a submodule that allows connecting {ref}`core I/O values <lang-iovalues>` and regular {ref}`values <lang-values>` without the use of an external, toolchain- and technology-dependent {ref}`instance <lang-instance>`. It can be created in four configurations: input, output, tristatable output, and bidirectional (input/output).
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.hdl import IOBufferInstance
 
     m = Module()
@@ -2004,9 +1748,7 @@ An *I/O buffer instance* is a submodule that allows connecting {ref}`core I/O va
 
 In the input configuration, the buffer instance combinationally drives a signal {py}`i` by the port:
 
-```{eval-rst}
-.. testcode::
-
+```python
     port = IOPort(4)
     port_i = Signal(4)
     m.submodules += IOBufferInstance(port, i=port_i)
@@ -2014,9 +1756,7 @@ In the input configuration, the buffer instance combinationally drives a signal 
 
 In the output configuration, the buffer instance combinationally drives the port by a value {py}`o`:
 
-```{eval-rst}
-.. testcode::
-
+```python
     port = IOPort(4)
     port_o = Signal(4)
     m.submodules += IOBufferInstance(port, o=port_o)
@@ -2024,9 +1764,7 @@ In the output configuration, the buffer instance combinationally drives the port
 
 In the tristatable output configuration, the buffer instance combinationally drives the port by a value {py}`o` if {py}`oe` is asserted, and does not drive (leaves in a high-impedance state, or tristates) the port otherwise:
 
-```{eval-rst}
-.. testcode::
-
+```python
     port = IOPort(4)
     port_o = Signal(4)
     port_oe = Signal()
@@ -2035,9 +1773,7 @@ In the tristatable output configuration, the buffer instance combinationally dri
 
 In the bidirectional (input/output) configuration, the buffer instance combinationally drives a signal {py}`i` by the port, combinationally drives the port by a value {py}`o` if {py}`oe` is asserted, and does not drive (leaves in a high-impedance state, or tristates) the port otherwise:
 
-```{eval-rst}
-.. testcode::
-
+```python
     port = IOPort(4)
     port_i = Signal(4)
     port_o = Signal(4)

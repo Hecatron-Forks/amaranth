@@ -6,17 +6,13 @@ The [`amaranth.sim`][] module, also known as the simulator, makes it possible to
 
 ## Simulating circuits
 
-```{eval-rst}
-.. testsetup::
-
+```python
     from amaranth import *
 ```
 
 The following examples simulate one of the two designs below: synchronous counter running in the `sync` clock domain, and combinational adder. They assume familiarity with the {doc}`language guide <guide>`.
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.lib import wiring
     from amaranth.lib.wiring import In, Out
 
@@ -39,16 +35,13 @@ The following examples simulate one of the two designs below: synchronous counte
             m = Module()
             m.d.comb += self.o.eq(self.a + self.b)
             return m
-
 ```
 
 ### Running a simulation
 
 Simulating a design always requires the three basic steps: constructing the {abbr}`DUT (Design Under Test)`, constructing a {class}`Simulator` for it, and running the simulation with the [`Simulator.run`][amaranth.sim.core.Simulator.run] or [`Simulator.run_until`][amaranth.sim.core.Simulator.run_until] method:
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.sim import Simulator, Period
 
     dut = Counter()
@@ -58,15 +51,13 @@ Simulating a design always requires the three basic steps: constructing the {abb
 
 However, the code above neither stimulates the DUT's inputs nor measures the DUT's outputs; the [`Simulator.run`][amaranth.sim.core.Simulator.run] method also immediately returns if no stimulus is added to the simulation. To make it useful, several changes are necessary:
 
-- The [`Simulator.add_clock`][amaranth.sim.core.Simulator.add_clock] method adds a *stimulus*: a process external to the DUT that manipulates its inputs (in this case, toggles the clock of the `sync` domain).
-- The [`Simulator.run_until`][amaranth.sim.core.Simulator.run_until] method runs the simulation until a specific deadline is reached.
-- The [`Simulator.write_vcd`][amaranth.sim.core.Simulator.write_vcd] method captures the DUT's inputs, state, and outputs, and writes it to a {abbr}`VCD (Value Change Dump)` file.
+  - The [`Simulator.add_clock`][amaranth.sim.core.Simulator.add_clock] method adds a *stimulus*: a process external to the DUT that manipulates its inputs (in this case, toggles the clock of the `sync` domain).
+  - The [`Simulator.run_until`][amaranth.sim.core.Simulator.run_until] method runs the simulation until a specific deadline is reached.
+  - The [`Simulator.write_vcd`][amaranth.sim.core.Simulator.write_vcd] method captures the DUT's inputs, state, and outputs, and writes it to a {abbr}`VCD (Value Change Dump)` file.
 
 The following code simulates a design and capture the values of all the signals used in the design for each moment of simulation time:
 
-```{eval-rst}
-.. testcode::
-
+```python
     dut = Counter()
     sim = Simulator(dut)
     sim.add_clock(Period(MHz=1)) # 1 µs period, or 1 MHz
@@ -76,9 +67,7 @@ The following code simulates a design and capture the values of all the signals 
 
 The captured data is saved to a {abbr}`VCD` file {file}`example1.vcd`, which can be displayed with a *waveform viewer* such as [Surfer] or [GTKWave]:
 
-```{eval-rst}
-.. wavedrom:: simulator/example1
-
+```json
     {
         "head": {"tock": 0},
         "signal": [
@@ -93,16 +82,13 @@ The captured data is saved to a {abbr}`VCD` file {file}`example1.vcd`, which can
 
 The [`Simulator.reset`][amaranth.sim.core.Simulator.reset] method reverts the simulation to its initial state. It can be used to speed up tests by capturing the waveforms only when the simulation is known to encounter an error:
 
-```{eval-rst}
-.. testcode::
-
+```python
     try:
         sim.run()
     except:
         sim.reset()
         with sim.write_vcd("example1_error.vcd"):
             sim.run()
-
 ```
 
 ### Testing synchronous circuits
@@ -113,9 +99,7 @@ This is done by adding a different type of stimulus to the simulator, a *testben
 
 The following example simulates a counter and verifies that it can be stopped using its {py}`en` input:
 
-```{eval-rst}
-.. testcode::
-
+```python
     dut = Counter()
 
     async def testbench_example2(ctx):
@@ -135,9 +119,7 @@ The following example simulates a counter and verifies that it can be stopped us
 
 Since this circuit is synchronous, and the {meth}`ctx.tick() <SimulatorContext.tick>` method waits until after the circuit has reacted to the clock edge, the change to the {py}`en` input affects the behavior of the circuit on the next clock cycle after the change:
 
-```{eval-rst}
-.. wavedrom:: simulator/example2
-
+```json
     {
         "head": {"tock": 0},
         "signal": [
@@ -148,7 +130,6 @@ Since this circuit is synchronous, and the {meth}`ctx.tick() <SimulatorContext.t
              "data": ["0","1","2","3","4","5","6","7","8","9","10"]}
         ]
     }
-
 ```
 
 ### Testing combinational circuits
@@ -157,9 +138,7 @@ A testbench that tests a combinational circuit advances simulation time using th
 
 The following example simulates an adder:
 
-```{eval-rst}
-.. testcode::
-
+```python
     dut = Adder()
 
     async def testbench_example3(ctx):
@@ -183,9 +162,7 @@ The following example simulates an adder:
 
 Since this circuit is entirely combinational, and the Amaranth simulator uses a *zero-delay model* of combinational circuits, the outputs change in the same instant as the inputs do:
 
-```{eval-rst}
-.. wavedrom:: simulator/example3
-
+```json
     {
         "signal": [
             {"name": "a", "wave": "===.", "data": [0, 2, 1717]},
@@ -193,7 +170,6 @@ Since this circuit is entirely combinational, and the Amaranth simulator uses a 
             {"name": "o", "wave": "===.", "data": [0, 4, 2137]}
         ]
     }
-
 ```
 
 ## Replacing circuits with code
@@ -206,8 +182,8 @@ During simulation, it is possible to replace an Amaranth circuit with the equiva
 
 This is done by adding a *process* to the simulator: an {py}`async` Python function that runs as an integral part of the simulation, simultaneously with the DUT. A process is added using the {meth}`Simulator.add_process` method, and receives a {class}[`SimulatorContext`][amaranth.sim._async.SimulatorContext] object through which it can interact with the simulator. A process is conceptually similar to a testbench but differs from it in two important ways:
 
-- Testbenches run in a well-defined order (from first to last in the order they were added, yielding control only at {py}`await` points) and cannot observe inconsistent intermediate states of a design, but processes run in an undefined order while the design is converging after a change to its inputs.
-- In a process, it is not possible to inspect the value of a signal using the {meth}`ctx.get() <SimulatorContext.get>` method, which guarantees that inconsistent intermediate states of a design cannot be observed by a process either.
+  - Testbenches run in a well-defined order (from first to last in the order they were added, yielding control only at {py}`await` points) and cannot observe inconsistent intermediate states of a design, but processes run in an undefined order while the design is converging after a change to its inputs.
+  - In a process, it is not possible to inspect the value of a signal using the {meth}`ctx.get() <SimulatorContext.get>` method, which guarantees that inconsistent intermediate states of a design cannot be observed by a process either.
 
 A process communicates with the rest of the design in the same way an elaboratable would: through {class}`Signal`s.
 
@@ -217,9 +193,7 @@ Processes cannot inspect values of signals using the {meth}`ctx.get() <Simulator
 
 The following code replaces the {py}`Counter` elaboratable with the equivalent Python code in a process, and uses a testbench to verify its correct operation:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m = Module()
     m.domains.sync = cd_sync = ClockDomain()
     en = Signal(init=1)
@@ -258,9 +232,7 @@ Values of signals in a combinational process are sampled anytime they change usi
 
 The following code replaces the {py}`Adder` elaboratable with the equivalent Python code in a process, and uses a testbench to verify its correct operation:
 
-```{eval-rst}
-.. testcode::
-
+```python
     m = Module()
     a = Signal(16)
     b = Signal(16)

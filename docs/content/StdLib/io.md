@@ -20,9 +20,7 @@ The Amaranth language provides {ref}`core I/O values <lang-iovalues>` that desig
 
 ## Examples
 
-```{eval-rst}
-.. testsetup::
-
+```python
     from amaranth import *
 
     class MockPlatform:
@@ -56,22 +54,17 @@ The Amaranth language provides {ref}`core I/O values <lang-iovalues>` that desig
 
 All of the following examples assume that one of the built-in FPGA platforms is used.
 
-```{eval-rst}
-.. testcode::
-
+```python
     from amaranth.sim import Simulator, Period
     from amaranth.lib import io, wiring, stream
     from amaranth.lib.wiring import In, Out
-
 ```
 
 ### LED output
 
 In this example, a library I/O port for a LED is requested from the platform and driven to blink the LED:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class Toplevel(Elaboratable):
         def elaborate(self, platform):
             m = Module()
@@ -90,21 +83,15 @@ In this example, a library I/O port for a LED is requested from the platform and
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     MockPlatform().build(Toplevel())
-
 ```
 
 ### Clock input
 
 In this example, a clock domain is created and driven from an external clock source:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class Toplevel(Elaboratable):
         def elaborate(self, platform):
             m = Module()
@@ -119,21 +106,15 @@ In this example, a clock domain is created and driven from an external clock sou
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     MockPlatform().build(Toplevel())
-
 ```
 
 ### Bidirectional bus
 
 This example implements a peripheral for a clocked parallel bus. This peripheral can store and recall one byte of data. The data is stored with a write enable pulse, and recalled with a read enable pulse:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class Toplevel(Elaboratable):
         def elaborate(self, platform):
             m = Module()
@@ -152,10 +133,7 @@ This example implements a peripheral for a clocked parallel bus. This peripheral
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     MockPlatform().build(Toplevel())
 ```
 
@@ -167,9 +145,7 @@ Note that data appears on the bus one cycle after the read enable input is asser
 
 In this example of a [source-synchronous interface](https://en.wikipedia.org/wiki/Source-synchronous), a clock signal is generated with the same phase as the DDR data signals associated with it:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class SourceSynchronousOutput(wiring.Component):
         dout: In(16)
 
@@ -193,10 +169,7 @@ In this example of a [source-synchronous interface](https://en.wikipedia.org/wik
             return m
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     MockPlatform().build(SourceSynchronousOutput())
 ```
 
@@ -210,9 +183,7 @@ A component that is designed for testing should accept the library I/O ports it 
 
 For example, consider a simple serializer that accepts a stream of multi-bit data words and outputs them bit by bit. It can be tested as follows:
 
-```{eval-rst}
-.. testcode::
-
+```python
     class OutputSerializer(wiring.Component):
         data: In(stream.Signature(8))
 
@@ -265,10 +236,7 @@ For example, consider a simple serializer that accepts a stream of multi-bit dat
         sim.run()
 ```
 
-```{eval-rst}
-.. testcode::
-    :hide:
-
+```python
     test_output_serializer()
 
 ```
