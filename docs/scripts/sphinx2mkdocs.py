@@ -101,6 +101,22 @@ def parse_rel_autoref(data, autoref_type):
     data = re.sub(patt, repl, data)
     return data
 
+def parse_api_ref(data, api_type):
+    """_summary_
+    Used for auto class references
+    Example: .. autoclass:: AlteraPlatform
+    """
+    patt = "```{eval-rst}\r?\n.. " + api_type + ":: .*\r?\n```\r?\n\r?\n"
+    def repl(match):
+        ret = match.group().replace("```{eval-rst}", "")
+        ret = ret.replace("```", "").replace("\r","").replace("\n", "")
+        ret = ret.replace(".. " + api_type + ":: ", "") + "\r\n" + "\r\n"
+        ret = "::: " + ret
+        return ret
+    data = re.sub(patt, repl, data)
+    return data
+
+
 def parse_md_file(filepath):
     data = Path(filepath).read_text()
 
@@ -120,9 +136,13 @@ def parse_md_file(filepath):
     data = parse_rel_autoref(data, "meth")
     data = parse_rel_autoref(data, "attr")
 
-    # remove currentmodule code block
+    # remove currentmodule sphinx block
     patt = "```{eval-rst}\r?\n.. currentmodule.*\r?\n```\r?\n\r?\n"
     data = re.sub(patt, "", data)
+
+    # parse autoclass
+    data = parse_api_ref(data, "autoclass")
+    data = parse_api_ref(data, "py:currentmodule")
 
     # Ammend markdown file
     Path(filepath).write_text(data)
@@ -137,7 +157,7 @@ def main():
     srcdir = os.path.abspath(argdir[0])
 
     # Use rst_to_myst to do the initial conversion
-    rst_to_myst_convert(srcdir + "/*.rst")
+    rst_to_myst_convert(srcdir + "/**/*.rst")
 
     # Get list of markdown files
     files = get_files(srcdir, "md")
