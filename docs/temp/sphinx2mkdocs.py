@@ -22,9 +22,15 @@ def rst_to_myst_convert(filepath):
     """_summary_
     Convert File initially using rst2myst
     """
+    exeargs = ["rst2myst", "convert"]
     extensions = ["sphinx.ext.intersphinx", "sphinx.ext.doctest", "sphinx.ext.todo", "sphinx.ext.autodoc", "sphinx.ext.napoleon"]
     ext_str = ','.join(extensions)
-    result = subprocess.run(["rst2myst", "convert", "--extensions", ext_str, filepath], check=True, capture_output=True, text=True)
+    exeargs.extend(["--extensions", ext_str])
+    # If to remove original rst files
+    #exeargs.append("-R")
+    exeargs.append(filepath)
+
+    result = subprocess.run(exeargs, check=True, capture_output=True, text=True)
     print("Output:", result.stdout)  # Print standard output
     print("Errors:", result.stderr)    # Print standard error (if any)
 
