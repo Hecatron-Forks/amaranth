@@ -1,0 +1,3 @@
+# Lib
+
+::: amaranth.lib
