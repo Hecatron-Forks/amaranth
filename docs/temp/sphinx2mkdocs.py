@@ -6,6 +6,7 @@ as part of the process
 
 import sys
 import os
+import re
 import glob
 import subprocess
 from pathlib import Path
@@ -27,12 +28,58 @@ def rst_to_myst_convert(filepath):
     print("Output:", result.stdout)  # Print standard output
     print("Errors:", result.stderr)    # Print standard error (if any)
 
+def parse_autoref1(data, autoref_type):
+    """_summary_
+    Used for mod and func autorefs
+    Example: {func}`amaranth.utils.ceil_log2`
+    """
+    autoref_type = "{" + autoref_type + "}"
+    patt = autoref_type + "`[^`]*`"
+    def repl(match):
+        ret = match.group().replace(autoref_type,"").replace("`","")
+        ret = "[`{0}`][{0}]". format(ret)
+        #print(ret)
+        return ret
+    data = re.sub(patt, repl, data)
+    return data
+
+def parse_abs_autoref(data, autoref_type):
+    """_summary_
+    Used for absoloute referenced autorefs
+    Example: {meth}`Platform.default_clk_frequency <amaranth.build.plat.Platform.default_clk_frequency>`
+    """
+    autoref_type = "{" + autoref_type + "}"
+    patt = autoref_type + "`[^`]*<[^`]*>`"
+    def repl(match):
+        ret = match.group().replace(autoref_type,"").replace("`","")
+        ret = ret.replace("<", "").replace(">","")
+        split = ret.split(" ")
+        ret = "[`{0}`][{1}]". format(split[0], split[1])
+        return ret
+    data = re.sub(patt, repl, data)
+    return data
+
+
 def parse_md_file(filepath):
     data = Path(filepath).read_text()
+
     # Fix inline code blocks
     data = data.replace('{py}`', '`#!python ')
+    # Replace module / func autorefs
+    data = parse_autoref1(data, "mod")
+    data = parse_autoref1(data, "func")
 
-    # TODO
+    # Replace absolute autorefs
+    data = parse_abs_autoref(data, "class")
+    data = parse_abs_autoref(data, "meth")
+    data = parse_abs_autoref(data, "attr")
+
+    # TODO reglative class / meth / attr
+    # where currentmodule in above line
+
+    # remove currentmodule code block
+    #patt = "```{eval-rst}\r?\n.. currentmodule.*\r?\n```\r?\n\r?\n"
+    #data = re.sub(patt, "", data)
 
     # Ammend markdown file
     Path(filepath).write_text(data)

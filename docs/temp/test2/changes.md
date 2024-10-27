@@ -33,11 +33,11 @@ Documentation for past releases of the Amaranth language and toolchain is availa
 - Deprecated: the `#!python local=` argument to {class}`ClockDomain`. ([RFC 59])
 - Removed: (deprecated in 0.4.0) {class}`Record`.
 - Removed: (deprecated in 0.5.0) {class}`Memory` ([RFC 45])
-- Removed: (deprecated in 0.5.0) public submodules of {mod}`amaranth.hdl`.
+- Removed: (deprecated in 0.5.0) public submodules of [`amaranth.hdl`][amaranth.hdl].
 - Removed: (deprecated in 0.5.0) {meth}`Value.implies`.
 - Removed: (deprecated in 0.5.0) {meth}`Const.width`, {meth}`Const.signed`, {meth}`Signal.width`, {meth}`Signal.signed`.
 - Removed: (deprecated in 0.5.0) upwards propagation of clock domains. ([RFC 59])
-- Removed: (deprecated in 0.5.0) {func}`amaranth.utils.log2_int`. ([RFC 17])
+- Removed: (deprecated in 0.5.0) [`amaranth.utils.log2_int`][amaranth.utils.log2_int]. ([RFC 17])
 
 ### Standard library changes
 
@@ -48,23 +48,23 @@ Documentation for past releases of the Amaranth language and toolchain is availa
 - Added: `#!python payload_init=` argument in {class}`amaranth.lib.stream.Signature`.
 - Added: {meth}`enum.EnumView.matches`. ([RFC 71])
 - Changed: (deprecated in 0.5.1) providing {meth}`io.PortLike.__add__` is now mandatory. ([RFC 69])
-- Removed: (deprecated in 0.5.0) {mod}`amaranth.lib.coding`. ([RFC 63])
+- Removed: (deprecated in 0.5.0) [`amaranth.lib.coding`][amaranth.lib.coding]. ([RFC 63])
 
 ### Toolchain changes
 
-- Added: {meth}`SimulatorContext.elapsed_time <amaranth.sim._async.SimulatorContext.elapsed_time>` for getting elapsed simulation time. ([RFC 66])
-- Added: {meth}`Platform.default_clk_period <amaranth.build.plat.Platform.default_clk_period>`. ([RFC 66])
-- Changed: {meth}`Simulator.add_clock <amaranth.sim.Simulator.add_clock>` now accepts a {class}`Period <amaranth.hdl.Period>` for `#!python period` and `#!python phase`. ([RFC 66])
-- Changed: {meth}`Simulator.run_until <amaranth.sim.Simulator.run_until>` now accepts a {class}`Period <amaranth.hdl.Period>` for `#!python deadline`. ([RFC 66])
-- Changed: {meth}`SimulatorContext.delay <amaranth.sim._async.SimulatorContext.delay>` now accepts a {class}`Period <amaranth.hdl.Period>` for `#!python interval`. ([RFC 66])
-- Changed: {meth}`ResourceManager.add_clock_constraint <amaranth.build.res.ResourceManager.add_clock_constraint>` now accepts a {class}`Period <amaranth.hdl.Period>` for `#!python period`. ([RFC 66])
-- Changed: {class}`Clock <amaranth.build.dsl.Clock>` now accepts a {class}`Period <amaranth.hdl.Period>` for `#!python period`. ([RFC 66])
-- Changed: {attr}`Clock.period <amaranth.build.dsl.Clock.period>` now returns a {class}`Period <amaranth.hdl.Period>`. ([RFC 66])
-- Deprecated: Passing a {class}`float` of seconds or hertz to any of the methods/arguments now accepting a {class}`Period <amaranth.hdl.Period>`. ([RFC 66])
-- Deprecated: Passing `#!python frequency=` to {meth}`ResourceManager.add_clock_constraint <amaranth.build.res.ResourceManager.add_clock_constraint>`. ([RFC 66])
-- Deprecated: Passing `#!python frequency=` to {class}`Clock <amaranth.build.dsl.Clock>`. ([RFC 66])
-- Deprecated: {attr}`Clock.frequency <amaranth.build.dsl.Clock.frequency>`. ([RFC 66])
-- Deprecated: {meth}`Platform.default_clk_frequency <amaranth.build.plat.Platform.default_clk_frequency>`. ([RFC 66])
+- Added: [`SimulatorContext.elapsed_time`][amaranth.sim._async.SimulatorContext.elapsed_time] for getting elapsed simulation time. ([RFC 66])
+- Added: [`Platform.default_clk_period`][amaranth.build.plat.Platform.default_clk_period]. ([RFC 66])
+- Changed: [`Simulator.add_clock`][amaranth.sim.Simulator.add_clock] now accepts a [`Period`][amaranth.hdl.Period] for `#!python period` and `#!python phase`. ([RFC 66])
+- Changed: [`Simulator.run_until`][amaranth.sim.Simulator.run_until] now accepts a [`Period`][amaranth.hdl.Period] for `#!python deadline`. ([RFC 66])
+- Changed: [`SimulatorContext.delay`][amaranth.sim._async.SimulatorContext.delay] now accepts a [`Period`][amaranth.hdl.Period] for `#!python interval`. ([RFC 66])
+- Changed: [`ResourceManager.add_clock_constraint`][amaranth.build.res.ResourceManager.add_clock_constraint] now accepts a [`Period`][amaranth.hdl.Period] for `#!python period`. ([RFC 66])
+- Changed: [`Clock`][amaranth.build.dsl.Clock] now accepts a [`Period`][amaranth.hdl.Period] for `#!python period`. ([RFC 66])
+- Changed: [`Clock.period`][amaranth.build.dsl.Clock.period] now returns a [`Period`][amaranth.hdl.Period]. ([RFC 66])
+- Deprecated: Passing a {class}`float` of seconds or hertz to any of the methods/arguments now accepting a [`Period`][amaranth.hdl.Period]. ([RFC 66])
+- Deprecated: Passing `#!python frequency=` to [`ResourceManager.add_clock_constraint`][amaranth.build.res.ResourceManager.add_clock_constraint]. ([RFC 66])
+- Deprecated: Passing `#!python frequency=` to [`Clock`][amaranth.build.dsl.Clock]. ([RFC 66])
+- Deprecated: [`Clock.frequency`][amaranth.build.dsl.Clock.frequency]. ([RFC 66])
+- Deprecated: [`Platform.default_clk_frequency`][amaranth.build.plat.Platform.default_clk_frequency]. ([RFC 66])
 
 ### Platform integration changes
 
@@ -133,15 +133,15 @@ Apply the following changes to code written against Amaranth 0.4 to migrate it t
 - Replace imports of `#!python amaranth.asserts.Assert`, `#!python Assume`, and `#!python Cover` with imports from `#!python amaranth.hdl`.
 - Remove uses of `#!python name=` keyword argument of `#!python Assert`, `#!python Assume`, and `#!python Cover`; a message can be used instead.
 - Replace uses of `#!python amaranth.hdl.Memory` with {class}`amaranth.lib.memory.Memory`.
-- Update uses of `#!python platform.request` to pass `#!python dir="-"` and use {mod}`amaranth.lib.io` buffers.
+- Update uses of `#!python platform.request` to pass `#!python dir="-"` and use [`amaranth.lib.io`][amaranth.lib.io] buffers.
 - Remove uses of `#!python amaranth.lib.coding.*` by inlining or copying the implementation of the modules.
-- Convert uses of `#!python Simulator.add_sync_process` used as testbenches to {meth}`Simulator.add_testbench <amaranth.sim.Simulator.add_testbench>`.
-- Convert other uses of `#!python Simulator.add_sync_process` to {meth}`Simulator.add_process <amaranth.sim.Simulator.add_process>`.
+- Convert uses of `#!python Simulator.add_sync_process` used as testbenches to [`Simulator.add_testbench`][amaranth.sim.Simulator.add_testbench].
+- Convert other uses of `#!python Simulator.add_sync_process` to [`Simulator.add_process`][amaranth.sim.Simulator.add_process].
 - Convert simulator processes and testbenches to use the new async API.
-- Update uses of {meth}`Simulator.add_clock <amaranth.sim.Simulator.add_clock>` with explicit `#!python phase` to take into account simulator no longer adding implicit `#!python period / 2`. (Previously, {meth}`Simulator.add_clock <amaranth.sim.Simulator.add_clock>` was documented to first toggle the clock at the time `#!python phase`, but actually first toggled the clock at `#!python period / 2 + phase`.)
-- Update uses of {meth}`Simulator.run_until <amaranth.sim.Simulator.run_until>` to remove the `#!python run_passive=True` argument. If the code uses `#!python run_passive=False`, ensure it still works with the new behavior.
-- Update uses of `#!python amaranth.utils.log2_int(need_pow2=False)` to {func}`amaranth.utils.ceil_log2`.
-- Update uses of `#!python amaranth.utils.log2_int(need_pow2=True)` to {func}`amaranth.utils.exact_log2`.
+- Update uses of [`Simulator.add_clock`][amaranth.sim.Simulator.add_clock] with explicit `#!python phase` to take into account simulator no longer adding implicit `#!python period / 2`. (Previously, [`Simulator.add_clock`][amaranth.sim.Simulator.add_clock] was documented to first toggle the clock at the time `#!python phase`, but actually first toggled the clock at `#!python period / 2 + phase`.)
+- Update uses of [`Simulator.run_until`][amaranth.sim.Simulator.run_until] to remove the `#!python run_passive=True` argument. If the code uses `#!python run_passive=False`, ensure it still works with the new behavior.
+- Update uses of `#!python amaranth.utils.log2_int(need_pow2=False)` to [`amaranth.utils.ceil_log2`][amaranth.utils.ceil_log2].
+- Update uses of `#!python amaranth.utils.log2_int(need_pow2=True)` to [`amaranth.utils.exact_log2`][amaranth.utils.exact_log2].
 - Replace uses of `#!python a.implies(b)` with `~a | b`.
 
 ### Implemented RFCs
@@ -173,7 +173,7 @@ Apply the following changes to code written against Amaranth 0.4 to migrate it t
 ```
 
 - Added: {class}`Slice` objects have been made const-castable.
-- Added: {func}`amaranth.utils.ceil_log2`, {func}`amaranth.utils.exact_log2`. ([RFC 17])
+- Added: [`amaranth.utils.ceil_log2`][amaranth.utils.ceil_log2], [`amaranth.utils.exact_log2`][amaranth.utils.exact_log2]. ([RFC 17])
 - Added: {class}`Format` objects, {class}`Print` statements, messages in {class}`Assert`, {class}`Assume` and {class}`Cover`. ([RFC 50])
 - Added: {meth}`ShapeCastable.from_bits` method. ([RFC 51])
 - Added: IO values, {class}`IOPort` objects, {class}`IOBufferInstance` objects. ([RFC 53])
@@ -186,9 +186,9 @@ Apply the following changes to code written against Amaranth 0.4 to migrate it t
 - Changed: `#!python Shape.cast(range(1))` is now `#!python unsigned(0)`. ([RFC 46])
 - Changed: the `#!python reset=` argument of {class}`Signal`, {meth}`Signal.like`, {class}`amaranth.lib.wiring.Member`, {class}`amaranth.lib.cdc.FFSynchronizer`, and `#!python m.FSM()` has been renamed to `#!python init=`. ([RFC 43])
 - Changed: {class}`Shape` has been made immutable and hashable.
-- Changed: {class}`Assert`, {class}`Assume`, {class}`Cover` have been moved to {mod}`amaranth.hdl` from {mod}`amaranth.asserts`. ([RFC 50])
+- Changed: {class}`Assert`, {class}`Assume`, {class}`Cover` have been moved to [`amaranth.hdl`][amaranth.hdl] from [`amaranth.asserts`][amaranth.asserts]. ([RFC 50])
 - Changed: {class}`Instance` IO ports now accept only IO values, not plain values. ([RFC 53])
-- Deprecated: {func}`amaranth.utils.log2_int`. ([RFC 17])
+- Deprecated: [`amaranth.utils.log2_int`][amaranth.utils.log2_int]. ([RFC 17])
 - Deprecated: {class}`amaranth.hdl.Memory`. ([RFC 45])
 - Deprecated: upwards propagation of clock domains. ([RFC 59])
 - Deprecated: {meth}`Value.implies`.
@@ -204,30 +204,30 @@ Apply the following changes to code written against Amaranth 0.4 to migrate it t
 .. currentmodule:: amaranth.lib
 ```
 
-- Added: {mod}`amaranth.lib.memory`. ([RFC 45])
+- Added: [`amaranth.lib.memory`][amaranth.lib.memory]. ([RFC 45])
 - Added: {class}`amaranth.lib.data.Const` class. ([RFC 51])
 - Changed: {meth}`amaranth.lib.data.Layout.const` returns a {class}`amaranth.lib.data.Const`, not a view ([RFC 51])
 - Changed: {meth}`amaranth.lib.wiring.Signature.is_compliant` no longer rejects reset-less signals.
 - Added: {class}`amaranth.lib.io.SingleEndedPort`, {class}`amaranth.lib.io.DifferentialPort`. ([RFC 55])
 - Added: {class}`amaranth.lib.io.Buffer`, {class}`amaranth.lib.io.FFBuffer`, {class}`amaranth.lib.io.DDRBuffer`. ([RFC 55])
-- Added: {mod}`amaranth.lib.meta`, {class}`amaranth.lib.wiring.ComponentMetadata`. ([RFC 30])
-- Added: {mod}`amaranth.lib.stream`. ([RFC 61])
-- Deprecated: {mod}`amaranth.lib.coding`. ([RFC 63])
-- Removed: (deprecated in 0.4.0) {mod}`amaranth.lib.scheduler`. ([RFC 19])
+- Added: [`amaranth.lib.meta`][amaranth.lib.meta], {class}`amaranth.lib.wiring.ComponentMetadata`. ([RFC 30])
+- Added: [`amaranth.lib.stream`][amaranth.lib.stream]. ([RFC 61])
+- Deprecated: [`amaranth.lib.coding`][amaranth.lib.coding]. ([RFC 63])
+- Removed: (deprecated in 0.4.0) [`amaranth.lib.scheduler`][amaranth.lib.scheduler]. ([RFC 19])
 - Removed: (deprecated in 0.4.0) {class}`amaranth.lib.fifo.FIFOInterface` with `#!python fwft=False`. ([RFC 20])
 - Removed: (deprecated in 0.4.0) {class}`amaranth.lib.fifo.SyncFIFO` with `#!python fwft=False`. ([RFC 20])
 
 ### Toolchain changes
 
-- Added: {meth}`Simulator.add_testbench <amaranth.sim.Simulator.add_testbench>`. ([RFC 27])
-- Added: async function support in {meth}`Simulator.add_testbench <amaranth.sim.Simulator.add_testbench>` and {meth}`Simulator.add_process <amaranth.sim.Simulator.add_process>`. ([RFC 36])
+- Added: [`Simulator.add_testbench`][amaranth.sim.Simulator.add_testbench]. ([RFC 27])
+- Added: async function support in [`Simulator.add_testbench`][amaranth.sim.Simulator.add_testbench] and [`Simulator.add_process`][amaranth.sim.Simulator.add_process]. ([RFC 36])
 - Added: support for {class}`amaranth.hdl.Assert` in simulation. ([RFC 50])
-- Changed: {meth}`Simulator.add_clock <amaranth.sim.Simulator.add_clock>` no longer implicitly adds `#!python period / 2` when `#!python phase` is specified, actually matching the documentation.
-- Changed: {meth}`Simulator.run_until <amaranth.sim.Simulator.run_until>` always runs the simulation until the given deadline, even when no critical processes or testbenches are present.
+- Changed: [`Simulator.add_clock`][amaranth.sim.Simulator.add_clock] no longer implicitly adds `#!python period / 2` when `#!python phase` is specified, actually matching the documentation.
+- Changed: [`Simulator.run_until`][amaranth.sim.Simulator.run_until] always runs the simulation until the given deadline, even when no critical processes or testbenches are present.
 - Deprecated: `#!python Settle` simulation command. ([RFC 27])
 - Deprecated: `#!python Simulator.add_sync_process`. ([RFC 27])
 - Deprecated: generator-based simulation processes and testbenches. ([RFC 36])
-- Deprecated: the `#!python run_passive` argument to {meth}`Simulator.run_until <amaranth.sim.Simulator.run_until>` has been deprecated, and does nothing.
+- Deprecated: the `#!python run_passive` argument to [`Simulator.run_until`][amaranth.sim.Simulator.run_until] has been deprecated, and does nothing.
 - Removed: (deprecated in 0.4.0) use of mixed-case toolchain environment variable names, such as `NMIGEN_ENV_Diamond` or `AMARANTH_ENV_Diamond`; use upper-case environment variable names, such as `AMARANTH_ENV_DIAMOND`.
 
 ### Platform integration changes
@@ -241,11 +241,11 @@ Apply the following changes to code written against Amaranth 0.4 to migrate it t
 - Added: `build.sh`  begins with `#!/bin/sh`.
 - Changed: `IntelPlatform` renamed to `AlteraPlatform`.
 - Deprecated: argument `#!python run_script=` in {meth}`BuildPlan.execute_local`.
-- Removed: (deprecated in 0.4.0) {mod}`vendor.intel`, {mod}`vendor.lattice_ecp5`, {mod}`vendor.lattice_ice40`, {mod}`vendor.lattice_machxo2_3l`, {mod}`vendor.quicklogic`, {mod}`vendor.xilinx`. ([RFC 18])
+- Removed: (deprecated in 0.4.0) [`vendor.intel`][vendor.intel], [`vendor.lattice_ecp5`][vendor.lattice_ecp5], [`vendor.lattice_ice40`][vendor.lattice_ice40], [`vendor.lattice_machxo2_3l`][vendor.lattice_machxo2_3l], [`vendor.quicklogic`][vendor.quicklogic], [`vendor.xilinx`][vendor.xilinx]. ([RFC 18])
 
 ## Version 0.4.0
 
-Support has been added for a new and improved way of defining data structures in {mod}`amaranth.lib.data` and component interfaces in {mod}`amaranth.lib.wiring`, as defined in [RFC 1] and [RFC 2]. {class}`Record` has been deprecated. In a departure from the usual policy, to give designers additional time to migrate, {class}`Record` will be removed in Amaranth 0.6 (one release later than normal).
+Support has been added for a new and improved way of defining data structures in [`amaranth.lib.data`][amaranth.lib.data] and component interfaces in [`amaranth.lib.wiring`][amaranth.lib.wiring], as defined in [RFC 1] and [RFC 2]. {class}`Record` has been deprecated. In a departure from the usual policy, to give designers additional time to migrate, {class}`Record` will be removed in Amaranth 0.6 (one release later than normal).
 
 Support for enumerations has been extended. A shape for enumeration members can be provided for an enumeration class, as defined in [RFC 3].
 
@@ -268,7 +268,7 @@ Apply the following changes to code written against Amaranth 0.3 to migrate it t
 - Update imports of the form `from amaranth.vendor.some_vendor import SomeVendorPlatform` to `from amaranth.vendor import SomeVendorPlatform`. This change will reduce future churn.
 - Replace uses of `Const.normalize(value, shape)` with `Const(value, shape).value`.
 - Replace uses of `Repl(value, count)` with `value.replicate(count)`.
-- Replace uses of `Record` with {mod}`amaranth.lib.data` and {mod}`amaranth.lib.wiring`. The appropriate replacement depends on the use case. If `Record` was being used for data storage and accessing the bit-level representation, use {mod}`amaranth.lib.data`. If `Record` was being used for connecting design components together, use {mod}`amaranth.lib.wiring`.
+- Replace uses of `Record` with [`amaranth.lib.data`][amaranth.lib.data] and [`amaranth.lib.wiring`][amaranth.lib.wiring]. The appropriate replacement depends on the use case. If `Record` was being used for data storage and accessing the bit-level representation, use [`amaranth.lib.data`][amaranth.lib.data]. If `Record` was being used for connecting design components together, use [`amaranth.lib.wiring`][amaranth.lib.wiring].
 - Replace uses of `Sample`, `Past`, `Stable`, `Rose`, `Fell` with a manually instantiated register, e.g. `past_x = Signal.like(x); m.d.sync += past_x.eq(x)`.
 - Remove uses of `amaranth.compat` by migrating to native Amaranth syntax.
 - Ensure the `Pin` instance returned by `platform.request` is not cast to value directly, but used for its fields. Replace code like `leds = Cat(platform.request(led, n) for n in range(4))` with `leds = Cat(platform.request(led, n).o for n in range(4))` (note the `.o`).
@@ -317,13 +317,13 @@ While code that uses the features listed as deprecated below will work in Amaran
 - Changed: {meth}`Value.cast` casts {class}`ValueCastable` objects recursively.
 - Changed: {meth}`Value.cast` treats instances of classes derived from both {class}`enum.Enum` and {class}`int` (including {class}`enum.IntEnum`) as enumerations rather than integers.
 - Changed: {meth}`Value.matches` with an empty list of patterns returns `Const(1)` rather than `Const(0)`, to match the behavior of `with m.Case():`.
-- Changed: {func}`Cat` warns if an enumeration without an explicitly specified shape is used. ([RFC 3])
+- Changed: [`Cat`][Cat] warns if an enumeration without an explicitly specified shape is used. ([RFC 3])
 - Changed: `signed(0)` is no longer constructible. (The semantics of this shape were never defined.)
 - Changed: {meth}`Value.__abs__` returns an unsigned value.
 - Deprecated: {class}`ast.Sample`, {class}`ast.Past`, {class}`ast.Stable`, {class}`ast.Rose`, {class}`ast.Fell`. (Predating the RFC process.)
 - Deprecated: {meth}`Const.normalize`; use `Const(value, shape).value` instead of `Const.normalize(value, shape)`. ([RFC 5])
 - Deprecated: {class}`Repl`; use {meth}`Value.replicate` instead. ([RFC 10])
-- Deprecated: {class}`Record`; use {mod}`amaranth.lib.data` and {mod}`amaranth.lib.wiring` instead. ([RFC 1], [RFC 2])
+- Deprecated: {class}`Record`; use [`amaranth.lib.data`][amaranth.lib.data] and [`amaranth.lib.wiring`][amaranth.lib.wiring] instead. ([RFC 1], [RFC 2])
 - Removed: (deprecated in 0.1) casting of {class}`Shape` to and from a `(width, signed)` tuple.
 - Removed: (deprecated in 0.3) {class}`ast.UserValue`.
 - Removed: (deprecated in 0.3) support for `# nmigen:` linter instructions at the beginning of file.
@@ -334,11 +334,11 @@ While code that uses the features listed as deprecated below will work in Amaran
 .. currentmodule:: amaranth.lib
 ```
 
-- Added: {mod}`amaranth.lib.enum`. ([RFC 3])
-- Added: {mod}`amaranth.lib.data`. ([RFC 1])
-- Added: {mod}`amaranth.lib.wiring`. ([RFC 2])
-- Added: {mod}`amaranth.lib.crc`. ([RFC 6])
-- Deprecated: {mod}`amaranth.lib.scheduler`. ([RFC 19])
+- Added: [`amaranth.lib.enum`][amaranth.lib.enum]. ([RFC 3])
+- Added: [`amaranth.lib.data`][amaranth.lib.data]. ([RFC 1])
+- Added: [`amaranth.lib.wiring`][amaranth.lib.wiring]. ([RFC 2])
+- Added: [`amaranth.lib.crc`][amaranth.lib.crc]. ([RFC 6])
+- Deprecated: [`amaranth.lib.scheduler`][amaranth.lib.scheduler]. ([RFC 19])
 - Deprecated: {class}`amaranth.lib.fifo.FIFOInterface` with `fwft=False`. ([RFC 20])
 - Deprecated: {class}`amaranth.lib.fifo.SyncFIFO` with `fwft=False`. ([RFC 20])
 
@@ -354,9 +354,9 @@ While code that uses the features listed as deprecated below will work in Amaran
 - Changed: {meth}`build.run.BuildPlan.add_file` rejects absolute paths.
 - Deprecated: use of mixed-case toolchain environment variable names, such as `NMIGEN_ENV_Diamond` or `AMARANTH_ENV_Diamond`; use upper-case environment variable names, such as `AMARANTH_ENV_DIAMOND`.
 - Removed: (deprecated in 0.3) {meth}`sim.Simulator.step`.
-- Removed: (deprecated in 0.3) {mod}`back.pysim`.
-- Removed: (deprecated in 0.3) support for invoking {func}`back.rtlil.convert()` and {func}`back.verilog.convert()` without an explicit `ports=` argument.
-- Removed: (deprecated in 0.3) {mod}`test`.
+- Removed: (deprecated in 0.3) [`back.pysim`][back.pysim].
+- Removed: (deprecated in 0.3) support for invoking [`back.rtlil.convert()`][back.rtlil.convert()] and [`back.verilog.convert()`][back.verilog.convert()] without an explicit `ports=` argument.
+- Removed: (deprecated in 0.3) [`test`][test].
 
 ### Platform integration changes
 
@@ -369,8 +369,8 @@ While code that uses the features listed as deprecated below will work in Amaran
 - Added: Xray toolchain support in {class}`vendor.XilinxPlatform`.
 - Added: Artix UltraScale+ part support in {class}`vendor.XilinxPlatform`.
 - Added: {class}`vendor.GowinPlatform`.
-- Deprecated: {mod}`vendor.intel`, {mod}`vendor.lattice_ecp5`, {mod}`vendor.lattice_ice40`, {mod}`vendor.lattice_machxo2_3l`, {mod}`vendor.quicklogic`, {mod}`vendor.xilinx`; import platforms directly from {mod}`vendor` instead. ([RFC 18])
-- Removed: (deprecated in 0.3) {mod}`lattice_machxo2`
+- Deprecated: [`vendor.intel`][vendor.intel], [`vendor.lattice_ecp5`][vendor.lattice_ecp5], [`vendor.lattice_ice40`][vendor.lattice_ice40], [`vendor.lattice_machxo2_3l`][vendor.lattice_machxo2_3l], [`vendor.quicklogic`][vendor.quicklogic], [`vendor.xilinx`][vendor.xilinx]; import platforms directly from [`vendor`][vendor] instead. ([RFC 18])
+- Removed: (deprecated in 0.3) [`lattice_machxo2`][lattice_machxo2]
 - Removed: (deprecated in 0.3) {class}`lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform` SVF programming vector `{{name}}.svf`.
 - Removed: (deprecated in 0.3) {class}`xilinx_spartan_3_6.XilinxSpartan3APlatform`, {class}`xilinx_spartan_3_6.XilinxSpartan6Platform`, {class}`xilinx_7series.Xilinx7SeriesPlatform`, {class}`xilinx_ultrascale.XilinxUltrascalePlatform`.
 
@@ -394,8 +394,8 @@ Apply the following changes to code written against nMigen 0.2 to migrate it to 
 - Update board definitions using {class}`vendor.lattice_machxo2.LatticeMachXO2Platform` to use {class}`vendor.lattice_machxo_2_3l.LatticeMachXO2Platform`.
 - Update board definitions using {class}`vendor.xilinx_spartan_3_6.XilinxSpartan3APlatform`, {class}`vendor.xilinx_spartan_3_6.XilinxSpartan6Platform`, {class}`vendor.xilinx_7series.Xilinx7SeriesPlatform`, {class}`vendor.xilinx_ultrascale.XilinxUltrascalePlatform` to use {class}`vendor.xilinx.XilinxPlatform`.
 - Switch uses of {class}`hdl.ast.UserValue` to {class}`ValueCastable`; note that {class}`ValueCastable` does not inherit from {class}`Value`, and inheriting from {class}`Value` is not supported.
-- Switch uses of {mod}`back.pysim` to {mod}`sim`.
-- Add an explicit `ports=` argument to uses of {func}`back.rtlil.convert` and {func}`back.verilog.convert` if missing.
+- Switch uses of [`back.pysim`][back.pysim] to [`sim`][sim].
+- Add an explicit `ports=` argument to uses of [`back.rtlil.convert`][back.rtlil.convert] and [`back.verilog.convert`][back.verilog.convert] if missing.
 - Remove uses of {class}`test.utils.FHDLTestCase` and vendor the implementation of {class}`test.utils.FHDLTestCase.assertFormal` if necessary.
 
 While code that uses the features listed as deprecated below will work in Amaranth 0.3, they will be removed in the next version.
@@ -406,7 +406,7 @@ While code that uses the features listed as deprecated below will work in Amaran
 .. currentmodule:: amaranth.hdl
 ```
 
-- Added: {class}`Value` can be used with {func}`abs`.
+- Added: {class}`Value` can be used with [`abs`][abs].
 - Added: {meth}`Value.rotate_left` and {meth}`Value.rotate_right`.
 - Added: {meth}`Value.shift_left` and {meth}`Value.shift_right`.
 - Added: {class}`ValueCastable`.
@@ -434,16 +434,16 @@ While code that uses the features listed as deprecated below will work in Amaran
 
 - Changed: Backend and simulator reject wires larger than 65536 bits.
 - Added: Backend emits Yosys enumeration attributes for {ref}`enumeration-shaped <lang-shapeenum>` signals.
-- Added: If a compatible Yosys version is not installed, {mod}`back.verilog` will fall back to the [amaranth-yosys](https://github.com/amaranth-lang/amaranth-yosys) PyPI package. The package can be {ref}`installed <install>` as `amaranth[builtin-yosys]` to ensure this dependency is available.
-- Added: {mod}`back.cxxrtl`.
-- Added: {mod}`sim`, a simulator interface with support for multiple simulation backends.
-- Deprecated: {mod}`back.pysim`; use {mod}`sim` instead.
+- Added: If a compatible Yosys version is not installed, [`back.verilog`][back.verilog] will fall back to the [amaranth-yosys](https://github.com/amaranth-lang/amaranth-yosys) PyPI package. The package can be {ref}`installed <install>` as `amaranth[builtin-yosys]` to ensure this dependency is available.
+- Added: [`back.cxxrtl`][back.cxxrtl].
+- Added: [`sim`][sim], a simulator interface with support for multiple simulation backends.
+- Deprecated: [`back.pysim`][back.pysim]; use [`sim`][sim] instead.
 - Removed: The `with Simulator(fragment, ...) as sim:` form.
 - Removed: {meth}`sim.Simulator.add_process` with a generator argument.
 - Deprecated: {meth}`sim.Simulator.step`; use {meth}`sim.Simulator.advance` instead.
 - Added: {meth}`build.BuildPlan.execute_remote_ssh`.
 - Deprecated: {class}`test.utils.FHDLTestCase`, with no replacement.
-- Deprecated: {func}`back.rtlil.convert()` and {func}`back.verilog.convert()` without an explicit `ports=` argument.
+- Deprecated: [`back.rtlil.convert()`][back.rtlil.convert()] and [`back.verilog.convert()`][back.verilog.convert()] without an explicit `ports=` argument.
 - Changed: VCD output now uses a top-level "bench" module that contains testbench only signals.
 - Deprecated: `NMIGEN_*` environment variables; use `AMARANTH_*` environment variables instead.
 
@@ -456,7 +456,7 @@ While code that uses the features listed as deprecated below will work in Amaran
 - Added: `SB_LFOSC` and `SB_HFOSC` as `default_clk` clock sources in {class}`lattice_ice40.LatticeICE40Platform`.
 - Added: {class}`lattice_machxo2.LatticeMachXO2Platform` generates binary (`.bit`) bitstreams.
 - Added: {class}`lattice_machxo_2_3l.LatticeMachXO3LPlatform`.
-- Deprecated: {mod}`lattice_machxo2`; use {class}`lattice_machxo_2_3l.LatticeMachXO2Platform` instead.
+- Deprecated: [`lattice_machxo2`][lattice_machxo2]; use {class}`lattice_machxo_2_3l.LatticeMachXO2Platform` instead.
 - Removed: {class}`xilinx_7series.Xilinx7SeriesPlatform.grade`; this family has no temperature grades.
 - Removed: {class}`xilinx_ultrascale.XilinxUltrascalePlatform.grade`; this family has temperature grade as part of speed grade.
 - Added: Symbiflow toolchain support for {class}`xilinx_7series.Xilinx7SeriesPlatform`.
