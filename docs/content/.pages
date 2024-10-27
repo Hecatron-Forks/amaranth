@@ -5,4 +5,5 @@ nav:
   - StdLib
   - Simulator
   - Platform
+  - Api
   - ...

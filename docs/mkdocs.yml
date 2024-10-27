@@ -84,7 +84,11 @@ plugins:
           options:
             show_root_heading: true
             show_symbol_type_heading: true
+            show_symbol_type_toc: true
             show_bases: false
+            show_signature_annotations: true
+            merge_init_into_class: true
+            summary: true
 
 # Extensions
 markdown_extensions:
@@ -120,7 +124,6 @@ markdown_extensions:
   - pymdownx.smartsymbols
   - pymdownx.snippets:
       auto_append:
-        - includes/mkdocs.md
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
