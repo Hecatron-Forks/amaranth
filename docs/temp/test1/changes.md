@@ -24,30 +24,22 @@ Documentation for past releases of the Amaranth language and toolchain is availa
 
 ### Language changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.hdl
-```
-
-- Added: {class}`Period` for representing time periods. ([RFC 66])
-- Changed: overriding {meth}`ValueCastable.from_bits` is now mandatory. ([RFC 51])
-- Deprecated: the `#!python local=` argument to {class}`ClockDomain`. ([RFC 59])
-- Removed: (deprecated in 0.4.0) {class}`Record`.
-- Removed: (deprecated in 0.5.0) {class}`Memory` ([RFC 45])
+- Added: [`Period`][amaranth.hdl.Period] for representing time periods. ([RFC 66])
+- Changed: overriding [`ValueCastable.from_bits`][amaranth.hdl.ValueCastable.from_bits] is now mandatory. ([RFC 51])
+- Deprecated: the `#!python local=` argument to [`ClockDomain`][amaranth.hdl.ClockDomain]. ([RFC 59])
+- Removed: (deprecated in 0.4.0) [`Record`][amaranth.hdl.Record].
+- Removed: (deprecated in 0.5.0) [`Memory`][amaranth.hdl.Memory] ([RFC 45])
 - Removed: (deprecated in 0.5.0) public submodules of [`amaranth.hdl`][amaranth.hdl].
-- Removed: (deprecated in 0.5.0) {meth}`Value.implies`.
-- Removed: (deprecated in 0.5.0) {meth}`Const.width`, {meth}`Const.signed`, {meth}`Signal.width`, {meth}`Signal.signed`.
+- Removed: (deprecated in 0.5.0) [`Value.implies`][amaranth.hdl.Value.implies].
+- Removed: (deprecated in 0.5.0) [`Const.width`][amaranth.hdl.Const.width], [`Const.signed`][amaranth.hdl.Const.signed], [`Signal.width`][amaranth.hdl.Signal.width], [`Signal.signed`][amaranth.hdl.Signal.signed].
 - Removed: (deprecated in 0.5.0) upwards propagation of clock domains. ([RFC 59])
 - Removed: (deprecated in 0.5.0) [`amaranth.utils.log2_int`][amaranth.utils.log2_int]. ([RFC 17])
 
 ### Standard library changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.lib
-```
-
-- Added: `#!python payload_init=` argument in {class}`amaranth.lib.stream.Signature`.
-- Added: {meth}`enum.EnumView.matches`. ([RFC 71])
-- Changed: (deprecated in 0.5.1) providing {meth}`io.PortLike.__add__` is now mandatory. ([RFC 69])
+- Added: `#!python payload_init=` argument in [`amaranth.lib.stream.Signature`][amaranth.lib.stream.Signature].
+- Added: [`enum.EnumView.matches`][amaranth.lib.enum.EnumView.matches]. ([RFC 71])
+- Changed: (deprecated in 0.5.1) providing [`io.PortLike.__add__`][amaranth.lib.io.PortLike.__add__] is now mandatory. ([RFC 69])
 - Removed: (deprecated in 0.5.0) [`amaranth.lib.coding`][amaranth.lib.coding]. ([RFC 63])
 
 ### Toolchain changes
@@ -60,17 +52,13 @@ Documentation for past releases of the Amaranth language and toolchain is availa
 - Changed: [`ResourceManager.add_clock_constraint`][amaranth.build.res.ResourceManager.add_clock_constraint] now accepts a [`Period`][amaranth.hdl.Period] for `#!python period`. ([RFC 66])
 - Changed: [`Clock`][amaranth.build.dsl.Clock] now accepts a [`Period`][amaranth.hdl.Period] for `#!python period`. ([RFC 66])
 - Changed: [`Clock.period`][amaranth.build.dsl.Clock.period] now returns a [`Period`][amaranth.hdl.Period]. ([RFC 66])
-- Deprecated: Passing a {class}`float` of seconds or hertz to any of the methods/arguments now accepting a [`Period`][amaranth.hdl.Period]. ([RFC 66])
+- Deprecated: Passing a [`float`][amaranth.lib.float] of seconds or hertz to any of the methods/arguments now accepting a [`Period`][amaranth.hdl.Period]. ([RFC 66])
 - Deprecated: Passing `#!python frequency=` to [`ResourceManager.add_clock_constraint`][amaranth.build.res.ResourceManager.add_clock_constraint]. ([RFC 66])
 - Deprecated: Passing `#!python frequency=` to [`Clock`][amaranth.build.dsl.Clock]. ([RFC 66])
 - Deprecated: [`Clock.frequency`][amaranth.build.dsl.Clock.frequency]. ([RFC 66])
 - Deprecated: [`Platform.default_clk_frequency`][amaranth.build.plat.Platform.default_clk_frequency]. ([RFC 66])
 
 ### Platform integration changes
-
-```{eval-rst}
-.. currentmodule:: amaranth.vendor
-```
 
 - Changed: the Gowin platform now uses `nextpnr-himbaechel` rather than `nextpnr-gowin`.
 
@@ -84,21 +72,13 @@ Documentation for past releases of the Amaranth language and toolchain is availa
 
 ### Standard library changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.lib
-```
-
-- Added: constants of {class}`amaranth.lib.data.ArrayLayout` can be indexed with negative integers or slices.
-- Added: `#!python len()` works on constants of {class}`amaranth.lib.data.ArrayLayout`.
-- Added: constants of {class}`amaranth.lib.data.ArrayLayout` are iterable.
+- Added: constants of [`amaranth.lib.data.ArrayLayout`][amaranth.lib.data.ArrayLayout] can be indexed with negative integers or slices.
+- Added: `#!python len()` works on constants of [`amaranth.lib.data.ArrayLayout`][amaranth.lib.data.ArrayLayout].
+- Added: constants of [`amaranth.lib.data.ArrayLayout`][amaranth.lib.data.ArrayLayout] are iterable.
 
 ### Platform integration changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.vendor
-```
-
-- Added: {meth}`Platform.request` accepts `#!python dir="-"` for resources with subsignals.
+- Added: [`Platform.request`][amaranth.vendor.Platform.request] accepts `#!python dir="-"` for resources with subsignals.
 
 ## Version 0.5.1
 
@@ -108,14 +88,10 @@ Documentation for past releases of the Amaranth language and toolchain is availa
 
 ### Standard library changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.lib
-```
-
-- Added: views of {class}`amaranth.lib.data.ArrayLayout` can be indexed with negative integers or slices.
-- Added: `#!python len()` works on views of {class}`amaranth.lib.data.ArrayLayout`.
-- Added: views of {class}`amaranth.lib.data.ArrayLayout` are iterable.
-- Added: {class}`io.SimulationPort`. ([RFC 69])
+- Added: views of [`amaranth.lib.data.ArrayLayout`][amaranth.lib.data.ArrayLayout] can be indexed with negative integers or slices.
+- Added: `#!python len()` works on views of [`amaranth.lib.data.ArrayLayout`][amaranth.lib.data.ArrayLayout].
+- Added: views of [`amaranth.lib.data.ArrayLayout`][amaranth.lib.data.ArrayLayout] are iterable.
+- Added: [`io.SimulationPort`][amaranth.lib.io.SimulationPort]. ([RFC 69])
 
 ## Version 0.5.0
 
@@ -126,13 +102,13 @@ The Migen compatibility layer has been removed.
 Apply the following changes to code written against Amaranth 0.4 to migrate it to version 0.5:
 
 - Update uses of `#!python reset=` keyword argument to `#!python init=`.
-- Ensure all elaboratables are subclasses of {class}`Elaboratable`.
+- Ensure all elaboratables are subclasses of [`Elaboratable`][amaranth.lib.Elaboratable].
 - Replace uses of `#!python m.Case()` with no patterns with `#!python m.Default()`.
 - Replace uses of `#!python Value.matches()` with no patterns with `#!python Const(1)`.
 - Ensure clock domains aren't used outside the module that defines them, or its submodules; move clock domain definitions upwards in the hierarchy as necessary
 - Replace imports of `#!python amaranth.asserts.Assert`, `#!python Assume`, and `#!python Cover` with imports from `#!python amaranth.hdl`.
 - Remove uses of `#!python name=` keyword argument of `#!python Assert`, `#!python Assume`, and `#!python Cover`; a message can be used instead.
-- Replace uses of `#!python amaranth.hdl.Memory` with {class}`amaranth.lib.memory.Memory`.
+- Replace uses of `#!python amaranth.hdl.Memory` with [`amaranth.lib.memory.Memory`][amaranth.lib.memory.Memory].
 - Update uses of `#!python platform.request` to pass `#!python dir="-"` and use [`amaranth.lib.io`][amaranth.lib.io] buffers.
 - Remove uses of `#!python amaranth.lib.coding.*` by inlining or copying the implementation of the modules.
 - Convert uses of `#!python Simulator.add_sync_process` used as testbenches to [`Simulator.add_testbench`][amaranth.sim.Simulator.add_testbench].
@@ -168,60 +144,52 @@ Apply the following changes to code written against Amaranth 0.4 to migrate it t
 
 ### Language changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.hdl
-```
-
-- Added: {class}`Slice` objects have been made const-castable.
+- Added: [`Slice`][amaranth.hdl.Slice] objects have been made const-castable.
 - Added: [`amaranth.utils.ceil_log2`][amaranth.utils.ceil_log2], [`amaranth.utils.exact_log2`][amaranth.utils.exact_log2]. ([RFC 17])
-- Added: {class}`Format` objects, {class}`Print` statements, messages in {class}`Assert`, {class}`Assume` and {class}`Cover`. ([RFC 50])
-- Added: {meth}`ShapeCastable.from_bits` method. ([RFC 51])
-- Added: IO values, {class}`IOPort` objects, {class}`IOBufferInstance` objects. ([RFC 53])
-- Added: {class}`MemoryData` objects. ([RFC 62])
+- Added: [`Format`][amaranth.hdl.Format] objects, [`Print`][amaranth.hdl.Print] statements, messages in [`Assert`][amaranth.hdl.Assert], [`Assume`][amaranth.hdl.Assume] and [`Cover`][amaranth.hdl.Cover]. ([RFC 50])
+- Added: [`ShapeCastable.from_bits`][amaranth.hdl.ShapeCastable.from_bits] method. ([RFC 51])
+- Added: IO values, [`IOPort`][amaranth.hdl.IOPort] objects, [`IOBufferInstance`][amaranth.hdl.IOBufferInstance] objects. ([RFC 53])
+- Added: [`MemoryData`][amaranth.hdl.MemoryData] objects. ([RFC 62])
 - Changed: `#!python m.Case()` with no patterns is never active instead of always active. ([RFC 39])
 - Changed: `#!python Value.matches()` with no patterns is `#!python Const(0)` instead of `#!python Const(1)`. ([RFC 39])
 - Changed: `#!python Signal(range(stop), init=stop)` warning has been changed into a hard error and made to trigger on any out-of range value.
 - Changed: `#!python Signal(range(0))` is now valid without a warning.
 - Changed: `#!python Const(value, shape)` now accepts shape-castable objects as `#!python shape`. ([RFC 42])
 - Changed: `#!python Shape.cast(range(1))` is now `#!python unsigned(0)`. ([RFC 46])
-- Changed: the `#!python reset=` argument of {class}`Signal`, {meth}`Signal.like`, {class}`amaranth.lib.wiring.Member`, {class}`amaranth.lib.cdc.FFSynchronizer`, and `#!python m.FSM()` has been renamed to `#!python init=`. ([RFC 43])
-- Changed: {class}`Shape` has been made immutable and hashable.
-- Changed: {class}`Assert`, {class}`Assume`, {class}`Cover` have been moved to [`amaranth.hdl`][amaranth.hdl] from [`amaranth.asserts`][amaranth.asserts]. ([RFC 50])
-- Changed: {class}`Instance` IO ports now accept only IO values, not plain values. ([RFC 53])
+- Changed: the `#!python reset=` argument of [`Signal`][amaranth.hdl.Signal], [`Signal.like`][amaranth.hdl.Signal.like], [`amaranth.lib.wiring.Member`][amaranth.lib.wiring.Member], [`amaranth.lib.cdc.FFSynchronizer`][amaranth.lib.cdc.FFSynchronizer], and `#!python m.FSM()` has been renamed to `#!python init=`. ([RFC 43])
+- Changed: [`Shape`][amaranth.hdl.Shape] has been made immutable and hashable.
+- Changed: [`Assert`][amaranth.hdl.Assert], [`Assume`][amaranth.hdl.Assume], [`Cover`][amaranth.hdl.Cover] have been moved to [`amaranth.hdl`][amaranth.hdl] from [`amaranth.asserts`][amaranth.asserts]. ([RFC 50])
+- Changed: [`Instance`][amaranth.hdl.Instance] IO ports now accept only IO values, not plain values. ([RFC 53])
 - Deprecated: [`amaranth.utils.log2_int`][amaranth.utils.log2_int]. ([RFC 17])
-- Deprecated: {class}`amaranth.hdl.Memory`. ([RFC 45])
+- Deprecated: [`amaranth.hdl.Memory`][amaranth.hdl.Memory]. ([RFC 45])
 - Deprecated: upwards propagation of clock domains. ([RFC 59])
-- Deprecated: {meth}`Value.implies`.
-- Removed: (deprecated in 0.4.0) {meth}`Const.normalize`. ([RFC 5])
-- Removed: (deprecated in 0.4.0) {class}`Repl`. ([RFC 10])
-- Removed: (deprecated in 0.4.0) {class}`ast.Sample`, {class}`ast.Past`, {class}`ast.Stable`, {class}`ast.Rose`, {class}`ast.Fell`.
-- Removed: assertion names in {class}`Assert`, {class}`Assume` and {class}`Cover`. ([RFC 50])
-- Removed: accepting non-subclasses of {class}`Elaboratable` as elaboratables.
+- Deprecated: [`Value.implies`][amaranth.hdl.Value.implies].
+- Removed: (deprecated in 0.4.0) [`Const.normalize`][amaranth.hdl.Const.normalize]. ([RFC 5])
+- Removed: (deprecated in 0.4.0) [`Repl`][amaranth.hdl.Repl]. ([RFC 10])
+- Removed: (deprecated in 0.4.0) [`ast.Sample`][amaranth.hdl.ast.Sample], [`ast.Past`][amaranth.hdl.ast.Past], [`ast.Stable`][amaranth.hdl.ast.Stable], [`ast.Rose`][amaranth.hdl.ast.Rose], [`ast.Fell`][amaranth.hdl.ast.Fell].
+- Removed: assertion names in [`Assert`][amaranth.hdl.Assert], [`Assume`][amaranth.hdl.Assume] and [`Cover`][amaranth.hdl.Cover]. ([RFC 50])
+- Removed: accepting non-subclasses of [`Elaboratable`][amaranth.hdl.Elaboratable] as elaboratables.
 
 ### Standard library changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.lib
-```
-
 - Added: [`amaranth.lib.memory`][amaranth.lib.memory]. ([RFC 45])
-- Added: {class}`amaranth.lib.data.Const` class. ([RFC 51])
-- Changed: {meth}`amaranth.lib.data.Layout.const` returns a {class}`amaranth.lib.data.Const`, not a view ([RFC 51])
-- Changed: {meth}`amaranth.lib.wiring.Signature.is_compliant` no longer rejects reset-less signals.
-- Added: {class}`amaranth.lib.io.SingleEndedPort`, {class}`amaranth.lib.io.DifferentialPort`. ([RFC 55])
-- Added: {class}`amaranth.lib.io.Buffer`, {class}`amaranth.lib.io.FFBuffer`, {class}`amaranth.lib.io.DDRBuffer`. ([RFC 55])
-- Added: [`amaranth.lib.meta`][amaranth.lib.meta], {class}`amaranth.lib.wiring.ComponentMetadata`. ([RFC 30])
+- Added: [`amaranth.lib.data.Const`][amaranth.lib.data.Const] class. ([RFC 51])
+- Changed: [`amaranth.lib.data.Layout.const`][amaranth.lib.data.Layout.const] returns a [`amaranth.lib.data.Const`][amaranth.lib.data.Const], not a view ([RFC 51])
+- Changed: [`amaranth.lib.wiring.Signature.is_compliant`][amaranth.lib.wiring.Signature.is_compliant] no longer rejects reset-less signals.
+- Added: [`amaranth.lib.io.SingleEndedPort`][amaranth.lib.io.SingleEndedPort], [`amaranth.lib.io.DifferentialPort`][amaranth.lib.io.DifferentialPort]. ([RFC 55])
+- Added: [`amaranth.lib.io.Buffer`][amaranth.lib.io.Buffer], [`amaranth.lib.io.FFBuffer`][amaranth.lib.io.FFBuffer], [`amaranth.lib.io.DDRBuffer`][amaranth.lib.io.DDRBuffer]. ([RFC 55])
+- Added: [`amaranth.lib.meta`][amaranth.lib.meta], [`amaranth.lib.wiring.ComponentMetadata`][amaranth.lib.wiring.ComponentMetadata]. ([RFC 30])
 - Added: [`amaranth.lib.stream`][amaranth.lib.stream]. ([RFC 61])
 - Deprecated: [`amaranth.lib.coding`][amaranth.lib.coding]. ([RFC 63])
 - Removed: (deprecated in 0.4.0) [`amaranth.lib.scheduler`][amaranth.lib.scheduler]. ([RFC 19])
-- Removed: (deprecated in 0.4.0) {class}`amaranth.lib.fifo.FIFOInterface` with `#!python fwft=False`. ([RFC 20])
-- Removed: (deprecated in 0.4.0) {class}`amaranth.lib.fifo.SyncFIFO` with `#!python fwft=False`. ([RFC 20])
+- Removed: (deprecated in 0.4.0) [`amaranth.lib.fifo.FIFOInterface`][amaranth.lib.fifo.FIFOInterface] with `#!python fwft=False`. ([RFC 20])
+- Removed: (deprecated in 0.4.0) [`amaranth.lib.fifo.SyncFIFO`][amaranth.lib.fifo.SyncFIFO] with `#!python fwft=False`. ([RFC 20])
 
 ### Toolchain changes
 
 - Added: [`Simulator.add_testbench`][amaranth.sim.Simulator.add_testbench]. ([RFC 27])
 - Added: async function support in [`Simulator.add_testbench`][amaranth.sim.Simulator.add_testbench] and [`Simulator.add_process`][amaranth.sim.Simulator.add_process]. ([RFC 36])
-- Added: support for {class}`amaranth.hdl.Assert` in simulation. ([RFC 50])
+- Added: support for [`amaranth.hdl.Assert`][amaranth.hdl.Assert] in simulation. ([RFC 50])
 - Changed: [`Simulator.add_clock`][amaranth.sim.Simulator.add_clock] no longer implicitly adds `#!python period / 2` when `#!python phase` is specified, actually matching the documentation.
 - Changed: [`Simulator.run_until`][amaranth.sim.Simulator.run_until] always runs the simulation until the given deadline, even when no critical processes or testbenches are present.
 - Deprecated: `#!python Settle` simulation command. ([RFC 27])
@@ -232,24 +200,20 @@ Apply the following changes to code written against Amaranth 0.4 to migrate it t
 
 ### Platform integration changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.vendor
-```
-
-- Added: {meth}`BuildPlan.execute_local_docker`.
-- Added: {meth}`BuildPlan.extract`.
+- Added: [`BuildPlan.execute_local_docker`][amaranth.vendor.BuildPlan.execute_local_docker].
+- Added: [`BuildPlan.extract`][amaranth.vendor.BuildPlan.extract].
 - Added: `build.sh`  begins with `#!/bin/sh`.
 - Changed: `IntelPlatform` renamed to `AlteraPlatform`.
-- Deprecated: argument `#!python run_script=` in {meth}`BuildPlan.execute_local`.
+- Deprecated: argument `#!python run_script=` in [`BuildPlan.execute_local`][amaranth.vendor.BuildPlan.execute_local].
 - Removed: (deprecated in 0.4.0) [`vendor.intel`][vendor.intel], [`vendor.lattice_ecp5`][vendor.lattice_ecp5], [`vendor.lattice_ice40`][vendor.lattice_ice40], [`vendor.lattice_machxo2_3l`][vendor.lattice_machxo2_3l], [`vendor.quicklogic`][vendor.quicklogic], [`vendor.xilinx`][vendor.xilinx]. ([RFC 18])
 
 ## Version 0.4.0
 
-Support has been added for a new and improved way of defining data structures in [`amaranth.lib.data`][amaranth.lib.data] and component interfaces in [`amaranth.lib.wiring`][amaranth.lib.wiring], as defined in [RFC 1] and [RFC 2]. {class}`Record` has been deprecated. In a departure from the usual policy, to give designers additional time to migrate, {class}`Record` will be removed in Amaranth 0.6 (one release later than normal).
+Support has been added for a new and improved way of defining data structures in [`amaranth.lib.data`][amaranth.lib.data] and component interfaces in [`amaranth.lib.wiring`][amaranth.lib.wiring], as defined in [RFC 1] and [RFC 2]. [`Record`][amaranth.vendor.Record] has been deprecated. In a departure from the usual policy, to give designers additional time to migrate, [`Record`][amaranth.vendor.Record] will be removed in Amaranth 0.6 (one release later than normal).
 
 Support for enumerations has been extended. A shape for enumeration members can be provided for an enumeration class, as defined in [RFC 3].
 
-The language includes several new extension points for integration with {class}`Value` based data structures defined outside of the core language. In particular, `Signal(shape)` may now return a {class}`Signal` object wrapped in another if `shape` implements the call protocol, as defined in [RFC 15].
+The language includes several new extension points for integration with [`Value`][amaranth.vendor.Value] based data structures defined outside of the core language. In particular, `Signal(shape)` may now return a [`Signal`][amaranth.vendor.Signal] object wrapped in another if `shape` implements the call protocol, as defined in [RFC 15].
 
 Several issues with shape inference have been resolved. Notably, `a - b` where both `a` and `b` are unsigned now returns a signed value.
 
@@ -302,77 +266,61 @@ While code that uses the features listed as deprecated below will work in Amaran
 
 ### Language changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.hdl
-```
-
-- Added: {class}`ShapeCastable`, similar to {class}`ValueCastable`.
-- Added: {class}`ShapeLike` and {class}`ValueLike`. ([RFC 35])
-- Added: {meth}`Value.as_signed` and {meth}`Value.as_unsigned` can be used on left-hand side of assignment (with no difference in behavior).
-- Added: {meth}`Const.cast`. ([RFC 4])
-- Added: `Signal(reset=)`, {meth}`Value.matches`, `with m.Case():` accept any constant-castable objects. ([RFC 4])
-- Added: {meth}`Value.replicate`, superseding {class}`Repl`. ([RFC 10])
-- Added: {class}`Memory` supports transparent read ports with read enable.
-- Changed: creating a {class}`Signal` with a shape that is a {class}`ShapeCastable` implementing {meth}`ShapeCastable.__call__` wraps the returned object using that method. ([RFC 15])
-- Changed: {meth}`Value.cast` casts {class}`ValueCastable` objects recursively.
-- Changed: {meth}`Value.cast` treats instances of classes derived from both {class}`enum.Enum` and {class}`int` (including {class}`enum.IntEnum`) as enumerations rather than integers.
-- Changed: {meth}`Value.matches` with an empty list of patterns returns `Const(1)` rather than `Const(0)`, to match the behavior of `with m.Case():`.
+- Added: [`ShapeCastable`][amaranth.hdl.ShapeCastable], similar to [`ValueCastable`][amaranth.hdl.ValueCastable].
+- Added: [`ShapeLike`][amaranth.hdl.ShapeLike] and [`ValueLike`][amaranth.hdl.ValueLike]. ([RFC 35])
+- Added: [`Value.as_signed`][amaranth.hdl.Value.as_signed] and [`Value.as_unsigned`][amaranth.hdl.Value.as_unsigned] can be used on left-hand side of assignment (with no difference in behavior).
+- Added: [`Const.cast`][amaranth.hdl.Const.cast]. ([RFC 4])
+- Added: `Signal(reset=)`, [`Value.matches`][amaranth.hdl.Value.matches], `with m.Case():` accept any constant-castable objects. ([RFC 4])
+- Added: [`Value.replicate`][amaranth.hdl.Value.replicate], superseding [`Repl`][amaranth.hdl.Repl]. ([RFC 10])
+- Added: [`Memory`][amaranth.hdl.Memory] supports transparent read ports with read enable.
+- Changed: creating a [`Signal`][amaranth.hdl.Signal] with a shape that is a [`ShapeCastable`][amaranth.hdl.ShapeCastable] implementing [`ShapeCastable.__call__`][amaranth.hdl.ShapeCastable.__call__] wraps the returned object using that method. ([RFC 15])
+- Changed: [`Value.cast`][amaranth.hdl.Value.cast] casts [`ValueCastable`][amaranth.hdl.ValueCastable] objects recursively.
+- Changed: [`Value.cast`][amaranth.hdl.Value.cast] treats instances of classes derived from both [`enum.Enum`][amaranth.hdl.enum.Enum] and [`int`][amaranth.hdl.int] (including [`enum.IntEnum`][amaranth.hdl.enum.IntEnum]) as enumerations rather than integers.
+- Changed: [`Value.matches`][amaranth.hdl.Value.matches] with an empty list of patterns returns `Const(1)` rather than `Const(0)`, to match the behavior of `with m.Case():`.
 - Changed: [`Cat`][Cat] warns if an enumeration without an explicitly specified shape is used. ([RFC 3])
 - Changed: `signed(0)` is no longer constructible. (The semantics of this shape were never defined.)
-- Changed: {meth}`Value.__abs__` returns an unsigned value.
-- Deprecated: {class}`ast.Sample`, {class}`ast.Past`, {class}`ast.Stable`, {class}`ast.Rose`, {class}`ast.Fell`. (Predating the RFC process.)
-- Deprecated: {meth}`Const.normalize`; use `Const(value, shape).value` instead of `Const.normalize(value, shape)`. ([RFC 5])
-- Deprecated: {class}`Repl`; use {meth}`Value.replicate` instead. ([RFC 10])
-- Deprecated: {class}`Record`; use [`amaranth.lib.data`][amaranth.lib.data] and [`amaranth.lib.wiring`][amaranth.lib.wiring] instead. ([RFC 1], [RFC 2])
-- Removed: (deprecated in 0.1) casting of {class}`Shape` to and from a `(width, signed)` tuple.
-- Removed: (deprecated in 0.3) {class}`ast.UserValue`.
+- Changed: [`Value.__abs__`][amaranth.hdl.Value.__abs__] returns an unsigned value.
+- Deprecated: [`ast.Sample`][amaranth.hdl.ast.Sample], [`ast.Past`][amaranth.hdl.ast.Past], [`ast.Stable`][amaranth.hdl.ast.Stable], [`ast.Rose`][amaranth.hdl.ast.Rose], [`ast.Fell`][amaranth.hdl.ast.Fell]. (Predating the RFC process.)
+- Deprecated: [`Const.normalize`][amaranth.hdl.Const.normalize]; use `Const(value, shape).value` instead of `Const.normalize(value, shape)`. ([RFC 5])
+- Deprecated: [`Repl`][amaranth.hdl.Repl]; use [`Value.replicate`][amaranth.hdl.Value.replicate] instead. ([RFC 10])
+- Deprecated: [`Record`][amaranth.hdl.Record]; use [`amaranth.lib.data`][amaranth.lib.data] and [`amaranth.lib.wiring`][amaranth.lib.wiring] instead. ([RFC 1], [RFC 2])
+- Removed: (deprecated in 0.1) casting of [`Shape`][amaranth.hdl.Shape] to and from a `(width, signed)` tuple.
+- Removed: (deprecated in 0.3) [`ast.UserValue`][amaranth.hdl.ast.UserValue].
 - Removed: (deprecated in 0.3) support for `# nmigen:` linter instructions at the beginning of file.
 
 ### Standard library changes
-
-```{eval-rst}
-.. currentmodule:: amaranth.lib
-```
 
 - Added: [`amaranth.lib.enum`][amaranth.lib.enum]. ([RFC 3])
 - Added: [`amaranth.lib.data`][amaranth.lib.data]. ([RFC 1])
 - Added: [`amaranth.lib.wiring`][amaranth.lib.wiring]. ([RFC 2])
 - Added: [`amaranth.lib.crc`][amaranth.lib.crc]. ([RFC 6])
 - Deprecated: [`amaranth.lib.scheduler`][amaranth.lib.scheduler]. ([RFC 19])
-- Deprecated: {class}`amaranth.lib.fifo.FIFOInterface` with `fwft=False`. ([RFC 20])
-- Deprecated: {class}`amaranth.lib.fifo.SyncFIFO` with `fwft=False`. ([RFC 20])
+- Deprecated: [`amaranth.lib.fifo.FIFOInterface`][amaranth.lib.fifo.FIFOInterface] with `fwft=False`. ([RFC 20])
+- Deprecated: [`amaranth.lib.fifo.SyncFIFO`][amaranth.lib.fifo.SyncFIFO] with `fwft=False`. ([RFC 20])
 
 ### Toolchain changes
 
-```{eval-rst}
-.. currentmodule:: amaranth
-```
-
 - Changed: text files are written with LF line endings on Windows, like on other platforms.
-- Added: `debug_verilog` override in {class}`build.TemplatedPlatform`.
-- Added: `env=` argument to {meth}`build.run.BuildPlan.execute_local`.
-- Changed: {meth}`build.run.BuildPlan.add_file` rejects absolute paths.
+- Added: `debug_verilog` override in [`build.TemplatedPlatform`][amaranth.build.TemplatedPlatform].
+- Added: `env=` argument to [`build.run.BuildPlan.execute_local`][amaranth.build.run.BuildPlan.execute_local].
+- Changed: [`build.run.BuildPlan.add_file`][amaranth.build.run.BuildPlan.add_file] rejects absolute paths.
 - Deprecated: use of mixed-case toolchain environment variable names, such as `NMIGEN_ENV_Diamond` or `AMARANTH_ENV_Diamond`; use upper-case environment variable names, such as `AMARANTH_ENV_DIAMOND`.
-- Removed: (deprecated in 0.3) {meth}`sim.Simulator.step`.
+- Removed: (deprecated in 0.3) [`sim.Simulator.step`][amaranth.sim.Simulator.step].
 - Removed: (deprecated in 0.3) [`back.pysim`][back.pysim].
 - Removed: (deprecated in 0.3) support for invoking [`back.rtlil.convert()`][back.rtlil.convert()] and [`back.verilog.convert()`][back.verilog.convert()] without an explicit `ports=` argument.
 - Removed: (deprecated in 0.3) [`test`][test].
 
 ### Platform integration changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.vendor
-```
-
-- Added: `icepack_opts` override in {class}`vendor.LatticeICE40Platform`.
-- Added: `OSCH` as `default_clk` clock source in {class}`vendor.LatticeMachXO2Platform`, {class}`vendor.LatticeMachXO3LPlatform`.
-- Added: Xray toolchain support in {class}`vendor.XilinxPlatform`.
-- Added: Artix UltraScale+ part support in {class}`vendor.XilinxPlatform`.
-- Added: {class}`vendor.GowinPlatform`.
+- Added: `icepack_opts` override in [`vendor.LatticeICE40Platform`][amaranth.vendor.vendor.LatticeICE40Platform].
+- Added: `OSCH` as `default_clk` clock source in [`vendor.LatticeMachXO2Platform`][amaranth.vendor.vendor.LatticeMachXO2Platform], [`vendor.LatticeMachXO3LPlatform`][amaranth.vendor.vendor.LatticeMachXO3LPlatform].
+- Added: Xray toolchain support in [`vendor.XilinxPlatform`][amaranth.vendor.vendor.XilinxPlatform].
+- Added: Artix UltraScale+ part support in [`vendor.XilinxPlatform`][amaranth.vendor.vendor.XilinxPlatform].
+- Added: [`vendor.GowinPlatform`][amaranth.vendor.vendor.GowinPlatform].
 - Deprecated: [`vendor.intel`][vendor.intel], [`vendor.lattice_ecp5`][vendor.lattice_ecp5], [`vendor.lattice_ice40`][vendor.lattice_ice40], [`vendor.lattice_machxo2_3l`][vendor.lattice_machxo2_3l], [`vendor.quicklogic`][vendor.quicklogic], [`vendor.xilinx`][vendor.xilinx]; import platforms directly from [`vendor`][vendor] instead. ([RFC 18])
 - Removed: (deprecated in 0.3) [`lattice_machxo2`][lattice_machxo2]
-- Removed: (deprecated in 0.3) {class}`lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform` SVF programming vector `{{name}}.svf`.
-- Removed: (deprecated in 0.3) {class}`xilinx_spartan_3_6.XilinxSpartan3APlatform`, {class}`xilinx_spartan_3_6.XilinxSpartan6Platform`, {class}`xilinx_7series.Xilinx7SeriesPlatform`, {class}`xilinx_ultrascale.XilinxUltrascalePlatform`.
+- Removed: (deprecated in 0.3) [`lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform`][amaranth.vendor.lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform] SVF programming vector `{{name}}.svf`.
+- Removed: (deprecated in 0.3) [`xilinx_spartan_3_6.XilinxSpartan3APlatform`][amaranth.vendor.xilinx_spartan_3_6.XilinxSpartan3APlatform], [`xilinx_spartan_3_6.XilinxSpartan6Platform`][amaranth.vendor.xilinx_spartan_3_6.XilinxSpartan6Platform], [`xilinx_7series.Xilinx7SeriesPlatform`][amaranth.vendor.xilinx_7series.Xilinx7SeriesPlatform], [`xilinx_ultrascale.XilinxUltrascalePlatform`][amaranth.vendor.xilinx_ultrascale.XilinxUltrascalePlatform].
 
 ## Version 0.3
 
@@ -382,55 +330,39 @@ Features deprecated in version 0.2 have been removed.
 
 ### Migrating from version 0.2
 
-```{eval-rst}
-.. currentmodule:: amaranth
-```
-
 Apply the following changes to code written against nMigen 0.2 to migrate it to Amaranth 0.3:
 
 - Update `import nmigen as nm` {ref}`explicit prelude imports <lang-prelude>` to be `import amaranth as am`, and adjust the code to use the `am.*` namespace.
 - Update `import nmigen.*` imports to be `import amaranth.*`.
 - Update `import nmigen_boards.*` imports to be `import amaranth_boards.*`.
-- Update board definitions using {class}`vendor.lattice_machxo2.LatticeMachXO2Platform` to use {class}`vendor.lattice_machxo_2_3l.LatticeMachXO2Platform`.
-- Update board definitions using {class}`vendor.xilinx_spartan_3_6.XilinxSpartan3APlatform`, {class}`vendor.xilinx_spartan_3_6.XilinxSpartan6Platform`, {class}`vendor.xilinx_7series.Xilinx7SeriesPlatform`, {class}`vendor.xilinx_ultrascale.XilinxUltrascalePlatform` to use {class}`vendor.xilinx.XilinxPlatform`.
-- Switch uses of {class}`hdl.ast.UserValue` to {class}`ValueCastable`; note that {class}`ValueCastable` does not inherit from {class}`Value`, and inheriting from {class}`Value` is not supported.
+- Update board definitions using [`vendor.lattice_machxo2.LatticeMachXO2Platform`][amaranth.vendor.lattice_machxo2.LatticeMachXO2Platform] to use [`vendor.lattice_machxo_2_3l.LatticeMachXO2Platform`][amaranth.vendor.lattice_machxo_2_3l.LatticeMachXO2Platform].
+- Update board definitions using [`vendor.xilinx_spartan_3_6.XilinxSpartan3APlatform`][amaranth.vendor.xilinx_spartan_3_6.XilinxSpartan3APlatform], [`vendor.xilinx_spartan_3_6.XilinxSpartan6Platform`][amaranth.vendor.xilinx_spartan_3_6.XilinxSpartan6Platform], [`vendor.xilinx_7series.Xilinx7SeriesPlatform`][amaranth.vendor.xilinx_7series.Xilinx7SeriesPlatform], [`vendor.xilinx_ultrascale.XilinxUltrascalePlatform`][amaranth.vendor.xilinx_ultrascale.XilinxUltrascalePlatform] to use [`vendor.xilinx.XilinxPlatform`][amaranth.vendor.xilinx.XilinxPlatform].
+- Switch uses of [`hdl.ast.UserValue`][amaranth.hdl.ast.UserValue] to [`ValueCastable`][amaranth.ValueCastable]; note that [`ValueCastable`][amaranth.ValueCastable] does not inherit from [`Value`][amaranth.Value], and inheriting from [`Value`][amaranth.Value] is not supported.
 - Switch uses of [`back.pysim`][back.pysim] to [`sim`][sim].
 - Add an explicit `ports=` argument to uses of [`back.rtlil.convert`][back.rtlil.convert] and [`back.verilog.convert`][back.verilog.convert] if missing.
-- Remove uses of {class}`test.utils.FHDLTestCase` and vendor the implementation of {class}`test.utils.FHDLTestCase.assertFormal` if necessary.
+- Remove uses of [`test.utils.FHDLTestCase`][amaranth.test.utils.FHDLTestCase] and vendor the implementation of [`test.utils.FHDLTestCase.assertFormal`][amaranth.test.utils.FHDLTestCase.assertFormal] if necessary.
 
 While code that uses the features listed as deprecated below will work in Amaranth 0.3, they will be removed in the next version.
 
 ### Language changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.hdl
-```
-
-- Added: {class}`Value` can be used with [`abs`][abs].
-- Added: {meth}`Value.rotate_left` and {meth}`Value.rotate_right`.
-- Added: {meth}`Value.shift_left` and {meth}`Value.shift_right`.
-- Added: {class}`ValueCastable`.
-- Deprecated: {class}`ast.UserValue`; use {class}`ValueCastable` instead.
+- Added: [`Value`][amaranth.hdl.Value] can be used with [`abs`][abs].
+- Added: [`Value.rotate_left`][amaranth.hdl.Value.rotate_left] and [`Value.rotate_right`][amaranth.hdl.Value.rotate_right].
+- Added: [`Value.shift_left`][amaranth.hdl.Value.shift_left] and [`Value.shift_right`][amaranth.hdl.Value.shift_right].
+- Added: [`ValueCastable`][amaranth.hdl.ValueCastable].
+- Deprecated: [`ast.UserValue`][amaranth.hdl.ast.UserValue]; use [`ValueCastable`][amaranth.hdl.ValueCastable] instead.
 - Added: Division and modulo operators can be used with a negative divisor.
 - Deprecated: `# nmigen:` linter instructions at the beginning of file; use `# amaranth:` instead.
 
 ### Standard library changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.lib
-```
-
-- Added: {class}`cdc.PulseSynchronizer`.
-- Added: {class}`cdc.AsyncFFSynchronizer`.
-- Changed: {class}`fifo.AsyncFIFO` is reset when the write domain is reset.
-- Added: {attr}`fifo.AsyncFIFO.r_rst` is asserted when the write domain is reset.
-- Added: {attr}`fifo.FIFOInterface.r_level` and {attr}`fifo.FIFOInterface.w_level`.
+- Added: [`cdc.PulseSynchronizer`][amaranth.lib.cdc.PulseSynchronizer].
+- Added: [`cdc.AsyncFFSynchronizer`][amaranth.lib.cdc.AsyncFFSynchronizer].
+- Changed: [`fifo.AsyncFIFO`][amaranth.lib.fifo.AsyncFIFO] is reset when the write domain is reset.
+- Added: [`fifo.AsyncFIFO.r_rst`][amaranth.lib.fifo.AsyncFIFO.r_rst] is asserted when the write domain is reset.
+- Added: [`fifo.FIFOInterface.r_level`][amaranth.lib.fifo.FIFOInterface.r_level] and [`fifo.FIFOInterface.w_level`][amaranth.lib.fifo.FIFOInterface.w_level].
 
 ### Toolchain changes
-
-```{eval-rst}
-.. currentmodule:: amaranth
-```
 
 - Changed: Backend and simulator reject wires larger than 65536 bits.
 - Added: Backend emits Yosys enumeration attributes for {ref}`enumeration-shaped <lang-shapeenum>` signals.
@@ -439,36 +371,32 @@ While code that uses the features listed as deprecated below will work in Amaran
 - Added: [`sim`][sim], a simulator interface with support for multiple simulation backends.
 - Deprecated: [`back.pysim`][back.pysim]; use [`sim`][sim] instead.
 - Removed: The `with Simulator(fragment, ...) as sim:` form.
-- Removed: {meth}`sim.Simulator.add_process` with a generator argument.
-- Deprecated: {meth}`sim.Simulator.step`; use {meth}`sim.Simulator.advance` instead.
-- Added: {meth}`build.BuildPlan.execute_remote_ssh`.
-- Deprecated: {class}`test.utils.FHDLTestCase`, with no replacement.
+- Removed: [`sim.Simulator.add_process`][amaranth.sim.Simulator.add_process] with a generator argument.
+- Deprecated: [`sim.Simulator.step`][amaranth.sim.Simulator.step]; use [`sim.Simulator.advance`][amaranth.sim.Simulator.advance] instead.
+- Added: [`build.BuildPlan.execute_remote_ssh`][amaranth.build.BuildPlan.execute_remote_ssh].
+- Deprecated: [`test.utils.FHDLTestCase`][amaranth.test.utils.FHDLTestCase], with no replacement.
 - Deprecated: [`back.rtlil.convert()`][back.rtlil.convert()] and [`back.verilog.convert()`][back.verilog.convert()] without an explicit `ports=` argument.
 - Changed: VCD output now uses a top-level "bench" module that contains testbench only signals.
 - Deprecated: `NMIGEN_*` environment variables; use `AMARANTH_*` environment variables instead.
 
 ### Platform integration changes
 
-```{eval-rst}
-.. currentmodule:: amaranth.vendor
-```
-
-- Added: `SB_LFOSC` and `SB_HFOSC` as `default_clk` clock sources in {class}`lattice_ice40.LatticeICE40Platform`.
-- Added: {class}`lattice_machxo2.LatticeMachXO2Platform` generates binary (`.bit`) bitstreams.
-- Added: {class}`lattice_machxo_2_3l.LatticeMachXO3LPlatform`.
-- Deprecated: [`lattice_machxo2`][lattice_machxo2]; use {class}`lattice_machxo_2_3l.LatticeMachXO2Platform` instead.
-- Removed: {class}`xilinx_7series.Xilinx7SeriesPlatform.grade`; this family has no temperature grades.
-- Removed: {class}`xilinx_ultrascale.XilinxUltrascalePlatform.grade`; this family has temperature grade as part of speed grade.
-- Added: Symbiflow toolchain support for {class}`xilinx_7series.Xilinx7SeriesPlatform`.
-- Added: {class}`lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform` generates separate Flash and SRAM SVF programming vectors, `{{name}}_flash.svf` and `{{name}}_sram.svf`.
-- Deprecated: {class}`lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform` SVF programming vector `{{name}}.svf`; use `{{name}}_flash.svf` instead.
-- Added: {class}`quicklogic.QuicklogicPlatform`.
-- Added: `cyclonev_oscillator` as `default_clk` clock source in {class}`intel.IntelPlatform`.
-- Added: `add_settings` and `add_constraints` overrides in {class}`intel.IntelPlatform`.
-- Added: {class}`xilinx.XilinxPlatform`.
-- Deprecated: {class}`xilinx_spartan_3_6.XilinxSpartan3APlatform`, {class}`xilinx_spartan_3_6.XilinxSpartan6Platform`, {class}`xilinx_7series.Xilinx7SeriesPlatform`, {class}`xilinx_ultrascale.XilinxUltrascalePlatform`; use {class}`xilinx.XilinxPlatform` instead.
-- Added: Mistral toolchain support for {class}`intel.IntelPlatform`.
-- Added: `synth_design_opts` override in {class}`xilinx.XilinxPlatform`.
+- Added: `SB_LFOSC` and `SB_HFOSC` as `default_clk` clock sources in [`lattice_ice40.LatticeICE40Platform`][amaranth.vendor.lattice_ice40.LatticeICE40Platform].
+- Added: [`lattice_machxo2.LatticeMachXO2Platform`][amaranth.vendor.lattice_machxo2.LatticeMachXO2Platform] generates binary (`.bit`) bitstreams.
+- Added: [`lattice_machxo_2_3l.LatticeMachXO3LPlatform`][amaranth.vendor.lattice_machxo_2_3l.LatticeMachXO3LPlatform].
+- Deprecated: [`lattice_machxo2`][lattice_machxo2]; use [`lattice_machxo_2_3l.LatticeMachXO2Platform`][amaranth.vendor.lattice_machxo_2_3l.LatticeMachXO2Platform] instead.
+- Removed: [`xilinx_7series.Xilinx7SeriesPlatform.grade`][amaranth.vendor.xilinx_7series.Xilinx7SeriesPlatform.grade]; this family has no temperature grades.
+- Removed: [`xilinx_ultrascale.XilinxUltrascalePlatform.grade`][amaranth.vendor.xilinx_ultrascale.XilinxUltrascalePlatform.grade]; this family has temperature grade as part of speed grade.
+- Added: Symbiflow toolchain support for [`xilinx_7series.Xilinx7SeriesPlatform`][amaranth.vendor.xilinx_7series.Xilinx7SeriesPlatform].
+- Added: [`lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform`][amaranth.vendor.lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform] generates separate Flash and SRAM SVF programming vectors, `{{name}}_flash.svf` and `{{name}}_sram.svf`.
+- Deprecated: [`lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform`][amaranth.vendor.lattice_machxo_2_3l.LatticeMachXO2Or3LPlatform] SVF programming vector `{{name}}.svf`; use `{{name}}_flash.svf` instead.
+- Added: [`quicklogic.QuicklogicPlatform`][amaranth.vendor.quicklogic.QuicklogicPlatform].
+- Added: `cyclonev_oscillator` as `default_clk` clock source in [`intel.IntelPlatform`][amaranth.vendor.intel.IntelPlatform].
+- Added: `add_settings` and `add_constraints` overrides in [`intel.IntelPlatform`][amaranth.vendor.intel.IntelPlatform].
+- Added: [`xilinx.XilinxPlatform`][amaranth.vendor.xilinx.XilinxPlatform].
+- Deprecated: [`xilinx_spartan_3_6.XilinxSpartan3APlatform`][amaranth.vendor.xilinx_spartan_3_6.XilinxSpartan3APlatform], [`xilinx_spartan_3_6.XilinxSpartan6Platform`][amaranth.vendor.xilinx_spartan_3_6.XilinxSpartan6Platform], [`xilinx_7series.Xilinx7SeriesPlatform`][amaranth.vendor.xilinx_7series.Xilinx7SeriesPlatform], [`xilinx_ultrascale.XilinxUltrascalePlatform`][amaranth.vendor.xilinx_ultrascale.XilinxUltrascalePlatform]; use [`xilinx.XilinxPlatform`][amaranth.vendor.xilinx.XilinxPlatform] instead.
+- Added: Mistral toolchain support for [`intel.IntelPlatform`][amaranth.vendor.intel.IntelPlatform].
+- Added: `synth_design_opts` override in [`xilinx.XilinxPlatform`][amaranth.vendor.xilinx.XilinxPlatform].
 
 ## Versions 0.1, 0.2
 

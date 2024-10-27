@@ -65,6 +65,41 @@ def parse_abs_autoref(data, autoref_type):
     data = re.sub(patt, repl, data)
     return data
 
+def find_last_currentmodule(data, startpos):
+    """_summary_
+    Find the last occurance of currentmodule by searching backwards
+    """
+    data2 = data[:startpos]
+    results = re.findall("\.\. currentmodule:: .*", data2)
+    if len(results) < 1:
+        return ""
+    ret = results[-1]
+    ret = ret.replace(".. currentmodule:: ", "")
+    return ret
+
+def parse_rel_autoref(data, autoref_type):
+    """_summary_
+    Used for relative autorefs
+    Example: {meth}`Value.implies`
+    """
+    autoref_type = "{" + autoref_type + "}"
+    patt = autoref_type + "`[^`]*`"
+    def repl(match):
+        ret = match.group().replace(autoref_type,"").replace("`","")
+
+        # Find the current module
+        currmod = ""
+        if not ret.startswith("amaranth"):
+            startpos = match.span()[0]
+            currmod = find_last_currentmodule(data, startpos)
+            currmod += "."
+
+        shortname = ret
+        fullname = currmod + ret
+        ret = "[`{0}`][{1}]". format(shortname, fullname)
+        return ret
+    data = re.sub(patt, repl, data)
+    return data
 
 def parse_md_file(filepath):
     data = Path(filepath).read_text()
@@ -80,12 +115,14 @@ def parse_md_file(filepath):
     data = parse_abs_autoref(data, "meth")
     data = parse_abs_autoref(data, "attr")
 
-    # TODO reglative class / meth / attr
-    # where currentmodule in above line
+    # Replace relative autorefs
+    data = parse_rel_autoref(data, "class")
+    data = parse_rel_autoref(data, "meth")
+    data = parse_rel_autoref(data, "attr")
 
     # remove currentmodule code block
-    #patt = "```{eval-rst}\r?\n.. currentmodule.*\r?\n```\r?\n\r?\n"
-    #data = re.sub(patt, "", data)
+    patt = "```{eval-rst}\r?\n.. currentmodule.*\r?\n```\r?\n\r?\n"
+    data = re.sub(patt, "", data)
 
     # Ammend markdown file
     Path(filepath).write_text(data)
