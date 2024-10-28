@@ -123,7 +123,6 @@ Some of the formatting guidelines are:
 ## Contributing your changes
 
 !!! warning
-
     Our code style guidelines are evolving, and we do not yet have a formal document listing them.
 
 We ask that you do your best effort to keep the code that you add or modify similar in style as well as in spirit to the code surrounding it, and we may ask you to change it during review. When in doubt, submit your code as-is.

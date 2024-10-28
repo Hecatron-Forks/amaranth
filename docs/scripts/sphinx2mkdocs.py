@@ -116,6 +116,28 @@ def parse_api_ref(data, api_type):
     data = re.sub(patt, repl, data)
     return data
 
+def parse_admo_block(data, name):
+    """_summary_
+    Used for admonition blocks
+    Example:    :::{warning}
+                Our documentation style guidelines are evolving, and this section is incomplete.
+                :::
+    """
+    patt = ":::{" + name + "}\r?\n((.|\r?\n)*?):::"
+    def repl(match):
+        ret = match.group().replace(":::{" + name + "}", "")
+        ret = ret.replace(":::", "")
+        ret = ret.replace("\r", "", 1).replace("\n", "", 1)
+        split = ret.split("\n")
+        ret = "!!! " + name + "\r\n"
+        ret2 = ""
+        for item in split:
+            ret2 += "    " + item + "\r\n"
+        ret += ret2
+        return ret
+    data = re.sub(patt, repl, data)
+    return data
+
 
 def parse_md_file(filepath):
     data = Path(filepath).read_text()
@@ -144,6 +166,10 @@ def parse_md_file(filepath):
     data = parse_api_ref(data, "autoclass")
     data = parse_api_ref(data, "py:currentmodule")
 
+    # parse admonition blocks
+    data = parse_admo_block(data, "warning")
+    data = parse_admo_block(data, "note")
+
     # Ammend markdown file
     Path(filepath).write_text(data)
 
@@ -164,7 +190,7 @@ def main():
 
     # Make further amendments to markdown files
     for filepath in files:
-        print("Further parsing: " + filepath)
+        #print("Further parsing: " + filepath)
         parse_md_file(filepath)
 
 if __name__ == "__main__":
